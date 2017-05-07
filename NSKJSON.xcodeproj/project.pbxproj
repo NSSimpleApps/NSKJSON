@@ -121,6 +121,7 @@
 		B54B030A1EBF7CBB00851268 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B54B030B1EBF7CBB00851268 /* NSKJSON.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSKJSON.podspec; sourceTree = "<group>"; };
 		B54B030C1EBF7CBB00851268 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B54B030D1EBF80B500851268 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		B56203901E9D20920071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B562039E1E9D20A20071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56203AB1E9D20AB0071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -215,6 +216,7 @@
 		B56203841E9D207E0071D7DC = {
 			isa = PBXGroup;
 			children = (
+				B54B030D1EBF80B500851268 /* Package.swift */,
 				B54B03091EBF7CBB00851268 /* CHANGELOG.md */,
 				B54B030A1EBF7CBB00851268 /* LICENSE */,
 				B54B030B1EBF7CBB00851268 /* NSKJSON.podspec */,
