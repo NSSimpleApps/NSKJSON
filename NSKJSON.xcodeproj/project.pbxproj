@@ -1,0 +1,1642 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B502AAFA1EA1395F00DD3527 /* NSKJSON5NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */; };
+		B502AAFB1EA1396500DD3527 /* NSKJSON5NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */; };
+		B502AAFC1EA1396600DD3527 /* NSKJSON5NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */; };
+		B502AAFD1EA1396600DD3527 /* NSKJSON5NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */; };
+		B54886C71EBD8CAA0020B777 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54886C51EBD8B890020B777 /* Helper.swift */; };
+		B54886C81EBD8CAA0020B777 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54886C51EBD8B890020B777 /* Helper.swift */; };
+		B54886C91EBD8CAB0020B777 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54886C51EBD8B890020B777 /* Helper.swift */; };
+		B549C0D71E9E893000ADE3EF /* NSKMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */; };
+		B549C0D81E9E893000ADE3EF /* NSKMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */; };
+		B549C0D91E9E893000ADE3EF /* NSKMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */; };
+		B5582F611EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */; };
+		B5582F621EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */; };
+		B5582F631EBB994300E3BD21 /* NSKJSON5Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */; };
+		B56203C61E9D22570071D7DC /* NSKJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B56203C51E9D21BC0071D7DC /* NSKJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B56203C71E9D22580071D7DC /* NSKJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B56203C51E9D21BC0071D7DC /* NSKJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B56203C81E9D22580071D7DC /* NSKJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B56203C51E9D21BC0071D7DC /* NSKJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B56203EE1E9D244E0071D7DC /* NSKJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = B56203C51E9D21BC0071D7DC /* NSKJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B56203F91E9D25410071D7DC /* Data+NSKExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F01E9D25410071D7DC /* Data+NSKExtension.swift */; };
+		B56203FA1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F01E9D25410071D7DC /* Data+NSKExtension.swift */; };
+		B56203FB1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F01E9D25410071D7DC /* Data+NSKExtension.swift */; };
+		B56203FC1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F01E9D25410071D7DC /* Data+NSKExtension.swift */; };
+		B56203FD1E9D25410071D7DC /* NSKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F11E9D25410071D7DC /* NSKConstants.swift */; };
+		B56203FE1E9D25410071D7DC /* NSKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F11E9D25410071D7DC /* NSKConstants.swift */; };
+		B56203FF1E9D25410071D7DC /* NSKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F11E9D25410071D7DC /* NSKConstants.swift */; };
+		B56204001E9D25410071D7DC /* NSKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F11E9D25410071D7DC /* NSKConstants.swift */; };
+		B56204011E9D25410071D7DC /* NSKJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F21E9D25410071D7DC /* NSKJSON.swift */; };
+		B56204021E9D25410071D7DC /* NSKJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F21E9D25410071D7DC /* NSKJSON.swift */; };
+		B56204031E9D25410071D7DC /* NSKJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F21E9D25410071D7DC /* NSKJSON.swift */; };
+		B56204041E9D25410071D7DC /* NSKJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F21E9D25410071D7DC /* NSKJSON.swift */; };
+		B56204051E9D25410071D7DC /* NSKJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F31E9D25410071D7DC /* NSKJSONError.swift */; };
+		B56204061E9D25410071D7DC /* NSKJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F31E9D25410071D7DC /* NSKJSONError.swift */; };
+		B56204071E9D25410071D7DC /* NSKJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F31E9D25410071D7DC /* NSKJSONError.swift */; };
+		B56204081E9D25410071D7DC /* NSKJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F31E9D25410071D7DC /* NSKJSONError.swift */; };
+		B56204091E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */; };
+		B562040A1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */; };
+		B562040B1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */; };
+		B562040C1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */; };
+		B562040D1E9D25410071D7DC /* NSKOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F51E9D25410071D7DC /* NSKOptions.swift */; };
+		B562040E1E9D25410071D7DC /* NSKOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F51E9D25410071D7DC /* NSKOptions.swift */; };
+		B562040F1E9D25410071D7DC /* NSKOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F51E9D25410071D7DC /* NSKOptions.swift */; };
+		B56204101E9D25410071D7DC /* NSKOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F51E9D25410071D7DC /* NSKOptions.swift */; };
+		B56204111E9D25410071D7DC /* NSKPlainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F61E9D25410071D7DC /* NSKPlainParser.swift */; };
+		B56204121E9D25410071D7DC /* NSKPlainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F61E9D25410071D7DC /* NSKPlainParser.swift */; };
+		B56204131E9D25410071D7DC /* NSKPlainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F61E9D25410071D7DC /* NSKPlainParser.swift */; };
+		B56204141E9D25410071D7DC /* NSKPlainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F61E9D25410071D7DC /* NSKPlainParser.swift */; };
+		B56204151E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
+		B56204161E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
+		B56204171E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
+		B56204181E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
+		B56204261E9D25BD0071D7DC /* NSKJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56203901E9D20920071D7DC /* NSKJSON.framework */; };
+		B56204351E9D25D70071D7DC /* NSKJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B562039E1E9D20A20071D7DC /* NSKJSON.framework */; };
+		B56204441E9D26040071D7DC /* NSKJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56203E51E9D23E00071D7DC /* NSKJSON.framework */; };
+		B562044F1E9D27290071D7DC /* NSKPlainJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B562044E1E9D27140071D7DC /* NSKPlainJSONTests.swift */; };
+		B56204501E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B562044E1E9D27140071D7DC /* NSKPlainJSONTests.swift */; };
+		B56204511E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B562044E1E9D27140071D7DC /* NSKPlainJSONTests.swift */; };
+		B562045B1E9D2AE90071D7DC /* NSKPlainNumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B562045A1E9D2AE40071D7DC /* NSKPlainNumberTest.swift */; };
+		B562045C1E9D2AE90071D7DC /* NSKPlainNumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B562045A1E9D2AE40071D7DC /* NSKPlainNumberTest.swift */; };
+		B562045D1E9D2AEA0071D7DC /* NSKPlainNumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B562045A1E9D2AE40071D7DC /* NSKPlainNumberTest.swift */; };
+		B56C327C1EB7306100FD6548 /* NSKJSON5Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */; };
+		B56C327F1EB74CB500FD6548 /* JSON5NumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C32791EB7190300FD6548 /* JSON5NumberCases.swift */; };
+		B56C32801EB74CB500FD6548 /* JSON5NumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C32791EB7190300FD6548 /* JSON5NumberCases.swift */; };
+		B56C32811EB74CB600FD6548 /* JSON5NumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C32791EB7190300FD6548 /* JSON5NumberCases.swift */; };
+		B56C32821EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327D1EB74C9000FD6548 /* NSKJSON5Tests.swift */; };
+		B56C32831EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327D1EB74C9000FD6548 /* NSKJSON5Tests.swift */; };
+		B56C32841EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327D1EB74C9000FD6548 /* NSKJSON5Tests.swift */; };
+		B56C32861EB74CE200FD6548 /* test_json5_parsing in Resources */ = {isa = PBXBuildFile; fileRef = B56C32851EB74CE200FD6548 /* test_json5_parsing */; };
+		B56C32871EB74CE200FD6548 /* test_json5_parsing in Resources */ = {isa = PBXBuildFile; fileRef = B56C32851EB74CE200FD6548 /* test_json5_parsing */; };
+		B56C32881EB74CE200FD6548 /* test_json5_parsing in Resources */ = {isa = PBXBuildFile; fileRef = B56C32851EB74CE200FD6548 /* test_json5_parsing */; };
+		B56C328A1EB79F3700FD6548 /* test_plain_parsing in Resources */ = {isa = PBXBuildFile; fileRef = B56C32891EB79F3700FD6548 /* test_plain_parsing */; };
+		B56C328B1EB79F3700FD6548 /* test_plain_parsing in Resources */ = {isa = PBXBuildFile; fileRef = B56C32891EB79F3700FD6548 /* test_plain_parsing */; };
+		B56C328C1EB79F3700FD6548 /* test_plain_parsing in Resources */ = {isa = PBXBuildFile; fileRef = B56C32891EB79F3700FD6548 /* test_plain_parsing */; };
+		B57800CA1EB8CCE000A0E6A7 /* test.json5 in Resources */ = {isa = PBXBuildFile; fileRef = B57800C81EB8CB7200A0E6A7 /* test.json5 */; };
+		B57800CB1EB8CCE000A0E6A7 /* test.json5 in Resources */ = {isa = PBXBuildFile; fileRef = B57800C81EB8CB7200A0E6A7 /* test.json5 */; };
+		B57800CC1EB8CCE100A0E6A7 /* test.json5 in Resources */ = {isa = PBXBuildFile; fileRef = B57800C81EB8CB7200A0E6A7 /* test.json5 */; };
+		B57B61781EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
+		B57B61791EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
+		B57B617A1EA3B0AB0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
+		B5BE746E1EAFB4C000B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
+		B5BE746F1EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
+		B5BE74701EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B56204271E9D25BD0071D7DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B56203851E9D207E0071D7DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B562038F1E9D20920071D7DC;
+			remoteInfo = iOSNSKJSON;
+		};
+		B56204361E9D25D70071D7DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B56203851E9D207E0071D7DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B562039D1E9D20A20071D7DC;
+			remoteInfo = macOSNSKJSON;
+		};
+		B56204451E9D26040071D7DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B56203851E9D207E0071D7DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B56203E41E9D23E00071D7DC;
+			remoteInfo = tvOSNSKJSON;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSON5NumberParser.swift; sourceTree = "<group>"; };
+		B54886C51EBD8B890020B777 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKMiscTests.swift; sourceTree = "<group>"; };
+		B54B03091EBF7CBB00851268 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		B54B030A1EBF7CBB00851268 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		B54B030B1EBF7CBB00851268 /* NSKJSON.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSKJSON.podspec; sourceTree = "<group>"; };
+		B54B030C1EBF7CBB00851268 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B56203901E9D20920071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B562039E1E9D20A20071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B56203AB1E9D20AB0071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B56203C11E9D210F0071D7DC /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		B56203C21E9D210F0071D7DC /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
+		B56203C41E9D210F0071D7DC /* Info-watchOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-watchOS.plist"; sourceTree = "<group>"; };
+		B56203C51E9D21BC0071D7DC /* NSKJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKJSON.h; sourceTree = "<group>"; };
+		B56203E51E9D23E00071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B56203ED1E9D24160071D7DC /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		B56203F01E9D25410071D7DC /* Data+NSKExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+NSKExtension.swift"; sourceTree = "<group>"; };
+		B56203F11E9D25410071D7DC /* NSKConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKConstants.swift; sourceTree = "<group>"; };
+		B56203F21E9D25410071D7DC /* NSKJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSON.swift; sourceTree = "<group>"; };
+		B56203F31E9D25410071D7DC /* NSKJSONError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSONError.swift; sourceTree = "<group>"; };
+		B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKPlainNumberParser.swift; sourceTree = "<group>"; };
+		B56203F51E9D25410071D7DC /* NSKOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKOptions.swift; sourceTree = "<group>"; };
+		B56203F61E9D25410071D7DC /* NSKPlainParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKPlainParser.swift; sourceTree = "<group>"; };
+		B56203F71E9D25410071D7DC /* NSKTerminator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKTerminator.swift; sourceTree = "<group>"; };
+		B56204211E9D25BD0071D7DC /* iOSNSKJSONTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSNSKJSONTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B56204301E9D25D70071D7DC /* macOSNSKJSONTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSNSKJSONTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B562043F1E9D26040071D7DC /* tvOSNSKJSONTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tvOSNSKJSONTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B562044B1E9D26ED0071D7DC /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		B562044C1E9D26ED0071D7DC /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
+		B562044D1E9D26ED0071D7DC /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		B562044E1E9D27140071D7DC /* NSKPlainJSONTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSKPlainJSONTests.swift; sourceTree = "<group>"; };
+		B562045A1E9D2AE40071D7DC /* NSKPlainNumberTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSKPlainNumberTest.swift; sourceTree = "<group>"; };
+		B56C32791EB7190300FD6548 /* JSON5NumberCases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON5NumberCases.swift; sourceTree = "<group>"; };
+		B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSON5Parser.swift; sourceTree = "<group>"; };
+		B56C327D1EB74C9000FD6548 /* NSKJSON5Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSON5Tests.swift; sourceTree = "<group>"; };
+		B56C32851EB74CE200FD6548 /* test_json5_parsing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_json5_parsing; sourceTree = "<group>"; };
+		B56C32891EB79F3700FD6548 /* test_plain_parsing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_plain_parsing; sourceTree = "<group>"; };
+		B57800C81EB8CB7200A0E6A7 /* test.json5 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.json5; sourceTree = "<group>"; };
+		B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSON5NumberTest.swift; sourceTree = "<group>"; };
+		B57B617C1EA3B1270025164B /* PlainNumberCases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainNumberCases.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B562038C1E9D20920071D7DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562039A1E9D20A20071D7DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203A71E9D20AB0071D7DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203E11E9D23E00071D7DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562041E1E9D25BD0071D7DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56204261E9D25BD0071D7DC /* NSKJSON.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562042D1E9D25D70071D7DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56204351E9D25D70071D7DC /* NSKJSON.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562043C1E9D26040071D7DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56204441E9D26040071D7DC /* NSKJSON.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B56203841E9D207E0071D7DC = {
+			isa = PBXGroup;
+			children = (
+				B54B03091EBF7CBB00851268 /* CHANGELOG.md */,
+				B54B030A1EBF7CBB00851268 /* LICENSE */,
+				B54B030B1EBF7CBB00851268 /* NSKJSON.podspec */,
+				B54B030C1EBF7CBB00851268 /* README.md */,
+				B562044A1E9D266A0071D7DC /* NSKJSONTests */,
+				B56203C01E9D210F0071D7DC /* Source */,
+				B56203911E9D20920071D7DC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B56203911E9D20920071D7DC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B56203901E9D20920071D7DC /* NSKJSON.framework */,
+				B562039E1E9D20A20071D7DC /* NSKJSON.framework */,
+				B56203AB1E9D20AB0071D7DC /* NSKJSON.framework */,
+				B56203E51E9D23E00071D7DC /* NSKJSON.framework */,
+				B56204211E9D25BD0071D7DC /* iOSNSKJSONTests.xctest */,
+				B56204301E9D25D70071D7DC /* macOSNSKJSONTests.xctest */,
+				B562043F1E9D26040071D7DC /* tvOSNSKJSONTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B56203C01E9D210F0071D7DC /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				B56203EF1E9D25410071D7DC /* Swift */,
+				B56203CA1E9D227A0071D7DC /* Supporting Files */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		B56203CA1E9D227A0071D7DC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B56203C11E9D210F0071D7DC /* Info-iOS.plist */,
+				B56203C21E9D210F0071D7DC /* Info-macOS.plist */,
+				B56203C41E9D210F0071D7DC /* Info-watchOS.plist */,
+				B56203ED1E9D24160071D7DC /* Info-tvOS.plist */,
+				B56203C51E9D21BC0071D7DC /* NSKJSON.h */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B56203EF1E9D25410071D7DC /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				B56203F11E9D25410071D7DC /* NSKConstants.swift */,
+				B56203F01E9D25410071D7DC /* Data+NSKExtension.swift */,
+				B56203F21E9D25410071D7DC /* NSKJSON.swift */,
+				B56203F31E9D25410071D7DC /* NSKJSONError.swift */,
+				B56203F51E9D25410071D7DC /* NSKOptions.swift */,
+				B56203F71E9D25410071D7DC /* NSKTerminator.swift */,
+				B56203F61E9D25410071D7DC /* NSKPlainParser.swift */,
+				B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */,
+				B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */,
+				B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
+		B562044A1E9D266A0071D7DC /* NSKJSONTests */ = {
+			isa = PBXGroup;
+			children = (
+				B57B617B1EA3B1180025164B /* Cases */,
+				B57B61751EA3B0510025164B /* JSON5 */,
+				B57B61741EA3B03C0025164B /* PlainJSON */,
+				B562044B1E9D26ED0071D7DC /* Info-iOS.plist */,
+				B562044C1E9D26ED0071D7DC /* Info-macOS.plist */,
+				B562044D1E9D26ED0071D7DC /* Info-tvOS.plist */,
+				B54886C51EBD8B890020B777 /* Helper.swift */,
+			);
+			path = NSKJSONTests;
+			sourceTree = "<group>";
+		};
+		B57B61741EA3B03C0025164B /* PlainJSON */ = {
+			isa = PBXGroup;
+			children = (
+				B56C32891EB79F3700FD6548 /* test_plain_parsing */,
+				B562045A1E9D2AE40071D7DC /* NSKPlainNumberTest.swift */,
+				B562044E1E9D27140071D7DC /* NSKPlainJSONTests.swift */,
+				B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */,
+			);
+			name = PlainJSON;
+			sourceTree = "<group>";
+		};
+		B57B61751EA3B0510025164B /* JSON5 */ = {
+			isa = PBXGroup;
+			children = (
+				B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */,
+				B56C327D1EB74C9000FD6548 /* NSKJSON5Tests.swift */,
+				B56C32851EB74CE200FD6548 /* test_json5_parsing */,
+			);
+			name = JSON5;
+			sourceTree = "<group>";
+		};
+		B57B617B1EA3B1180025164B /* Cases */ = {
+			isa = PBXGroup;
+			children = (
+				B57B617C1EA3B1270025164B /* PlainNumberCases.swift */,
+				B56C32791EB7190300FD6548 /* JSON5NumberCases.swift */,
+				B57800C81EB8CB7200A0E6A7 /* test.json5 */,
+			);
+			name = Cases;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B562038D1E9D20920071D7DC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56203C61E9D22570071D7DC /* NSKJSON.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562039B1E9D20A20071D7DC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56203C71E9D22580071D7DC /* NSKJSON.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203A81E9D20AB0071D7DC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56203C81E9D22580071D7DC /* NSKJSON.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203E21E9D23E00071D7DC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56203EE1E9D244E0071D7DC /* NSKJSON.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		B562038F1E9D20920071D7DC /* iOSNSKJSON */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56203961E9D20920071D7DC /* Build configuration list for PBXNativeTarget "iOSNSKJSON" */;
+			buildPhases = (
+				B562038B1E9D20920071D7DC /* Sources */,
+				B562038C1E9D20920071D7DC /* Frameworks */,
+				B562038D1E9D20920071D7DC /* Headers */,
+				B562038E1E9D20920071D7DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOSNSKJSON;
+			productName = iOSNSKJSON;
+			productReference = B56203901E9D20920071D7DC /* NSKJSON.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B562039D1E9D20A20071D7DC /* macOSNSKJSON */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56203A31E9D20A20071D7DC /* Build configuration list for PBXNativeTarget "macOSNSKJSON" */;
+			buildPhases = (
+				B56203991E9D20A20071D7DC /* Sources */,
+				B562039A1E9D20A20071D7DC /* Frameworks */,
+				B562039B1E9D20A20071D7DC /* Headers */,
+				B562039C1E9D20A20071D7DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = macOSNSKJSON;
+			productName = macOSNSKJSON;
+			productReference = B562039E1E9D20A20071D7DC /* NSKJSON.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B56203AA1E9D20AB0071D7DC /* watchOSNSKJSON */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56203B01E9D20AB0071D7DC /* Build configuration list for PBXNativeTarget "watchOSNSKJSON" */;
+			buildPhases = (
+				B56203A61E9D20AB0071D7DC /* Sources */,
+				B56203A71E9D20AB0071D7DC /* Frameworks */,
+				B56203A81E9D20AB0071D7DC /* Headers */,
+				B56203A91E9D20AB0071D7DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = watchOSNSKJSON;
+			productName = watchOSNSKJSON;
+			productReference = B56203AB1E9D20AB0071D7DC /* NSKJSON.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B56203E41E9D23E00071D7DC /* tvOSNSKJSON */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56203EA1E9D23E00071D7DC /* Build configuration list for PBXNativeTarget "tvOSNSKJSON" */;
+			buildPhases = (
+				B56203E01E9D23E00071D7DC /* Sources */,
+				B56203E11E9D23E00071D7DC /* Frameworks */,
+				B56203E21E9D23E00071D7DC /* Headers */,
+				B56203E31E9D23E00071D7DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tvOSNSKJSON;
+			productName = tvOSNSKJSON;
+			productReference = B56203E51E9D23E00071D7DC /* NSKJSON.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B56204201E9D25BD0071D7DC /* iOSNSKJSONTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56204291E9D25BD0071D7DC /* Build configuration list for PBXNativeTarget "iOSNSKJSONTests" */;
+			buildPhases = (
+				B562041D1E9D25BD0071D7DC /* Sources */,
+				B562041E1E9D25BD0071D7DC /* Frameworks */,
+				B562041F1E9D25BD0071D7DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B56204281E9D25BD0071D7DC /* PBXTargetDependency */,
+			);
+			name = iOSNSKJSONTests;
+			productName = iOSNSKJSONTests;
+			productReference = B56204211E9D25BD0071D7DC /* iOSNSKJSONTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B562042F1E9D25D70071D7DC /* macOSNSKJSONTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56204381E9D25D70071D7DC /* Build configuration list for PBXNativeTarget "macOSNSKJSONTests" */;
+			buildPhases = (
+				B562042C1E9D25D70071D7DC /* Sources */,
+				B562042D1E9D25D70071D7DC /* Frameworks */,
+				B562042E1E9D25D70071D7DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B56204371E9D25D70071D7DC /* PBXTargetDependency */,
+			);
+			name = macOSNSKJSONTests;
+			productName = macOSNSKJSONTests;
+			productReference = B56204301E9D25D70071D7DC /* macOSNSKJSONTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B562043E1E9D26040071D7DC /* tvOSNSKJSONTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56204471E9D26040071D7DC /* Build configuration list for PBXNativeTarget "tvOSNSKJSONTests" */;
+			buildPhases = (
+				B562043B1E9D26040071D7DC /* Sources */,
+				B562043C1E9D26040071D7DC /* Frameworks */,
+				B562043D1E9D26040071D7DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B56204461E9D26040071D7DC /* PBXTargetDependency */,
+			);
+			name = tvOSNSKJSONTests;
+			productName = tvOSNSKJSONTests;
+			productReference = B562043F1E9D26040071D7DC /* tvOSNSKJSONTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B56203851E9D207E0071D7DC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				TargetAttributes = {
+					B562038F1E9D20920071D7DC = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					B562039D1E9D20A20071D7DC = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					B56203AA1E9D20AB0071D7DC = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					B56203E41E9D23E00071D7DC = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					B56204201E9D25BD0071D7DC = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					B562042F1E9D25D70071D7DC = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					B562043E1E9D26040071D7DC = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B56203881E9D207E0071D7DC /* Build configuration list for PBXProject "NSKJSON" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B56203841E9D207E0071D7DC;
+			productRefGroup = B56203911E9D20920071D7DC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B562038F1E9D20920071D7DC /* iOSNSKJSON */,
+				B562039D1E9D20A20071D7DC /* macOSNSKJSON */,
+				B56203AA1E9D20AB0071D7DC /* watchOSNSKJSON */,
+				B56203E41E9D23E00071D7DC /* tvOSNSKJSON */,
+				B56204201E9D25BD0071D7DC /* iOSNSKJSONTests */,
+				B562042F1E9D25D70071D7DC /* macOSNSKJSONTests */,
+				B562043E1E9D26040071D7DC /* tvOSNSKJSONTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B562038E1E9D20920071D7DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562039C1E9D20A20071D7DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203A91E9D20AB0071D7DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203E31E9D23E00071D7DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562041F1E9D25BD0071D7DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56C328A1EB79F3700FD6548 /* test_plain_parsing in Resources */,
+				B56C32861EB74CE200FD6548 /* test_json5_parsing in Resources */,
+				B57800CA1EB8CCE000A0E6A7 /* test.json5 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562042E1E9D25D70071D7DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56C328B1EB79F3700FD6548 /* test_plain_parsing in Resources */,
+				B56C32871EB74CE200FD6548 /* test_json5_parsing in Resources */,
+				B57800CB1EB8CCE000A0E6A7 /* test.json5 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562043D1E9D26040071D7DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56C328C1EB79F3700FD6548 /* test_plain_parsing in Resources */,
+				B56C32881EB74CE200FD6548 /* test_json5_parsing in Resources */,
+				B57800CC1EB8CCE100A0E6A7 /* test.json5 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B562038B1E9D20920071D7DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56204091E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
+				B56204111E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
+				B56204011E9D25410071D7DC /* NSKJSON.swift in Sources */,
+				B56204051E9D25410071D7DC /* NSKJSONError.swift in Sources */,
+				B502AAFA1EA1395F00DD3527 /* NSKJSON5NumberParser.swift in Sources */,
+				B562040D1E9D25410071D7DC /* NSKOptions.swift in Sources */,
+				B56203FD1E9D25410071D7DC /* NSKConstants.swift in Sources */,
+				B56203F91E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
+				B56204151E9D25410071D7DC /* NSKTerminator.swift in Sources */,
+				B56C327C1EB7306100FD6548 /* NSKJSON5Parser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203991E9D20A20071D7DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B562040A1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
+				B56204121E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
+				B56204021E9D25410071D7DC /* NSKJSON.swift in Sources */,
+				B5582F611EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */,
+				B56204061E9D25410071D7DC /* NSKJSONError.swift in Sources */,
+				B502AAFB1EA1396500DD3527 /* NSKJSON5NumberParser.swift in Sources */,
+				B562040E1E9D25410071D7DC /* NSKOptions.swift in Sources */,
+				B56203FE1E9D25410071D7DC /* NSKConstants.swift in Sources */,
+				B56203FA1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
+				B56204161E9D25410071D7DC /* NSKTerminator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203A61E9D20AB0071D7DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B562040B1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
+				B56204131E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
+				B56204031E9D25410071D7DC /* NSKJSON.swift in Sources */,
+				B5582F621EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */,
+				B56204071E9D25410071D7DC /* NSKJSONError.swift in Sources */,
+				B502AAFC1EA1396600DD3527 /* NSKJSON5NumberParser.swift in Sources */,
+				B562040F1E9D25410071D7DC /* NSKOptions.swift in Sources */,
+				B56203FF1E9D25410071D7DC /* NSKConstants.swift in Sources */,
+				B56203FB1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
+				B56204171E9D25410071D7DC /* NSKTerminator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56203E01E9D23E00071D7DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B562040C1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
+				B56204141E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
+				B56204041E9D25410071D7DC /* NSKJSON.swift in Sources */,
+				B5582F631EBB994300E3BD21 /* NSKJSON5Parser.swift in Sources */,
+				B56204081E9D25410071D7DC /* NSKJSONError.swift in Sources */,
+				B502AAFD1EA1396600DD3527 /* NSKJSON5NumberParser.swift in Sources */,
+				B56204101E9D25410071D7DC /* NSKOptions.swift in Sources */,
+				B56204001E9D25410071D7DC /* NSKConstants.swift in Sources */,
+				B56203FC1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
+				B56204181E9D25410071D7DC /* NSKTerminator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562041D1E9D25BD0071D7DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56C327F1EB74CB500FD6548 /* JSON5NumberCases.swift in Sources */,
+				B549C0D71E9E893000ADE3EF /* NSKMiscTests.swift in Sources */,
+				B5BE746E1EAFB4C000B24F71 /* PlainNumberCases.swift in Sources */,
+				B54886C71EBD8CAA0020B777 /* Helper.swift in Sources */,
+				B562044F1E9D27290071D7DC /* NSKPlainJSONTests.swift in Sources */,
+				B562045B1E9D2AE90071D7DC /* NSKPlainNumberTest.swift in Sources */,
+				B57B61781EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */,
+				B56C32821EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562042C1E9D25D70071D7DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56C32801EB74CB500FD6548 /* JSON5NumberCases.swift in Sources */,
+				B549C0D81E9E893000ADE3EF /* NSKMiscTests.swift in Sources */,
+				B5BE746F1EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */,
+				B54886C81EBD8CAA0020B777 /* Helper.swift in Sources */,
+				B56204501E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */,
+				B562045C1E9D2AE90071D7DC /* NSKPlainNumberTest.swift in Sources */,
+				B57B61791EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */,
+				B56C32831EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B562043B1E9D26040071D7DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56C32811EB74CB600FD6548 /* JSON5NumberCases.swift in Sources */,
+				B549C0D91E9E893000ADE3EF /* NSKMiscTests.swift in Sources */,
+				B5BE74701EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */,
+				B54886C91EBD8CAB0020B777 /* Helper.swift in Sources */,
+				B56204511E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */,
+				B562045D1E9D2AEA0071D7DC /* NSKPlainNumberTest.swift in Sources */,
+				B57B617A1EA3B0AB0025164B /* NSKJSON5NumberTest.swift in Sources */,
+				B56C32841EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B56204281E9D25BD0071D7DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B562038F1E9D20920071D7DC /* iOSNSKJSON */;
+			targetProxy = B56204271E9D25BD0071D7DC /* PBXContainerItemProxy */;
+		};
+		B56204371E9D25D70071D7DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B562039D1E9D20A20071D7DC /* macOSNSKJSON */;
+			targetProxy = B56204361E9D25D70071D7DC /* PBXContainerItemProxy */;
+		};
+		B56204461E9D26040071D7DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B56203E41E9D23E00071D7DC /* tvOSNSKJSON */;
+			targetProxy = B56204451E9D26040071D7DC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B56203891E9D207E0071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		B562038A1E9D207E0071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		B56203971E9D20920071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-iOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B56203981E9D20920071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-iOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B56203A41E9D20A20071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-macOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B56203A51E9D20A20071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-macOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B56203B11E9D20AB0071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-watchOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		B56203B21E9D20AB0071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-watchOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		B56203EB1E9D23E00071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B56203EC1E9D23E00071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Source/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSON;
+				PRODUCT_NAME = NSKJSON;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B562042A1E9D25BD0071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "NSKJSONTests/Info-iOS.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSONTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		B562042B1E9D25BD0071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "NSKJSONTests/Info-iOS.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSONTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B56204391E9D25D70071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "NSKJSONTests/Info-macOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSONTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		B562043A1E9D25D70071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "NSKJSONTests/Info-macOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSONTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		B56204481E9D26040071D7DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "NSKJSONTests/Info-tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSONTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		B56204491E9D26040071D7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "NSKJSONTests/Info-tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSONTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B56203881E9D207E0071D7DC /* Build configuration list for PBXProject "NSKJSON" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56203891E9D207E0071D7DC /* Debug */,
+				B562038A1E9D207E0071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56203961E9D20920071D7DC /* Build configuration list for PBXNativeTarget "iOSNSKJSON" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56203971E9D20920071D7DC /* Debug */,
+				B56203981E9D20920071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56203A31E9D20A20071D7DC /* Build configuration list for PBXNativeTarget "macOSNSKJSON" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56203A41E9D20A20071D7DC /* Debug */,
+				B56203A51E9D20A20071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56203B01E9D20AB0071D7DC /* Build configuration list for PBXNativeTarget "watchOSNSKJSON" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56203B11E9D20AB0071D7DC /* Debug */,
+				B56203B21E9D20AB0071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56203EA1E9D23E00071D7DC /* Build configuration list for PBXNativeTarget "tvOSNSKJSON" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56203EB1E9D23E00071D7DC /* Debug */,
+				B56203EC1E9D23E00071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56204291E9D25BD0071D7DC /* Build configuration list for PBXNativeTarget "iOSNSKJSONTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B562042A1E9D25BD0071D7DC /* Debug */,
+				B562042B1E9D25BD0071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56204381E9D25D70071D7DC /* Build configuration list for PBXNativeTarget "macOSNSKJSONTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56204391E9D25D70071D7DC /* Debug */,
+				B562043A1E9D25D70071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56204471E9D26040071D7DC /* Build configuration list for PBXNativeTarget "tvOSNSKJSONTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56204481E9D26040071D7DC /* Debug */,
+				B56204491E9D26040071D7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B56203851E9D207E0071D7DC /* Project object */;
+}
