@@ -16,8 +16,8 @@ class NSKMiscTests: XCTestCase {
         //let str = "0.e1"
         //let str = "[1,]"
         //let data = Data(bytes: [123, 34, 185, 34, 58, 34, 48, 34, 44, 125])
-        let data = Data(bytes: [NSKQuotationMark, NSKa, NSKBackSlash,
-                                NSKQuotationMark])
+        let data = Data(bytes: [NSKQuotationMark, NSKa, NSKBackSlash, NSKNewLine,
+                                NSKx, NSKQuotationMark])
         
         //let data = str.data(using: .utf8)!
         
