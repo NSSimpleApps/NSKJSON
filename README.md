@@ -25,6 +25,11 @@ do {
 
 ```
 
+Test cases were taken from here:
+
+https://github.com/nst/JSONTestSuite
+
+
 TODO:
 
 1. Supporting `UTF16-BE`, `UTF16-LE`, `UTF32-BE`, `UTF32-LE` encodings.
