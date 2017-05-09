@@ -84,6 +84,12 @@
 		B57B61781EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
 		B57B61791EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
 		B57B617A1EA3B0AB0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
+		B587E3391EC179E30062FCC9 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = B587E3381EC179E30062FCC9 /* comments */; };
+		B587E33A1EC179E30062FCC9 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = B587E3381EC179E30062FCC9 /* comments */; };
+		B587E33B1EC179E30062FCC9 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = B587E3381EC179E30062FCC9 /* comments */; };
+		B587E33D1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
+		B587E33E1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
+		B587E33F1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
 		B5BE746E1EAFB4C000B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
 		B5BE746F1EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
 		B5BE74701EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
@@ -155,6 +161,8 @@
 		B57800C81EB8CB7200A0E6A7 /* test.json5 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.json5; sourceTree = "<group>"; };
 		B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSON5NumberTest.swift; sourceTree = "<group>"; };
 		B57B617C1EA3B1270025164B /* PlainNumberCases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainNumberCases.swift; sourceTree = "<group>"; };
+		B587E3381EC179E30062FCC9 /* comments */ = {isa = PBXFileReference; lastKnownFileType = folder; path = comments; sourceTree = "<group>"; };
+		B587E33C1EC17A9D0062FCC9 /* TestComments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComments.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,7 +229,7 @@
 				B54B030A1EBF7CBB00851268 /* LICENSE */,
 				B54B030B1EBF7CBB00851268 /* NSKJSON.podspec */,
 				B54B030C1EBF7CBB00851268 /* README.md */,
-				B562044A1E9D266A0071D7DC /* NSKJSONTests */,
+				B562044A1E9D266A0071D7DC /* Tests */,
 				B56203C01E9D210F0071D7DC /* Source */,
 				B56203911E9D20920071D7DC /* Products */,
 			);
@@ -279,7 +287,7 @@
 			path = Swift;
 			sourceTree = "<group>";
 		};
-		B562044A1E9D266A0071D7DC /* NSKJSONTests */ = {
+		B562044A1E9D266A0071D7DC /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				B57B617B1EA3B1180025164B /* Cases */,
@@ -289,8 +297,9 @@
 				B562044C1E9D26ED0071D7DC /* Info-macOS.plist */,
 				B562044D1E9D26ED0071D7DC /* Info-tvOS.plist */,
 				B54886C51EBD8B890020B777 /* Helper.swift */,
+				B587E33C1EC17A9D0062FCC9 /* TestComments.swift */,
 			);
-			path = NSKJSONTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		B57B61741EA3B03C0025164B /* PlainJSON */ = {
@@ -317,6 +326,7 @@
 		B57B617B1EA3B1180025164B /* Cases */ = {
 			isa = PBXGroup;
 			children = (
+				B587E3381EC179E30062FCC9 /* comments */,
 				B57B617C1EA3B1270025164B /* PlainNumberCases.swift */,
 				B56C32791EB7190300FD6548 /* JSON5NumberCases.swift */,
 				B57800C81EB8CB7200A0E6A7 /* test.json5 */,
@@ -585,6 +595,7 @@
 			files = (
 				B56C328A1EB79F3700FD6548 /* test_plain_parsing in Resources */,
 				B56C32861EB74CE200FD6548 /* test_json5_parsing in Resources */,
+				B587E3391EC179E30062FCC9 /* comments in Resources */,
 				B57800CA1EB8CCE000A0E6A7 /* test.json5 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,6 +606,7 @@
 			files = (
 				B56C328B1EB79F3700FD6548 /* test_plain_parsing in Resources */,
 				B56C32871EB74CE200FD6548 /* test_json5_parsing in Resources */,
+				B587E33A1EC179E30062FCC9 /* comments in Resources */,
 				B57800CB1EB8CCE000A0E6A7 /* test.json5 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -605,6 +617,7 @@
 			files = (
 				B56C328C1EB79F3700FD6548 /* test_plain_parsing in Resources */,
 				B56C32881EB74CE200FD6548 /* test_json5_parsing in Resources */,
+				B587E33B1EC179E30062FCC9 /* comments in Resources */,
 				B57800CC1EB8CCE100A0E6A7 /* test.json5 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -690,6 +703,7 @@
 				B54886C71EBD8CAA0020B777 /* Helper.swift in Sources */,
 				B562044F1E9D27290071D7DC /* NSKPlainJSONTests.swift in Sources */,
 				B562045B1E9D2AE90071D7DC /* NSKPlainNumberTest.swift in Sources */,
+				B587E33D1EC17A9D0062FCC9 /* TestComments.swift in Sources */,
 				B57B61781EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */,
 				B56C32821EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */,
 			);
@@ -705,6 +719,7 @@
 				B54886C81EBD8CAA0020B777 /* Helper.swift in Sources */,
 				B56204501E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */,
 				B562045C1E9D2AE90071D7DC /* NSKPlainNumberTest.swift in Sources */,
+				B587E33E1EC17A9D0062FCC9 /* TestComments.swift in Sources */,
 				B57B61791EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */,
 				B56C32831EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */,
 			);
@@ -720,6 +735,7 @@
 				B54886C91EBD8CAB0020B777 /* Helper.swift in Sources */,
 				B56204511E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */,
 				B562045D1E9D2AEA0071D7DC /* NSKPlainNumberTest.swift in Sources */,
+				B587E33F1EC17A9D0062FCC9 /* TestComments.swift in Sources */,
 				B57B617A1EA3B0AB0025164B /* NSKJSON5NumberTest.swift in Sources */,
 				B56C32841EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */,
 			);

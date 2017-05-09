@@ -12,7 +12,6 @@ class Helper {
     
     static func directoryPath(forName name: String) -> String {
         
-        //return Bundle(for: type(of: self)).resourcePath!.appending("/" + name)
         return Bundle(for: self).resourcePath!.appending("/" + name)
     }
 
