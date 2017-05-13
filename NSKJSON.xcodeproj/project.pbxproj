@@ -90,6 +90,9 @@
 		B587E33D1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
 		B587E33E1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
 		B587E33F1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
+		B5951CF71EC6C02C00BEE9D3 /* json5-tests in Resources */ = {isa = PBXBuildFile; fileRef = B5951CF61EC6C01C00BEE9D3 /* json5-tests */; };
+		B5951CF81EC6C02C00BEE9D3 /* json5-tests in Resources */ = {isa = PBXBuildFile; fileRef = B5951CF61EC6C01C00BEE9D3 /* json5-tests */; };
+		B5951CF91EC6C02D00BEE9D3 /* json5-tests in Resources */ = {isa = PBXBuildFile; fileRef = B5951CF61EC6C01C00BEE9D3 /* json5-tests */; };
 		B5BE746E1EAFB4C000B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
 		B5BE746F1EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
 		B5BE74701EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B617C1EA3B1270025164B /* PlainNumberCases.swift */; };
@@ -163,6 +166,7 @@
 		B57B617C1EA3B1270025164B /* PlainNumberCases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainNumberCases.swift; sourceTree = "<group>"; };
 		B587E3381EC179E30062FCC9 /* comments */ = {isa = PBXFileReference; lastKnownFileType = folder; path = comments; sourceTree = "<group>"; };
 		B587E33C1EC17A9D0062FCC9 /* TestComments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComments.swift; sourceTree = "<group>"; };
+		B5951CF61EC6C01C00BEE9D3 /* json5-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "json5-tests"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,6 +330,7 @@
 		B57B617B1EA3B1180025164B /* Cases */ = {
 			isa = PBXGroup;
 			children = (
+				B5951CF61EC6C01C00BEE9D3 /* json5-tests */,
 				B587E3381EC179E30062FCC9 /* comments */,
 				B57B617C1EA3B1270025164B /* PlainNumberCases.swift */,
 				B56C32791EB7190300FD6548 /* JSON5NumberCases.swift */,
@@ -593,6 +598,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5951CF71EC6C02C00BEE9D3 /* json5-tests in Resources */,
 				B56C328A1EB79F3700FD6548 /* test_plain_parsing in Resources */,
 				B56C32861EB74CE200FD6548 /* test_json5_parsing in Resources */,
 				B587E3391EC179E30062FCC9 /* comments in Resources */,
@@ -604,6 +610,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5951CF81EC6C02C00BEE9D3 /* json5-tests in Resources */,
 				B56C328B1EB79F3700FD6548 /* test_plain_parsing in Resources */,
 				B56C32871EB74CE200FD6548 /* test_json5_parsing in Resources */,
 				B587E33A1EC179E30062FCC9 /* comments in Resources */,
@@ -615,6 +622,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5951CF91EC6C02D00BEE9D3 /* json5-tests in Resources */,
 				B56C328C1EB79F3700FD6548 /* test_plain_parsing in Resources */,
 				B56C32881EB74CE200FD6548 /* test_json5_parsing in Resources */,
 				B587E33B1EC179E30062FCC9 /* comments in Resources */,
@@ -1312,7 +1320,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "NSKJSONTests/Info-iOS.plist";
+				INFOPLIST_FILE = "Tests/Info-iOS.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1361,7 +1369,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "NSKJSONTests/Info-iOS.plist";
+				INFOPLIST_FILE = "Tests/Info-iOS.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1416,7 +1424,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "NSKJSONTests/Info-macOS.plist";
+				INFOPLIST_FILE = "Tests/Info-macOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1466,7 +1474,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "NSKJSONTests/Info-macOS.plist";
+				INFOPLIST_FILE = "Tests/Info-macOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1518,7 +1526,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "NSKJSONTests/Info-tvOS.plist";
+				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1566,7 +1574,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "NSKJSONTests/Info-tvOS.plist";
+				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = ns.simpleapps.NSKJSONTests;

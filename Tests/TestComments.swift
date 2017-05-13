@@ -2,7 +2,7 @@
 //  TestComments.swift
 //  NSKJSON
 //
-//  Created by neo on 09.05.17.
+//  Created by NSSimpleApps on 09.05.17.
 //
 //
 
