@@ -17,7 +17,7 @@ internal class NSKPlainParser {
         self.options = options
     }
     
-    internal func skipWhiteSpaces(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
+    internal final func skip(buffer: UnsafeBufferPointer<UInt8>, set: Set<UInt8>, from: Int) -> (index: Int, hasValue: Bool, numberOfLines: Int) {
         
         let endIndex = buffer.endIndex
         var numberOfLines = 0
@@ -26,17 +26,22 @@ internal class NSKPlainParser {
             
             let byte = buffer[index]
             
-            if NSKWhitespaces.contains(byte) == false {
+            if set.contains(byte) == false {
                 
                 return (index, true, numberOfLines)
                 
-            } else if byte == NSKNewLine {
+            } else if byte == NSKNewLine || byte == NSKCarriageReturn {
                 
                 numberOfLines += 1
             }
         }
         
         return (endIndex - 1, false, numberOfLines)
+    }
+    
+    internal func skipWhiteSpaces(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
+        
+        return self.skip(buffer: buffer, set: NSKWhitespaces, from: from)
     }
     
     internal final func parseByteSequence(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: NSKTerminator.Type) throws -> (value: String, offset: Int) {
@@ -50,7 +55,7 @@ internal class NSKPlainParser {
             
             let byte = buffer[index]
             
-            if byte.isConrtolCharacter {
+            if byte.isControlCharacter {
                 
                 throw NSKJSONError.error(description: "Unescaped control character around character \(index).")
                 

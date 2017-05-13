@@ -9,13 +9,20 @@
 import Foundation
 
 internal let NSKNewLine: UInt8     = 0x0A // \n
+internal let NSKCarriageReturn: UInt8     = 0x0D // \r
+
 
 internal let NSKWhitespaces: Set<UInt8> = [
-0x09, // Horizontal tab
-NSKNewLine, // Line feed or New line
-0x0D, // Carriage return
-0x20, // Space
+    0x09, // Horizontal tab
+    NSKNewLine, // Line feed or New line
+    NSKCarriageReturn, // Carriage return
+    0x20, // Space
 ]
+internal let NSKJSON5Whitespaces: Set<UInt8> =
+    NSKWhitespaces.union([0x0C, // Form feed
+        0xA0, // Non-breaking space
+        ])
+
 
 internal let NSKBeginArray: UInt8     = 0x5B // [
 internal let NSKEndArray: UInt8       = 0x5D // ]
@@ -54,6 +61,7 @@ internal let NSKE: UInt8 = 0x45 // E
 internal let NSKP: UInt8 = 0x50 // P
 internal let NSKp: UInt8 = 0x70 // p
 internal let NSKx: UInt8 = 0x78 // x
+internal let NSKX: UInt8 = 0x58 // X
 internal let NSKStar: UInt8 = 0x2A // *
 
 internal let NSKI: UInt8 = 0x49 // I

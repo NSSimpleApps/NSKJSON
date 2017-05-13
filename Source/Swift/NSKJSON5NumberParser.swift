@@ -185,7 +185,7 @@ internal final class NSKJSON5NumberParser: NSKPlainNumberParser {
                 return NSKPrefixValidation.validator(validator: .number, hasDecimalMarker: true, length: index - from)
             }
             
-        } else if index < buffer.endIndex - 2 && buffer[index].isZero && buffer[index + 1] == NSKx {
+        } else if index < buffer.endIndex - 2 && buffer[index].isZero && (buffer[index + 1] == NSKx || buffer[index + 1] == NSKX) {
             
             return NSKPrefixValidation.validator(validator: .hex, hasDecimalMarker: false, length: index + 2 - from)
             

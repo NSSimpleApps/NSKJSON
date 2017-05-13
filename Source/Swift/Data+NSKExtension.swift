@@ -32,7 +32,7 @@ internal extension UnsignedInteger {
         return self >= 0x31 && self <= 0x39
     }
     
-    internal var isConrtolCharacter: Bool {
+    internal var isControlCharacter: Bool {
         
         return self >= 0x00 && self <= 0x1F
     }

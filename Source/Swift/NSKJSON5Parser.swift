@@ -17,7 +17,7 @@ internal final class NSKJSON5Parser: NSKPlainParser {
         
         while true {
             
-            let (index, hasValue, wsLines) = try super.skipWhiteSpaces(buffer: buffer, from: currentIndex)
+            let (index, hasValue, wsLines) = self.skip(buffer: buffer, set: NSKJSON5Whitespaces, from: currentIndex)
             
             numberOfLines += wsLines
             
@@ -90,7 +90,9 @@ internal final class NSKJSON5Parser: NSKPlainParser {
             
             for index in from + 2 ..< endIndex {
                 
-                if buffer[index] == NSKNewLine {
+                let byte = buffer[index]
+                
+                if byte == NSKNewLine || byte == NSKCarriageReturn {
                     
                     if index == endIndex - 1 {
                         
@@ -223,7 +225,7 @@ internal final class NSKJSON5Parser: NSKPlainParser {
         
         switch b0 {
             
-        case NSKx:
+        case NSKx, NSKX:
             let result = try self.parseXSequence(buffer: buffer, from: from + 1)
             
             return (result, 3)
