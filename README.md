@@ -29,6 +29,7 @@ Test cases were taken from here:
 
 https://github.com/nst/JSONTestSuite
 
+https://github.com/json5/json5-tests
 
 TODO:
 
