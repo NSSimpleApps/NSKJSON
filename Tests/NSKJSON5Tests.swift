@@ -12,6 +12,49 @@ import XCTest
 
 class NSKJSON5Tests: XCTestCase {
     
+    func testCorrectJSON5Test() {
+        
+        let files = try! Helper.jsonFiles(in: "json5-tests", withPrefix: "y_")
+        
+        for fileName in files {
+            
+            let url = URL(fileURLWithPath: fileName)
+            let data = try! Data(contentsOf: url)
+            let file = (fileName as NSString).lastPathComponent
+            
+            print("SHOULD HAVE PASS TEST: \(file)")
+            
+            do {
+                
+                let val = try NSKJSON.jsonObject(with: data, version: .json5)
+                print(val)
+                
+            } catch {
+                
+                XCTFail("!!!! FAILED AT \(file), \(error)")
+            }
+        }
+    }
+    
+    func testIncorrectJSON5Test() {
+        
+        let files = try! Helper.jsonFiles(in: "json5-tests", withPrefix: "n_")
+        
+        for fileName in files {
+            
+            let url = URL(fileURLWithPath: fileName)
+            let data = try! Data(contentsOf: url)
+            let file = (fileName as NSString).lastPathComponent
+            
+            print("SHOULD HAVE FAILED \(fileName)")
+            
+            XCTAssertThrowsError(try NSKJSON.jsonObject(with: data, version: .json5), "!!!! FAILED AT \(file)", { (error) in
+                
+                print(error)
+            })
+        }
+    }
+    
     func testCorrectPlainFormat() {
         
         let files = try! Helper.jsonFiles(in: "test_plain_parsing", withPrefix: "y_")
