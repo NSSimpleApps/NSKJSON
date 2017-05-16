@@ -1,3 +1,7 @@
+## 0.3 (2017-05-16)
+
+- fixed incorrect json5 terminator
+
 ## 0.2 (2017-05-13)
 
 - fixed incorrect parsing single-line comment

@@ -42,12 +42,22 @@ internal class NSKPlainJSONTerminator: NSKTerminator {
             
             let b = buffer[index]
             
-            return NSKWhitespaces.contains(b) || b == NSKEndArray || b == NSKEndDictionary || b == NSKComma
+            return self.whiteSpaces(contains: b) || b == NSKEndArray || b == NSKEndDictionary || b == NSKComma
         }
+    }
+    
+    internal class func whiteSpaces(contains byte: UInt8) -> Bool {
+        
+        return NSKWhitespaces.contains(byte)
     }
 }
 
 internal class NSKJSON5Terminator: NSKPlainJSONTerminator {
+    
+    internal override static func whiteSpaces(contains byte: UInt8) -> Bool {
+        
+        return NSKJSON5Whitespaces.contains(byte)
+    }
     
     internal override class func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int) -> Bool {
         
