@@ -1,3 +1,7 @@
+## 0.4 (2017-05-17)
+
+- fixed NSKTerminator
+
 ## 0.3 (2017-05-16)
 
 - fixed incorrect json5 terminator
