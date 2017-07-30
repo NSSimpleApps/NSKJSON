@@ -91,7 +91,7 @@ internal class NSKPlainParser<C> where C: Collection, C.Iterator.Element: Unsign
                     
                     let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                     
-                    result += (escapeSequence.string + prefix)
+                    result += (prefix + escapeSequence.string)
                     index += (escapeSequence.offset + 1)
                     begin = index
                     
