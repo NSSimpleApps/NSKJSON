@@ -1,0 +1,17 @@
+language: objective-c
+osx_image: xcode8.3
+xcode_project: NSKJSON.xcodeproj
+
+matrix:
+  include:
+    - xcode_scheme: iOSNSKJSON.xcscheme
+      xcode_sdk: iphonesimulator10.3
+
+    - xcode_scheme: macOSNSKJSON.xcscheme
+      xcode_sdk: macosx10.12
+
+    - xcode_scheme: tvOSNSKJSON.xcscheme
+      xcode_sdk: appletvsimulator
+
+    - xcode_scheme: watchOSNSKJSON.xcscheme
+    - xcode_sdk: watchsimulator
