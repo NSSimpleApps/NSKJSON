@@ -13,17 +13,19 @@ class NSKMiscTests: XCTestCase {
     
     func testMisc() {
         
-        //let str = "0.e1"
-        //let str = "[1,]"
-        //let data = Data(bytes: [123, 34, 185, 34, 58, 34, 48, 34, 44, 125])
-        let data = Data(bytes: [NSKQuotationMark, NSKa, NSKBackSlash, NSKNewLine,
-                                NSKx, NSKQuotationMark])
+        //let str = "{\"a\":\"b\"}/**//"
+        let str = "{\"a\":\"b\",,\"c\":\"d\"}"
+        print(str)
         
-        //let data = str.data(using: .utf8)!
+        let data = str.data(using: .utf8)!
+        let options = NSKOptions(encoding: .utf8, transformer: { $0 })
         
         do {
             
-            let obj = try NSKJSON.jsonObject(with: data, version: .json5)
+            //let obj = try NSKJSON5Parser(options: options).skipWhiteSpaces(buffer: data, from: 0)
+            //let obj = try NSKJSON5Parser(options: options).skipSingleLineComment(buffer: data, from: 0, whitespaces: options.json5Whitespaces)
+            //let obj = try NSKJSON5Parser(options: options).skipMultiLineComment(buffer: data, from: 0, whitespaces: options.json5Whitespaces)
+            let obj = try NSKPlainParser(options: options).parseObject(buffer: data)
             
             print("!!!!!!", obj)
             
@@ -32,7 +34,6 @@ class NSKMiscTests: XCTestCase {
             print(error)
             
             XCTFail()
-            
         }
     }
 }

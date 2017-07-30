@@ -8,100 +8,96 @@
 
 import Foundation
 
-internal protocol NSKTerminator {
+internal struct NSKPlainJSONTerminator<T: Hashable> {
     
-    static func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int) -> Bool
-}
-
-internal class NSKQuotationTerminator: NSKTerminator {
+    internal let whiteSpaces: Set<T>
+    internal let endArray: T
+    internal let endDictionary: T
+    internal let comma: T
     
-    internal static func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int) -> Bool {
+    internal func contains<C>(buffer: C, at index: C.Index) -> Bool where C : Collection, C.Iterator.Element == T {
         
-        return buffer[index] == NSKQuotationMark
+        let b = buffer[index]
+        
+        return self.whiteSpaces.contains(b) || b == self.endArray || b == self.endDictionary || b == self.comma        
     }
 }
 
-internal class NSKSingleQuotationTerminator: NSKTerminator {
+internal struct NSKJSON5Comment<T: Hashable> {
     
-    internal static func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int) -> Bool {
-        
-        return buffer[index] == NSKSingleQuotationMark
-    }
-}
-
-
-internal class NSKPlainJSONTerminator: NSKTerminator {
+    internal let slash: T
+    internal let star: T
     
-    internal class func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int) -> Bool {
+    internal func contains<C>(buffer: C, at index: C.Index) -> Bool where C : Collection, C.Iterator.Element == T {
         
-        return self.contains(buffer: buffer, at: index, set: NSKWhitespaces)
-    }
-    
-    internal static func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int, set: Set<UInt8>) -> Bool {
-        
-        if index >= buffer.endIndex {
+        if buffer.distance(from: index, to: buffer.endIndex) >= 2 {
             
-            return true
+            let b0 = buffer[index]
+            let b1 = buffer[buffer.index(after: index)]
             
-        } else {
-            
-            let b = buffer[index]
-            
-            return set.contains(b) || b == NSKEndArray || b == NSKEndDictionary || b == NSKComma
-        }
-    }
-}
-
-internal class NSKJSON5Terminator: NSKPlainJSONTerminator {
-    
-    internal override class func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int) -> Bool {
-        
-        if self.contains(buffer: buffer, at: index, set: NSKJSON5Whitespaces) {
-            
-            return true
-            
-        } else {
-            
-            let length = buffer.endIndex - index
-            
-            if length >= 2 {
+            switch (b0, b1) {
                 
-                let b0 = buffer[index + 0]
-                let b1 = buffer[index + 1]
+            case (self.slash, self.slash):
+                return true
                 
-                switch (b0, b1) {
-                    
-                case (NSKSlash, NSKSlash):
-                    return true
-                    
-                case (NSKSlash, NSKStar):
-                    return true
-                    
-                default:
-                    return false
-                }
+            case (self.slash, self.star):
+                return true
                 
-            } else {
-                
+            default:
                 return false
             }
+            
+        } else {
+            
+            return false
         }
     }
 }
 
-internal class NSKDictionaryKeyTerminator: NSKJSON5Terminator {
+internal struct NSKJSON5Terminator<T: Hashable> {
     
-    internal override static func contains(buffer: UnsafeBufferPointer<UInt8>, at index: Int) -> Bool {
+    internal let terminator: NSKPlainJSONTerminator<T>
+    internal let comment: NSKJSON5Comment<T>
+    
+    internal init(terminator: NSKPlainJSONTerminator<T>, slash: T, star: T) {
         
-        let contains = super.contains(buffer: buffer, at: index)
+        self.terminator = terminator
+        self.comment = NSKJSON5Comment(slash: slash, star: star)
+    }
+    
+    internal func contains<C>(buffer: C, at index: C.Index) -> Bool where C : Collection, C.Iterator.Element == T {
         
-        if contains {
+        if self.terminator.contains(buffer: buffer, at: index) {
             
             return true
             
         } else {
             
-            return buffer[index] == NSKColon
+            return self.comment.contains(buffer: buffer, at: index)
+        }
+    }
+}
+
+internal struct NSKDictionaryKeyTerminator<T: Hashable> {
+    
+    internal let terminators: Set<T>
+    internal let comment: NSKJSON5Comment<T>
+    
+    internal init(whiteSpaces: Set<T>, colon: T, slash: T, star: T) {
+        
+        self.terminators = whiteSpaces.union([colon])
+        self.comment = NSKJSON5Comment(slash: slash, star: star)
+    }
+    
+    internal func contains<C>(buffer: C, at index: C.Index) -> Bool where C : Collection, C.Iterator.Element == T {
+        
+        if self.terminators.contains(buffer[index]) {
+            
+            return true
+            
+        } else {
+            
+            return self.comment.contains(buffer: buffer, at: index)
         }
     }
 }

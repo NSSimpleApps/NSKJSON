@@ -1,3 +1,8 @@
+## 0.5 (2017-07-30)
+
+- Added support of `UTF16BE`, `UTF16LE`, `UTF32BE`, `UTF32LE` encodings.
+- fixed some errors.
+
 ## 0.4 (2017-05-17)
 
 - fixed NSKTerminator

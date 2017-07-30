@@ -18,11 +18,22 @@ class NSKPlainNumberTest: XCTestCase {
             print("TESTING:", integer.0)
             
             let data = integer.0.data(using: .utf8)!
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
             
             do {
                 
-                let (number, length) = try NSKPlainNumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKPlainJSONTerminator.self)
+                let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+                let terminator =
+                NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
+                                       endArray: options.endArray,
+                                       endDictionary: options.endDictionary,
+                                       comma: options.comma)
+                
+                let parser = NSKPlainNumberParser<Data>(options: options)
+                
+                let (number, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return terminator.contains(buffer: data, at: index)
+                })
                 
                 XCTAssertEqual(length, integer.2)
                 XCTAssertTrue(number is Int)
@@ -30,7 +41,7 @@ class NSKPlainNumberTest: XCTestCase {
                 
             } catch {
                 
-                print("FAILED AT:", integer, error)
+                print("FAILED AT:", integer.0, error)
                 
                 XCTFail()
             }
@@ -44,12 +55,19 @@ class NSKPlainNumberTest: XCTestCase {
             print("TESTING:", correctPlainDoubleCase)
             
             let data = correctPlainDoubleCase.data(using: .utf8)!
-            
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
+            let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+            let terminator =
+                NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
+                                       endArray: options.endArray,
+                                       endDictionary: options.endDictionary,
+                                       comma: options.comma)
             
             do {
                 
-                let (number, length) = try NSKPlainNumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKPlainJSONTerminator.self)
+                let (number, length) = try NSKPlainNumberParser(options: options).parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return terminator.contains(buffer: data, at: index)
+                })
                 
                 XCTAssertEqual(length, correctPlainDoubleCase.characters.count)
                 XCTAssertTrue(number is Double)
@@ -71,36 +89,19 @@ class NSKPlainNumberTest: XCTestCase {
             print("TESTING:", incorrectPlainCase)
             
             let data = incorrectPlainCase.data(using: .utf8)!
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
+            let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+            let terminator =
+                NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
+                                       endArray: options.endArray,
+                                       endDictionary: options.endDictionary,
+                                       comma: options.comma)
             
-            XCTAssertThrowsError(try NSKPlainNumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKPlainJSONTerminator.self), "FAILED AT \(incorrectPlainCase)", { (error) in
+            XCTAssertThrowsError(try NSKPlainNumberParser(options: options).parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
                 
-//                let e = error as NSError
-//                
-//                print(incorrectPlainCase, e.userInfo["NSDebugDescription"]!)
+                return terminator.contains(buffer: data, at: index)
+            }),
+                                 "FAILED AT \(incorrectPlainCase)", { (error) in
             })
-        }
-    }
-    
-    func testMisc() {
-        
-        let str = "123"
-        let data = str.data(using: .utf8)!
-        let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
-        
-        do {
-            
-            let (number, length) = try NSKPlainNumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKPlainJSONTerminator.self)
-            
-            XCTAssertTrue(number is Int)
-            XCTAssertEqual(number as! Int, 123)
-            XCTAssertEqual(length, 3)
-            
-        } catch {
-            
-            print(error)
-            
-            XCTFail()
         }
     }
 }

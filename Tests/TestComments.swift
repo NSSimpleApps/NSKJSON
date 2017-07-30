@@ -21,13 +21,14 @@ class NSKCommentTests: XCTestCase {
                 
             let url = URL(fileURLWithPath: fileName)
             let data = Data((try! Data(contentsOf: url)).dropLast())
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
             let file = (fileName as NSString).lastPathComponent
-            print("Testing: \(file)")
+            print("TESTING: \(file)")
             
             do {
                 
-                let (_, _, numberOfLines) = try NSKJSON5Parser(options: NSKOptions(encoding: .utf8)).skipWhiteSpaces(buffer: buffer, from: 0)
+                let options = NSKOptions(encoding: .utf8, transformer: { $0 })
+                
+                let (_, _, numberOfLines) = try NSKJSON5Parser(options: options).skipWhiteSpaces(buffer: data, from: 0)
                 
                 XCTAssertEqual(numberOfLines, numbersOfLines[index])
                 

@@ -13,15 +13,25 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectPlainIntegers() {
         
+        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let plainTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
+                                   endArray: options.endArray,
+                                   endDictionary: options.endDictionary,
+                                   comma: options.comma)
+        let json5Terminator = NSKJSON5Terminator(terminator: plainTerminator, slash: options.slash, star: options.star)
+        let parser = NSKJSON5NumberParser<Data>(options: options)
+        
         for integer in correctPlainIntegerCases {
             
             let data = integer.0.data(using: .utf8)!
             
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
-            
             do {
                 
-                let (number, length) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKPlainJSONTerminator.self)
+                let (number, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return json5Terminator.contains(buffer: data, at: index)
+                })
                 
                 XCTAssertEqual(length, integer.2)
                 XCTAssertTrue(number is Int)
@@ -38,16 +48,27 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectPlainDoubles() {
         
+        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let plainTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
+                                   endArray: options.endArray,
+                                   endDictionary: options.endDictionary,
+                                   comma: options.comma)
+        let json5Terminator = NSKJSON5Terminator(terminator: plainTerminator, slash: options.slash, star: options.star)
+        let parser = NSKJSON5NumberParser<Data>(options: options)
+        
         for correctPlainDoubleCase in correctPlainDoubleCases {
             
             let data = correctPlainDoubleCase.data(using: .utf8)!
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
             
             do {
                 
-                print("TESTING:", correctPlainDoubleCase)
+                let (number, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return json5Terminator.contains(buffer: data, at: index)
+                })
                 
-                let (number, length) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKJSON5Terminator.self)
+                print("TESTING:", correctPlainDoubleCase)
                 
                 XCTAssertEqual(length, correctPlainDoubleCase.characters.count)
                 XCTAssertTrue(number is Double)
@@ -55,7 +76,7 @@ class NSKJSON5NumberTest: XCTestCase {
                 
             } catch {
                 
-                print("FAILED AT:", correctPlainDoubleCase, error)
+                print(error)
                 
                 XCTFail()
             }
@@ -64,6 +85,15 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectJSON5Integers() {
         
+        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let plainTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
+                                   endArray: options.endArray,
+                                   endDictionary: options.endDictionary,
+                                   comma: options.comma)
+        let json5Terminator = NSKJSON5Terminator(terminator: plainTerminator, slash: options.slash, star: options.star)
+        let parser = NSKJSON5NumberParser<Data>(options: options)
+        
         for correctJSON5IntegerCase in correctJSON5IntegerCases {
             
             do {
@@ -71,9 +101,11 @@ class NSKJSON5NumberTest: XCTestCase {
                 print("TESTING:", correctJSON5IntegerCase.0)
                 
                 let data = correctJSON5IntegerCase.0.data(using: .utf8)!
-                let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
                 
-                let (number, length) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKJSON5Terminator.self)
+                let (number, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return json5Terminator.contains(buffer: data, at: index)
+                })
                 
                 XCTAssertEqual(length, correctJSON5IntegerCase.1)
                 XCTAssertTrue(number is Int)
@@ -90,6 +122,15 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectJSON5Doubles() {
         
+        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let plainTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
+                                   endArray: options.endArray,
+                                   endDictionary: options.endDictionary,
+                                   comma: options.comma)
+        let json5Terminator = NSKJSON5Terminator(terminator: plainTerminator, slash: options.slash, star: options.star)
+        let parser = NSKJSON5NumberParser<Data>(options: options)
+        
         for correctJSON5DoubleCase in correctJSON5DoubleCases {
             
             do {
@@ -97,9 +138,11 @@ class NSKJSON5NumberTest: XCTestCase {
                 print("TESTING:", correctJSON5DoubleCase)
                 
                 let data = correctJSON5DoubleCase.data(using: .utf8)!
-                let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
                 
-                let (number, length) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKJSON5Terminator.self)
+                let (number, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return json5Terminator.contains(buffer: data, at: index)
+                })
                 
                 XCTAssertEqual(length, correctJSON5DoubleCase.characters.count)
                 XCTAssertTrue(number is Double)
@@ -116,14 +159,25 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testIncorrectJSON5Doubles() {
         
+        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let plainTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
+                                   endArray: options.endArray,
+                                   endDictionary: options.endDictionary,
+                                   comma: options.comma)
+        let json5Terminator = NSKJSON5Terminator(terminator: plainTerminator, slash: options.slash, star: options.star)
+        let parser = NSKJSON5NumberParser<Data>(options: options)
+        
         for incorrectJSON5Case in incorrectJSON5Cases {
             
             print("TESTING:", incorrectJSON5Case)
             
             let data = incorrectJSON5Case.data(using: .utf8)!
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
             
-            XCTAssertThrowsError(try NSKPlainNumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKPlainJSONTerminator.self), "FAILED AT \(incorrectJSON5Case)", { (error) in
+            XCTAssertThrowsError(try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                
+                return json5Terminator.contains(buffer: data, at: index)
+            }), "FAILED AT \(incorrectJSON5Case)", { (error) in
                 
                 //                let e = error as NSError
                 //
@@ -132,26 +186,76 @@ class NSKJSON5NumberTest: XCTestCase {
         }
     }
     
-    func testNan() {
+    func testInfinity() {
         
-        for nan in [("NaN", 3), ("+NaN", 4), ("-NaN", 4)] {
+        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let plainTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
+                                   endArray: options.endArray,
+                                   endDictionary: options.endDictionary,
+                                   comma: options.comma)
+        let json5Terminator = NSKJSON5Terminator(terminator: plainTerminator, slash: options.slash, star: options.star)
+        let parser = NSKJSON5NumberParser<Data>(options: options)
+        let cases: [(String, Int)] = [("Infinity", 8), ("+Infinity", 9), ("-Infinity", 9)]
+        
+        for number in cases {
             
             do {
                 
-                print("TESTING:", nan.0)
+                print("TESTING:", number.0)
                 
-                let data = nan.0.data(using: .utf8)!
-                let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
+                let data = number.0.data(using: .utf8)!
                 
-                let (number, length) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKJSON5Terminator.self)
+                let (result, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return json5Terminator.contains(buffer: data, at: index)
+                })
                 
-                XCTAssertEqual(length, nan.1)
-                XCTAssertTrue(number is Double)
-                XCTAssertTrue((number as! Double).isNaN)
+                XCTAssertEqual(length, number.1)
+                XCTAssertTrue(result is Double)
+                XCTAssertTrue((result as! Double).isInfinite)
                 
             } catch {
                 
-                print("FAILED AT:", nan.0, error)
+                print("FAILED AT:", number.0, error)
+                
+                XCTFail()
+            }
+        }
+    }
+    
+    func testNaN() {
+        
+        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let plainTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
+                                   endArray: options.endArray,
+                                   endDictionary: options.endDictionary,
+                                   comma: options.comma)
+        let json5Terminator = NSKJSON5Terminator(terminator: plainTerminator, slash: options.slash, star: options.star)
+        let parser = NSKJSON5NumberParser<Data>(options: options)
+        let cases: [(String, Int)] = [("NaN", 3), ("+NaN", 4), ("-NaN", 4)]
+        
+        for number in cases {
+            
+            do {
+                
+                print("TESTING:", number.0)
+                
+                let data = number.0.data(using: .utf8)!
+                
+                let (result, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+                    
+                    return json5Terminator.contains(buffer: data, at: index)
+                })
+                
+                XCTAssertEqual(length, number.1)
+                XCTAssertTrue(result is Double)
+                XCTAssertTrue((result as! Double).isNaN)
+                
+            } catch {
+                
+                print("FAILED AT:", number.0, error)
                 
                 XCTFail()
             }
@@ -162,30 +266,30 @@ class NSKJSON5NumberTest: XCTestCase {
         
         //let str = "+0x1.91eb85P+1"
         //let str = "0x185P+1"
-        let strs = ["-.512e+10"]
-        for str in strs {
-            
-            do {
-                
-                print("TESTING:", str)
-                
-                let data = str.data(using: .utf8)!
-                let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
-                
-                let (number, length) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKJSON5Terminator.self)
-                
-                print(number, Double(str)!)
-                
-                XCTAssertEqual(length, str.characters.count)
-                XCTAssertTrue(number is Double)
-                XCTAssertEqual(number as! Double, Double(str)!)
-                
-            } catch {
-                
-                print("FAILED AT:", str, error)
-                
-                XCTFail()
-            }
-        }
+//        let strs = ["-.512e+10"]
+//        for str in strs {
+//            
+//            do {
+//                
+//                print("TESTING:", str)
+//                
+//                let data = str.data(using: .utf8)!
+//                let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: 0)
+//                
+//                let (number, length) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: 0, terminator: NSKJSON5Terminator.self)
+//                
+//                print(number, Double(str)!)
+//                
+//                XCTAssertEqual(length, str.characters.count)
+//                XCTAssertTrue(number is Double)
+//                XCTAssertEqual(number as! Double, Double(str)!)
+//                
+//            } catch {
+//                
+//                print("FAILED AT:", str, error)
+//                
+//                XCTFail()
+//            }
+//        }
     }
 }

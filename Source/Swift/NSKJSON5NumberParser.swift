@@ -3,226 +3,200 @@
 //  NSKJSON
 //
 //  Created by NSSimpleApps on 15.04.17.
-//
+//  Copyright © 2016 NSSimpleApps. All rights reserved.
 //
 
 import Foundation
 
-internal final class NSKJSON5NumberParser: NSKPlainNumberParser {
+
+internal final class NSKJSON5NumberParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int, C.Iterator.Element == C.SubSequence.Iterator.Element {
     
-    internal static func iss(_ prefix: UInt8) -> Bool {
+    internal typealias Byte = C.Iterator.Element
+    internal typealias Terminator = (_ buffer: C, _ index: Int) -> Bool
+    
+    internal let options: NSKOptions<Byte>
+    
+    internal init(options: NSKOptions<Byte>) {
         
-        return prefix.isDigit || prefix == NSKMinus || prefix == NSKDot || prefix == NSKPlus || prefix == NSKI || prefix == NSKN
+        self.options = options
     }
     
-    internal override static func isNumberPrefix(_ prefix: UInt8) -> Bool {
+    internal static func isValidPrefix(_ prefix: Byte, options: NSKOptions<Byte>) -> Bool {
         
-        return prefix.isDigit || prefix == NSKMinus || prefix == NSKDot || prefix == NSKPlus || prefix == NSKI || prefix == NSKN
+        return NSKPlainNumberParser<C>.isValidPrefix(prefix, options: options) || prefix == options.dot || prefix == options.plus || prefix == options.I || prefix == options.N
     }
     
-    internal static func validateInfinity(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws {
+    internal func validateNumber(buffer: C, from: Int, terminator: Terminator) throws -> (isAFloatingPoint: Bool, base: Int32, length: Int) {
         
-        if self.validateSequence([NSKI, NSKn, NSKf, NSKi, NSKn, NSKi, NSKt, NSKy], buffer: buffer, from: from) == false {
-            
-            throw NSKJSONError.error(description: "Expected 'Infinity' at \(from).")
-        }
-    }
-    
-    internal static func validateNaN(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws {
-        
-        if self.validateSequence([NSKN, NSKa, NSKN], buffer: buffer, from: from) == false {
-            
-            throw NSKJSONError.error(description: "Expected 'NaN' at \(from).")
-        }
-    }
-    
-    /// [hex]*
-    internal static func skipHex(buffer: UnsafeBufferPointer<UInt8>, from: Int) -> Int {
-        
+        let endIndex = buffer.endIndex - 1
         var index = from
         
-        while index < buffer.endIndex {
-            
-            if buffer[index].isHex {
-                
-                index += 1
-                
-            } else {
-                
-                break
-            }
-        }
-        return index - from
-    }
-    
-    internal static func validateHexFraction(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: NSKTerminator.Type) throws -> Int {
-        
-        let hexLength = self.skipHex(buffer: buffer, from: from)
-        
-        if hexLength == 0 {
-            
-            throw NSKJSONError.error(description: "Expected hex at \(from).")
-        }
-        
-        let index = from + hexLength
-        
-        if index >= buffer.endIndex || terminator.contains(buffer: buffer, at: index) {
-            
-            return index - from
-            
-        } else if case let exponent = buffer[index], exponent == NSKp || exponent == NSKP  {
-            
-            let expLength = try self.validateExponent(buffer: buffer, from: index, exponents: [exponent], terminator: terminator)
-            
-            return index + expLength - from
-            
-        } else {
-            
-            throw NSKJSONError.error(description: "Expected 'p' or 'P' at \(index).")
-        }
-    }
-    
-    // [hex]+ or [hex]+\.[hex]+[pP][+-][0-9]+
-    internal override static func validateHexFormat(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: NSKTerminator.Type) throws -> (isAFloatingPoint: Bool, length: Int) {
-        
-        let hexLength = self.skipHex(buffer: buffer, from: from)
-        let index = from + hexLength
-        
-        if terminator.contains(buffer: buffer, at: index) {
-            
-            return (false, index - from)
-        }
-        
-        let byte = buffer[index]
-        
-        if byte == NSKDot && index < buffer.endIndex - 1 {
-            
-            let nextIndex = index + 1
-            let fractionLength = try self.validateHexFraction(buffer: buffer, from: nextIndex, terminator: terminator)
-            
-            return (true, nextIndex + fractionLength - from)
-            
-        } else if byte == NSKP || byte == NSKp {
-                
-            let expLength = try self.validateExponent(buffer: buffer, from: index, exponents: [byte], terminator: terminator)
-            
-            return (true, index + expLength - from)
-            
-        } else {
-            
-            throw NSKJSONError.error(description: "Invalid hex number format at \(from).")
-        }
-    }
-    
-    /// (-)?0  or  -0.[0-9]+  or (-)?[1-9]
-    internal override static func validatePrefix(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: NSKTerminator.Type) throws -> NSKPrefixValidation {
-        
-        var index = from
-        let b0 = buffer[index]
-        var hasMinus = false
-        
-        if b0 == NSKPlus || b0 == NSKMinus {
+        if buffer[index] == self.options.plus || buffer[index] == self.options.minus {
             
             index += 1
-            
-            hasMinus = b0 == NSKMinus
         }
         
-        if index >= buffer.endIndex {
+        if index > endIndex {
             
-            throw NSKJSONError.error(description: "Invalid number format at \(index).")
+            throw NSKJSONError.error(description: "Expected digit, '.', Infinity or NaN at \(index).")
         }
         
-        if buffer[index] == NSKI {
+        if buffer[index] == self.options.I {
             
-            do {
+            let infinityMatch = NSKMatcher.match(buffer: buffer,
+                                                 from: index + 1,
+                                                 sequence: [self.options.n,
+                                                            self.options.f,
+                                                            self.options.i,
+                                                            self.options.n,
+                                                            self.options.i,
+                                                            self.options.t,
+                                                            self.options.y])
+            
+            switch infinityMatch {
+            case .match:
+                return (true, 10, index - from + 8)
                 
-                try self.validateInfinity(buffer: buffer, from: index)
+            default:
+                throw NSKJSONError.error(description: "Expected Infinity at \(index).")
+            }
+            
+        } else if buffer[index] == self.options.N {
+            
+            let nanMatch = NSKMatcher.match(buffer: buffer,
+                                            from: index + 1,
+                                            sequence: [self.options.a, self.options.N])
+            
+            switch nanMatch {
+            case .match:
+                return (true, 10, index - from + 3)
                 
-                let result: Double
+            default:
+                throw NSKJSONError.error(description: "Expected NaN at \(index).")
+            }
+        }
+        
+        if self.options.isZero(buffer[index]) && index < endIndex - 1 && (buffer[index + 1] == self.options.x || buffer[index + 1] == self.options.X) {
+            
+            index += 2
+            
+            if case let integerPartHexOffset = NSKNumberHelper<C>.skipHex(buffer: buffer, from: index, options: self.options) - index, integerPartHexOffset > 0 {
                 
-                if hasMinus {
+                index += integerPartHexOffset
+                
+                if index > endIndex || terminator(buffer, index) {
                     
-                    result = -Double.infinity
+                    return (false, 16, index - from)
                     
                 } else {
                     
-                    result = Double.infinity
+                    if buffer[index] == self.options.dot {
+                        
+                        index += 1
+                    }
+                    
+                    if index > endIndex || terminator(buffer, index) {
+                        
+                        return (true, 16, index - from)
+                    }
+                    
+                    index = NSKNumberHelper<C>.skipHex(buffer: buffer, from: index, options: self.options)
+                    
+                    if index > endIndex || terminator(buffer, index) {
+                        
+                        return (true, 16, index - from)
+                        
+                    } else {
+                        
+                        if buffer[index] == self.options.p || buffer[index] == self.options.P {
+                            
+                            index += 1
+                            index = try NSKNumberHelper<C>.validateExponent(buffer: buffer, from: index, options: self.options, terminator: terminator)
+                            
+                            if index > endIndex || terminator(buffer, index) {
+                                
+                                return (true, 16, index - from)
+                                
+                            } else {
+                                
+                                throw NSKJSONError.error(description: "Invalid number format at \(index).")
+                            }
+                            
+                        } else {
+                            
+                            throw NSKJSONError.error(description: "Expected terminator, 'p' or 'P' at \(index).")
+                        }
+                    }
                 }
-                
-                return NSKPrefixValidation.result(value: result, length: 8 + index - from)
-                
-            } catch {
-                
-                throw error
-            }
-        }
-        
-        if buffer[index] == NSKN {
-            
-            do {
-                
-                try self.validateNaN(buffer: buffer, from: index)
-                
-                return NSKPrefixValidation.result(value: Double.nan, length: 3 + index - from)
-                
-            } catch {
-                
-                throw error
-            }
-        }
-        
-        if buffer[index] == NSKDot {
-            
-            index += 1
-            
-            if index >= buffer.endIndex || buffer[index].isDigit == false {
-                
-                throw NSKJSONError.error(description: "Expected digit, '.', 'Infinity' or 'NaN' at \(index).")
                 
             } else {
                 
-                return NSKPrefixValidation.validator(validator: .number, hasDecimalMarker: true, length: index - from)
+                throw NSKJSONError.error(description: "Expected hex after '0x' at \(index).")
             }
+        }
+        
+        let leadingDigitsLength = NSKNumberHelper<C>.skipDigits(buffer: buffer, from: index, options: self.options) - index
+        
+        index += leadingDigitsLength
+        
+        if (index > endIndex || terminator(buffer, index)) && leadingDigitsLength > 0 {
             
-        } else if index < buffer.endIndex - 2 && buffer[index].isZero && (buffer[index + 1] == NSKx || buffer[index + 1] == NSKX) {
+            return (false, 10, index - from)
+        }
+        
+        var hasDot = false
+        
+        if buffer[index] == self.options.dot {
             
-            return NSKPrefixValidation.validator(validator: .hex, hasDecimalMarker: false, length: index + 2 - from)
+            index += 1
+            hasDot = true
+        }
+        
+        index = NSKNumberHelper<C>.skipDigits(buffer: buffer, from: index, options: self.options)
+        
+        if index > endIndex || terminator(buffer, index) {
             
-        } else if buffer[index].isDigit {
+            return (hasDot, 10, index - from)
+        }
+        
+        if buffer[index] == self.options.e || buffer[index] == self.options.E {
             
-            return NSKPrefixValidation.validator(validator: .number, hasDecimalMarker: false, length: index - from)
+            index += 1
+            index = try NSKNumberHelper<C>.validateExponent(buffer: buffer, from: index, options: self.options, terminator: terminator)
+            
+            return (true, 10, index - from)
+        }
+        
+        throw NSKJSONError.error(description: "Invalid number format \(index).")
+    }
+    
+    internal func parseNumber(buffer: C, from: Int, terminator: Terminator) throws -> (number: Any, length: Int) {
+        
+        let (isAFloatingPoint, base, length) = try self.validateNumber(buffer: buffer, from: from, terminator: terminator)
+        
+        let string = options.string(bytes: buffer[from..<(from + length)])!
+        let number: Any
+        let numberLength: Int
+        
+        if isAFloatingPoint {
+            
+            let (double, doubleLength) = NSKNumberHelper<C>.parseDouble(buffer: buffer, string: string)
+            
+            (number, numberLength) = (double, doubleLength)
             
         } else {
             
-            throw NSKJSONError.error(description: "Invalid number format at \(index).")
+            let (integer, integerLength) = NSKNumberHelper<C>.parseInteger(buffer: buffer, base: base, string: string)
+            
+            (number, numberLength) = (integer, integerLength)
         }
-    }
-    
-    internal override static func validateAfterPoint(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: NSKTerminator.Type) -> (isValid: Bool, hasTerminator: Bool) {
         
-        if terminator.contains(buffer: buffer, at: from) {
+        if length != numberLength {
             
-            return (true, true)
-            
-        } else if case let byte = buffer[from], byte == NSKE || byte == NSKe {
-            
-            return (true, false)
-            
-        } else {
-            
-            return super.validateAfterPoint(buffer: buffer, from: from, terminator: terminator)
+            throw NSKJSONError.error(description: "Invalid number format at \(from).")
         }
-    }
-    
-    internal override static func validateIntegerBeforeExponent(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> Int {
         
-        return self.skipInteger(buffer: buffer, from: from)
-    }
-    
-    internal override static func validateDouble(_ double: Double, index: Int) throws {
-        
-        
+        return (number, numberLength)
     }
 }
 

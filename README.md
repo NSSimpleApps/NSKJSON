@@ -33,6 +33,4 @@ https://github.com/json5/json5-tests
 
 TODO:
 
-1. Supporting `UTF16-BE`, `UTF16-LE`, `UTF32-BE`, `UTF32-LE` encodings.
-
-2. Improve error reports.
+1. Improve error reports.

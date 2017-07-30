@@ -8,6 +8,7 @@
 
 import Foundation
 
+let encodings = ["utf8", "utf16be", "utf16le", "utf32be", "utf32le"]
 
 let correctPlainIntegerCases = [
     

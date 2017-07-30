@@ -8,16 +8,19 @@
 
 import Foundation
 
-internal class NSKPlainParser {
+internal class NSKPlainParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.SubSequence.Iterator.Element == C.Iterator.Element, C.Index == Int {
     
-    internal let options: NSKOptions
+    internal typealias Byte = C.Iterator.Element
+    internal typealias Terminator = (_ buffer: C, _ index: Int) -> Bool
     
-    internal init(options: NSKOptions) {
+    internal let options: NSKOptions<Byte>
+    
+    internal init(options: NSKOptions<Byte>) {
         
         self.options = options
     }
     
-    internal final func skip(buffer: UnsafeBufferPointer<UInt8>, set: Set<UInt8>, from: Int) -> (index: Int, hasValue: Bool, numberOfLines: Int) {
+    internal final func skip(buffer: C, from: Int, set: Set<Byte>) -> (index: Int, hasValue: Bool, numberOfLines: Int) {
         
         let endIndex = buffer.endIndex
         var numberOfLines = 0
@@ -30,7 +33,7 @@ internal class NSKPlainParser {
                 
                 return (index, true, numberOfLines)
                 
-            } else if byte == NSKNewLine || byte == NSKCarriageReturn {
+            } else if byte == self.options.newLine || byte == self.options.carriageReturn {
                 
                 numberOfLines += 1
             }
@@ -39,14 +42,21 @@ internal class NSKPlainParser {
         return (endIndex - 1, false, numberOfLines)
     }
     
-    internal func skipWhiteSpaces(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
+    internal func skipWhiteSpaces(buffer: C, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
         
-        return self.skip(buffer: buffer, set: NSKWhitespaces, from: from)
+        return self.skip(buffer: buffer, from: from, set: self.options.whitespaces)
     }
     
-    internal final func parseByteSequence(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: NSKTerminator.Type) throws -> (value: String, offset: Int) {
+    internal final func parseByteSequence(buffer: C, from: Int, terminator: Byte) throws -> (value: String, offset: Int) {
         
-        let encoding = self.options.encoding
+        return try self.parseByteSequence(buffer: buffer, from: from, terminator: { (buffer, index) -> Bool in
+            
+            return buffer[index] == terminator
+        })
+    }
+    
+    internal final func parseByteSequence(buffer: C, from: Int, terminator: Terminator) throws -> (value: String, offset: Int) {
+        
         var index = from
         var begin = index
         var result = ""
@@ -55,13 +65,13 @@ internal class NSKPlainParser {
             
             let byte = buffer[index]
             
-            if byte.isControlCharacter {
+            if self.options.isControlCharacter(byte) {
                 
                 throw NSKJSONError.error(description: "Unescaped control character around character \(index).")
                 
-            } else if terminator.contains(buffer: buffer, at: index) {
-                
-                if let string = String(bytes: buffer[begin..<index], encoding: encoding) {
+            } else if terminator(buffer, index) {
+            
+                if let string = self.options.string(bytes: buffer[begin..<index]) {
                     
                     return (result + string, index - from)
                     
@@ -70,16 +80,19 @@ internal class NSKPlainParser {
                     throw NSKJSONError.error(description: "Unable to convert data to string at \(index).")
                 }
                 
-            } else if byte == NSKBackSlash {
+            } else if byte == self.options.backSlash {
                 
-                if let prefix = String(bytes: buffer[begin..<index], encoding: encoding) {
+                if index >= buffer.endIndex - 1 {
                     
-                    result += prefix
+                    break
+                }
+                
+                if let prefix = self.options.string(bytes: buffer[begin..<index]) {
                     
-                    let escapeSequence = try self.parseSlashSequence(buffer: buffer, from: index)
+                    let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                     
-                    result += escapeSequence.string
-                    index += escapeSequence.offset
+                    result += (escapeSequence.string + prefix)
+                    index += (escapeSequence.offset + 1)
                     begin = index
                     
                     continue
@@ -93,105 +106,81 @@ internal class NSKPlainParser {
             index += 1
         }
         
-        throw NSKJSONError.error(description: "Expected terminator at \(index).")
-    }
-    
-    internal final func parseString(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: NSKTerminator.Type) throws -> (value: String, offset: Int) {
-        
-        guard buffer.endIndex - from >= 2 && terminator.contains(buffer: buffer, at: from) else {
-            
-            throw NSKJSONError.error(description: "Invalid string format at \(from).")
-        }
-        
-        let result = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: terminator)
-        
-        return (result.value, result.offset + 2)
+        throw NSKJSONError.error(description: "Unterminated sequence at \(index).")
     }
     
     /// [0-9a-fA-F]{4}
-    internal final func parseCodeUnit(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> UInt16 {
+    internal final func parseCodeUnit(buffer: C, from: Int) throws -> UInt16 {
         
-        let length = buffer.endIndex - from
+        let length: C.IndexDistance = 4
         
-        guard length >= 4 else {
+        let matchResult = NSKMatcher<C>.match(buffer: buffer,
+                               from: from,
+                               length: length,
+                               where: { (elem, index) -> Bool in
+                                
+                                return self.options.isHex(elem)
+        })
+        
+        switch matchResult {
+        
+        case .lengthMismatch, .outOfRange:
+            throw NSKJSONError.error(description: "Expected at least 4 hex digits at \(from).")
             
-            throw NSKJSONError.error(description: "Expected at least 4 hex digits instead of \(length) at \(from).")
-        }
-        
-        let b3 = buffer[from + 0]
-        let b2 = buffer[from + 1]
-        let b1 = buffer[from + 2]
-        let b0 = buffer[from + 3]
-        
-        if b0.isHex && b1.isHex && b2.isHex && b3.isHex {
+        case .mismatch(let index):
+            throw NSKJSONError.error(description: "Invalid hex digit in unicode escape sequence around character \(index).")
             
-            let hexString = String(bytes: [b3, b2, b1, b0], encoding: .utf8)!
+        case .match:
+            let index = buffer.index(from, offsetBy: length)
+            let hexString = self.options.string(bytes: buffer[from..<index])!
             
             return UInt16(strtol(hexString, nil, 16))
-            
-        } else {
-            
-            throw NSKJSONError.error(description: "Invalid hex digit in unicode escape sequence around character \(from).")
         }
     }
     
     // \\u[hex]{4} and hex is a trail code unit
-    internal final func parseTrailCodeUnit(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> UInt16 {
+    internal final func parseTrailCodeUnit(buffer: C, from: Int) throws -> UInt16 {
         
-        let length = buffer.endIndex - from
+        let prefix = NSKMatcher<C>.match(buffer: buffer, from: from, sequence: [self.options.backSlash, self.options.u])
+            
+        switch prefix {
         
-        guard length >= 6 else {
+        case .lengthMismatch, .outOfRange:
+            throw NSKJSONError.error(description: "Expected at least 6 characters at \(from).")
             
-            throw NSKJSONError.error(description: "Expected at least 6 characters but have \(length) at \(from).")
-        }
-        
-        guard buffer[from] == NSKBackSlash && buffer[from + 1] == NSKu else {
+        case .mismatch(let index):
+            throw NSKJSONError.error(description: "Expected '\\u' at \(index).")
             
-            throw NSKJSONError.error(description: "Expected '\\' or 'u' at \(from).")
-        }
-        
-        let codeUnit = try self.parseCodeUnit(buffer: buffer, from: from + 2)
-        
-        if UTF16.isTrailSurrogate(codeUnit) {
+        case .match:
+            let codeUnit = try self.parseCodeUnit(buffer: buffer, from: from + 2)
             
-            return codeUnit
-            
-        } else {
-            
-            throw NSKJSONError.error(description: "Expected low-surrogate code point but did not find one at \(from).")
+            if UTF16.isTrailSurrogate(codeUnit) {
+                
+                return codeUnit
+                
+            } else {
+                
+                throw NSKJSONError.error(description: "Expected low-surrogate code point but did not find one at \(from).")
+            }
         }
     }
     
-    internal final func parseSlashSequence(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (string: String, offset: Int) {
-        
-        let length = buffer.endIndex - from
-        
-        guard length >= 2 && buffer[from] == NSKBackSlash else {
-            
-            throw NSKJSONError.error(description: "Expected '\\' at \(from).")
-        }
-        
-        let (string, offset) = try self.parseEscapeSequence(buffer: buffer, from: from + 1)
-        
-        return (string, offset + 1)
-    }
-    
-    internal func parseEscapeSequence(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (string: String, offset: Int) {
+    internal func parseEscapeSequence(buffer: C, from: Int) throws -> (string: String, offset: Int) {
                 
         let b0 = buffer[from + 0]
         
         switch b0 {
             
-        case NSKQuotationMark: return ("\"", 1)
-        case NSKSingleQuotationMark: return ("\'", 1)
-        case NSKBackSlash : return ("\\", 1)
-        case NSKSlash: return ("/", 1)
-        case NSKb: return ("\u{08}", 1)
-        case NSKf: return ("\u{0C}", 1)
-        case NSKn: return ("\u{0A}", 1)
-        case NSKr: return ("\u{0D}", 1)
-        case NSKt: return ("\u{09}", 1)
-        case NSKu:
+        case self.options.quotationMark: return ("\"", 1)
+        case self.options.apostrophe: return ("\'", 1)
+        case self.options.backSlash : return ("\\", 1)
+        case self.options.slash: return ("/", 1)
+        case self.options.b: return ("\u{08}", 1)
+        case self.options.f: return ("\u{0C}", 1)
+        case self.options.n: return ("\u{0A}", 1)
+        case self.options.r: return ("\u{0D}", 1)
+        case self.options.t: return ("\u{09}", 1)
+        case self.options.u:
             
             let codeUnit = try self.parseCodeUnit(buffer: buffer, from: from + 1)
             
@@ -218,65 +207,38 @@ internal class NSKPlainParser {
         }
     }
     
-    internal func parseNumber(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (value: Any, offset: Int) {
+    internal func parseNumber(buffer: C, from: Int) throws -> (value: Any, offset: Int) {
+            
+        let whiteSpaces = self.options.whitespaces
+        let endArray = self.options.endArray
+        let endDictionary = self.options.endDictionary
+        let comma = self.options.comma
         
-        let (value, offset) = try NSKPlainNumberParser.parseNumber(buffer: buffer, from: from, terminator: NSKPlainJSONTerminator.self)
+        let plainJSONTerminator =
+        NSKPlainJSONTerminator(whiteSpaces: whiteSpaces,
+                               endArray: endArray,
+                               endDictionary: endDictionary,
+                               comma: comma)
+        
+        let numberParser = NSKPlainNumberParser<C>(options: self.options)
+        
+        let (value, offset) = try numberParser.parseNumber(buffer: buffer, from: from, terminator: { (buffer, index) -> Bool in
+                
+                return plainJSONTerminator.contains(buffer: buffer, at: index)
+        })
         
         return (value, offset)
     }
     
-    internal final func parsePrimitive(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (value: Any, offset: Int) {
+    internal final func parseArray(buffer: C, from: Int, nestingLevel: Int) throws -> (value: [Any], offset: Int) {
         
-        let b0 = buffer[from]
-        let length = buffer.endIndex - from
-        
-        if b0 == NSKt && length >= 4 { // maybe true
-            
-            let b1 = buffer[from + 1]
-            let b2 = buffer[from + 2]
-            let b3 = buffer[from + 3]
-            
-            if b1 == NSKr && b2 == NSKu && b3 == NSKe {
-                
-                return (true, 4)
-            }
-            
-        } else if b0 == NSKf && length >= 5 { // maybe false
-            
-            let b1 = buffer[from + 1]
-            let b2 = buffer[from + 2]
-            let b3 = buffer[from + 3]
-            let b4 = buffer[from + 4]
-            
-            if b1 == NSKa && b2 == NSKl && b3 == NSKs && b4 == NSKe {
-                
-                return (false, 5)
-            }
-            
-        } else if b0 == NSKn && length >= 4 { // maybe null
-            
-            let b1 = buffer[from + 1]
-            let b2 = buffer[from + 2]
-            let b3 = buffer[from + 3]
-            
-            if b1 == NSKu && b2 == NSKl && b3 == NSKl {
-                
-                return (NSNull(), 4)
-            }
-        }
-        
-        throw NSKJSONError.error(description: "Unable to parse primitive value at \(from).")
-    }
-    
-    internal final func parseArray(buffer: UnsafeBufferPointer<UInt8>, from: Int, nestingLevel: Int) throws -> (value: [Any], offset: Int) {
-        
-        guard buffer.endIndex - from >= 2 && buffer[from] == NSKBeginArray else {
+        guard buffer.endIndex - from >= 2 && buffer[from] == self.options.beginArray else {
             
             throw NSKJSONError.error(description: "Unable to parse array at \(from).")
         }
         
         let (index, hasValue, _) = try self.skipWhiteSpaces(buffer: buffer, from: from + 1)
-        let terminator = NSKEndArray
+        let terminator = self.options.endArray
         
         if hasValue == false {
             
@@ -312,15 +274,16 @@ internal class NSKPlainParser {
         }
     }
     
-    internal final func parseDictionary(buffer: UnsafeBufferPointer<UInt8>, from: Int, nestingLevel: Int) throws -> (value: [String: Any], offset: Int) {
+    internal final func parseDictionary(buffer: C, from: Int, nestingLevel: Int) throws -> (value: [String: Any], offset: Int) {
         
-        guard buffer.endIndex - from >= 2 && buffer[from] == NSKBeginDictionary else {
+        guard buffer.endIndex - from >= 2 && buffer[from] == self.options.beginDictionary else {
             
             throw NSKJSONError.error(description: "Cannot parse dictionary at \(from).")
         }
-
+        
+        let terminator = self.options.endDictionary
+        
         let (index, hasValue, _) = try self.skipWhiteSpaces(buffer: buffer, from: from + 1)
-        let terminator = NSKEndDictionary
         
         if hasValue == false {
             
@@ -366,70 +329,81 @@ internal class NSKPlainParser {
         }
     }
     
-    internal func stringTerminator(byte: UInt8) -> NSKTerminator.Type? {
-        
-        if byte == NSKQuotationMark {
-            
-            return NSKQuotationTerminator.self
-            
-        } else {
-            
-            return nil
-        }
-    }
-    
-    internal func isNumberPrefix(_ prefix: UInt8) -> Bool {
-        
-        return NSKPlainNumberParser.isNumberPrefix(prefix)
-    }
-    
-    internal final func parseValue(buffer: UnsafeBufferPointer<UInt8>, from: Int, nestingLevel: Int) throws -> (value: Any, offset: Int) {
+    internal func parseValue(buffer: C, from: Int, nestingLevel: Int) throws -> (value: Any, offset: Int) {
         
         if nestingLevel > NSKNestingLevel {
             
-            throw NSKJSONError.error(description: "Too many nested arrays or dictionaries around character \(from).")
+            throw NSKJSONError.error(description: "Too many nested arrays or dictionaries at \(from).")
         }
         
         let byte = buffer[from]
         
         switch byte {
             
-        case NSKBeginDictionary:
-            
+        case self.options.beginDictionary:
             let dictionary = try self.parseDictionary(buffer: buffer, from: from, nestingLevel: nestingLevel + 1)
             
             return (dictionary.value, dictionary.offset)
             
-        case NSKBeginArray:
-            
+        case self.options.beginArray:
             let array = try self.parseArray(buffer: buffer, from: from, nestingLevel: nestingLevel + 1)
             
             return (array.value, array.offset)
             
-        case NSKt, NSKf, NSKn:
+        case self.options.t:
+            let trueMatch = NSKMatcher<C>.match(buffer: buffer, from: from + 1, sequence: [self.options.r, self.options.u, self.options.e])
             
-            return try self.parsePrimitive(buffer: buffer, from: from)
+            switch trueMatch {
+                
+            case .match:
+                return (true, 4)
+                
+            default:
+                throw NSKJSONError.error(description: "Unable to parse 'true' at \(from).")
+            }
+        case self.options.f:
+            let falseMatch = NSKMatcher<C>.match(buffer: buffer, from: from + 1, sequence: [self.options.a, self.options.l, self.options.s, self.options.e])
+            
+            switch falseMatch {
+                
+            case .match:
+                return (false, 5)
+                
+            default:
+                throw NSKJSONError.error(description: "Unable to parse 'false' at \(from).")
+            }
+        case self.options.n:
+            let nullMatch = NSKMatcher<C>.match(buffer: buffer, from: from + 1, sequence: [self.options.u, self.options.l, self.options.l])
+            
+            switch nullMatch {
+                
+            case .match:
+                return (NSNull(), 4)
+                
+            default:
+                throw NSKJSONError.error(description: "Unable to parse 'null' at \(from).")
+            }
         
-        case let b where self.isNumberPrefix(b):
-            
+        case let b where self.isNumberPrefix(byte: b):
             return try self.parseNumber(buffer: buffer, from: from)
+        
+        case self.options.quotationMark where from < buffer.endIndex - 1:
+            
+            let string = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
+            
+            return (string.value, string.offset + 2)
             
         default:
-            
-            if let terminator = self.stringTerminator(byte: byte) {
-                
-                let string = try self.parseString(buffer: buffer, from: from, terminator: terminator)
-                
-                return (string.value, string.offset)
-                
-            } else {
-                
-                throw NSKJSONError.error(description: "Unable to parse JSON object at \(from).")
-            }
+            throw NSKJSONError.error(description: "Unable to parse JSON object at \(from).")
         }
     }
     
-    internal final func parseObject(buffer: UnsafeBufferPointer<UInt8>) throws -> Any {
+    internal func isNumberPrefix(byte: Byte) -> Bool {
+        
+        return NSKPlainNumberParser<C>.isValidPrefix(byte, options: self.options)
+    }
+    
+    internal final func parseObject(buffer: C) throws -> Any {
         
         if buffer.isEmpty {
             
@@ -460,23 +434,22 @@ internal class NSKPlainParser {
         }
     }
     
-    internal func parseValueSpace(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: UInt8) throws -> (offset: Int, hasTerminator: Bool) {
+    internal func parseValueSpace(buffer: C, from: Int, terminator: Byte) throws -> (offset: Int, hasTerminator: Bool) {
         
         return try self.parseValueSpace(buffer: buffer, from: from, terminator: terminator, trailingComma: false)
     }
     
-    internal final func parseValueSpace(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: UInt8, trailingComma: Bool) throws -> (offset: Int, hasTerminator: Bool) {
+    internal final func parseValueSpace(buffer: C, from: Int, terminator: Byte, trailingComma: Bool) throws -> (offset: Int, hasTerminator: Bool) {
         
         let endIndex = buffer.endIndex
         let (leadingIndex, _, _) = try self.skipWhiteSpaces(buffer: buffer, from: from)
-        
         let byte = buffer[leadingIndex]
         
         if byte == terminator {
             
             return (leadingIndex - from, true)
             
-        } else if byte == NSKComma {
+        } else if byte == self.options.comma {
             
             if leadingIndex == endIndex - 1 {
                 
@@ -485,7 +458,6 @@ internal class NSKPlainParser {
             } else {
                 
                 let (trailingIndex, hasValue, _) = try self.skipWhiteSpaces(buffer: buffer, from: leadingIndex + 1)
-                
                 let byte = buffer[trailingIndex]
                 
                 if byte == terminator {
@@ -498,6 +470,10 @@ internal class NSKPlainParser {
                         
                         throw NSKJSONError.error(description: "0 or 1 commas allowed at \(trailingIndex).")
                     }
+                
+                } else if byte == self.options.comma {
+                    
+                    throw NSKJSONError.error(description: "Expected value but ',' found at \(trailingIndex) during parsing value space.")
                     
                 } else if hasValue == true {
                     
@@ -515,12 +491,21 @@ internal class NSKPlainParser {
         }
     }
     
-    internal func parseDictionaryKey(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (value: String, offset: Int) {
+    internal func parseDictionaryKey(buffer: C, from: Int) throws -> (value: String, offset: Int) {
         
-        return try self.parseString(buffer: buffer, from: from, terminator: NSKQuotationTerminator.self)
+        let quotationMark = self.options.quotationMark
+        
+        guard buffer.endIndex - from >= 2 && buffer[from] == quotationMark else {
+            
+            throw NSKJSONError.error(description: "Invalid dictionary format at \(from).")
+        }
+        
+        let result = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: quotationMark)
+        
+        return (result.value, result.offset + 2)
     }
     
-    internal final func parseDictionarySpace(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (offset: Int, hasNext: Bool) {
+    internal final func parseDictionarySpace(buffer: C, from: Int) throws -> (offset: Int, hasNext: Bool) {
         
         let endIndex = buffer.endIndex - 1
         
@@ -530,7 +515,7 @@ internal class NSKPlainParser {
             
             let byte = buffer[index]
             
-            if byte == NSKColon {
+            if byte == self.options.colon {
                 
                 if index < endIndex - 1 {
                     

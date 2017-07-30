@@ -284,9 +284,10 @@ let incorrectJSON5Cases = ["-",
                            "123E-,",
                            "123E-,",
                            
-                           "0x0.p1",
-                           "0x0.1",
-                           "0x0abc.1",
+                           ".e10",
+                           "-.e10",
+                           "+.e10",
+                           
                            "0xvsd",
                            "0x0abcp-1dd",
 ]

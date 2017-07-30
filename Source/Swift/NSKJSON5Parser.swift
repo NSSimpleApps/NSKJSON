@@ -3,71 +3,60 @@
 //  NSKJSON
 //
 //  Created by NSSimpleApps on 01.05.17.
+//  Copyright © 2016 NSSimpleApps. All rights reserved.
 //
-//
+
 
 import Foundation
 
-internal final class NSKJSON5Parser: NSKPlainParser {
+
+internal final class NSKJSON5Parser<C>: NSKPlainParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.SubSequence.Iterator.Element == C.Iterator.Element, C.Index == Int {
     
-    internal override func skipWhiteSpaces(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
+    internal override func skipWhiteSpaces(buffer: C, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
         
-        var currentIndex = from
+        let whitespaces = self.options.json5Whitespaces
+        var index = from
         var numberOfLines = 0
         
         while true {
             
-            let (index, hasValue, wsLines) = self.skip(buffer: buffer, set: NSKJSON5Whitespaces, from: currentIndex)
+            let (wsIndex, wsHasValue, wsLines) = self.skip(buffer: buffer, from: index, set: whitespaces)
             
             numberOfLines += wsLines
+            index = wsIndex
             
-            if hasValue {
+            if wsHasValue {
                 
-                let length = buffer.endIndex - index
+                let (slIndex, slHasNext, slHasValue, slLines) = self.skipSingleLineComment(buffer: buffer, from: index, whitespaces: whitespaces)
                 
-                if length >= 2 {
+                numberOfLines += slLines
+                index = slIndex
+                
+                if slHasNext {
                     
-                    let b0 = buffer[index + 0]
-                    let b1 = buffer[index + 1]
+                    let (mlIndex, mlHasNext, mlHasValue, mlLines) = try self.skipMultiLineComment(buffer: buffer, from: index, whitespaces: whitespaces)
                     
-                    switch (b0, b1) {
+                    numberOfLines += mlLines
+                    index = mlIndex
+                    
+                    if mlHasNext {
                         
-                    case (NSKSlash, NSKSlash):
-                        
-                        let (index, hasNext, slLines) = self.skipSingleLineComment(buffer: buffer, from: index)
-                        numberOfLines += slLines
-                        
-                        if hasNext {
+                        if wsIndex == index {
                             
-                            currentIndex = index
+                            return (index, mlHasValue, numberOfLines)
                             
                         } else {
                             
-                            return (index, false, numberOfLines)
+                            continue
                         }
                         
-                    case (NSKSlash, NSKStar):
+                    } else {
                         
-                        let (index, hasNext, mlLines) = try skipMultiLineComment(buffer: buffer, from: index)
-                        numberOfLines += mlLines
-                        
-                        if hasNext {
-                            
-                            currentIndex = index
-                            
-                        } else {
-                            
-                            return (index, false, numberOfLines)
-                        }
-                        
-                    default:
-                        
-                        return (index, true, numberOfLines)
+                        return (index, mlHasValue, numberOfLines)
                     }
-                    
                 } else {
                     
-                    return (index, true, numberOfLines)
+                    return (index, slHasValue, numberOfLines)
                 }
                 
             } else {
@@ -77,70 +66,55 @@ internal final class NSKJSON5Parser: NSKPlainParser {
         }
     }
     
-    internal func skipSingleLineComment(buffer: UnsafeBufferPointer<UInt8>, from: Int) -> (index: Int, hasNext: Bool, numberOfLines: Int) {
+    internal func skipSingleLineComment(buffer: C, from: Int, whitespaces: Set<Byte>) -> (index: Int, hasNext: Bool, hasValue: Bool, numberOfLines: Int) {
         
-        let endIndex = buffer.endIndex
-        let length = endIndex - from
+        let length = buffer.distance(from: from, to: buffer.endIndex)
+        let endIndex = buffer.endIndex - 1
         
-        if length < 2 || (buffer[from] != NSKSlash || buffer[from + 1] != NSKSlash) {
+        if length < 2 || (buffer[from] != self.options.slash || buffer[from + 1] != self.options.slash) {
             
-            return (from, from < endIndex - 1, 0)
+            return (from, from + 1 <= endIndex, whitespaces.contains(buffer[from]) == false, 0)
             
         } else {
             
-            for index in from + 2 ..< endIndex {
+            let startIndex = from + 2
+            
+            if startIndex > endIndex {
+                
+                return (endIndex, false, false, 0)
+            }
+            
+            for index in startIndex...endIndex {
                 
                 let byte = buffer[index]
                 
-                if byte == NSKNewLine || byte == NSKCarriageReturn {
+                if byte == self.options.newLine || byte == self.options.carriageReturn {
                     
-                    if index == endIndex - 1 {
+                    if index == endIndex {
                         
-                        return (index, false, 1)
+                        return (index, false, false, 1)
                         
                     } else {
                         
                         let nextIndex = index + 1
                         
-                        return (nextIndex, nextIndex < endIndex - 1, 1)
+                        return (nextIndex, nextIndex < endIndex, whitespaces.contains(buffer[nextIndex]) == false, 1)
                     }
                 }
             }
             
-            return (endIndex - 1, false, 0)
+            return (endIndex, false, whitespaces.contains(buffer[endIndex]) == false, 0)
         }
     }
     
-    internal func skipMultiLineComment(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (index: Int, hasNext: Bool, numberOfLines: Int) {
+    internal func skipMultiLineComment(buffer: C, from: Int, whitespaces: Set<Byte>) throws -> (index: Int, hasNext: Bool, hasValue: Bool, numberOfLines: Int) {
         
-        func match(buffer: UnsafeBufferPointer<UInt8>, from: Int, args: UInt8...) -> (isMatch: Bool, hasNext: Bool) {
-            
-            let endIndex = buffer.endIndex
-            let index = from + args.count
-            
-            if index > endIndex {
-                
-                return (false, from < endIndex)
-                
-            } else {
-                
-                if args == Array(buffer[from..<index]) {
-                    
-                    return (true, index < endIndex)
-                    
-                } else {
-                    
-                    return (false, from < endIndex)
-                }
-            }
-        }
+        let length = buffer.distance(from: from, to: buffer.endIndex)
+        let endIndex = buffer.endIndex - 1
         
-        let endIndex = buffer.endIndex
-        let length = endIndex - from
-        
-        if (length < 2) || (buffer[from] != NSKSlash || buffer[from + 1] != NSKStar) {
+        if (length < 2) || (buffer[from] != self.options.slash || buffer[from + 1] != self.options.star) {
             
-            return (from, from < endIndex - 1, 0)
+            return (from, from + 1 <= endIndex, whitespaces.contains(buffer[from]) == false, 0)
             
         } else {
             
@@ -148,89 +122,112 @@ internal final class NSKJSON5Parser: NSKPlainParser {
             var index = from + 2
             var numberOfLines = 0
             
-            while index < endIndex {
+            while index <= endIndex {
                 
-                let (hasNewLine, hasNextAfterNewLine) = match(buffer: buffer, from: index, args: NSKNewLine)
+                let byte = buffer[index]
                 
-                if hasNewLine {
+                if byte == self.options.newLine || byte == self.options.carriageReturn {
                     
-                    if hasNextAfterNewLine {
-                        
-                        numberOfLines += 1
-                        index += 1
-                        
-                        continue
-                        
-                    } else {
-                        
-                        break
-                    }
-                }
-                
-                let (hasOpeningComment, hasNextAfterOpeningComment) = match(buffer: buffer, from: index, args: NSKSlash, NSKStar)
-                
-                if hasOpeningComment {
+                    numberOfLines += 1
                     
-                    nestingLevel += 1
+                } else if byte == self.options.slash {
                     
-                    if hasNextAfterOpeningComment {
+                    if index < endIndex {
                         
-                        index += 2
-                        
-                        continue
-                        
-                    } else {
-                        
-                        break
-                    }
-                }
-                
-                let (hasClosingComment, hasNextAfterClosingComment) = match(buffer: buffer, from: index, args: NSKStar, NSKSlash)
-                
-                if hasClosingComment {
-                    
-                    nestingLevel -= 1
-                    
-                    if nestingLevel == 0 {
-                        
-                        if hasNextAfterClosingComment {
+                        if buffer[index + 1] == self.options.star {
                             
-                            let nextIndex = index + 2
-                            
-                            return (nextIndex, nextIndex < endIndex - 1, numberOfLines)
+                            nestingLevel += 1
+                            index += 2
+                            continue
                             
                         } else {
                             
-                            return (index + 1, false, numberOfLines)
+                            index += 2
+                            continue
                         }
                         
                     } else {
                         
-                        index += 2
+                        break
+                    }
+                    
+                } else if byte == self.options.star {
+                    
+                    if index < endIndex {
                         
-                        continue
+                        let nextIndex = index + 1
+                        
+                        if buffer[nextIndex] == self.options.slash {
+                            
+                            nestingLevel -= 1
+                            
+                            if nestingLevel == 0 {
+                                
+                                if nextIndex == endIndex {
+                                    
+                                    return (nextIndex, false, false, numberOfLines)
+                                    
+                                } else {
+                                    
+                                    return (nextIndex + 1, nextIndex + 1 < endIndex, whitespaces.contains(buffer[nextIndex + 1]) == false, numberOfLines)
+                                }
+                            } else {
+                                
+                                index += 2
+                                continue
+                            }
+                        } else {
+                            
+                            index += 2
+                            continue
+                        }
+                        
+                    } else {
+                        
+                        break
                     }
                 }
                 
                 index += 1
             }
             
-            throw NSError(domain: "1", code: 1, userInfo: ["d": "Unterminated multiline comment at \(index)."])
+            throw NSKJSONError.error(description: "Unterminated multiline comment at \(index).")
         }
     }
     
-    override func parseEscapeSequence(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (string: String, offset: Int) {
+    internal override func parseValue(buffer: C, from: Int, nestingLevel: Int) throws -> (value: Any, offset: Int) {
+        
+        let byte = buffer[from]
+        
+        switch byte {
+            
+        case self.options.apostrophe where from < buffer.endIndex - 1:
+            
+            let string = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
+            
+            return (string.value, string.offset + 2)
+            
+        default:
+            return try super.parseValue(buffer: buffer, from: from, nestingLevel: nestingLevel)
+        }
+    }
+    
+    internal override func isNumberPrefix(byte: Byte) -> Bool {
+        
+        return NSKJSON5NumberParser<C>.isValidPrefix(byte, options: self.options)
+    }
+    
+    override func parseEscapeSequence(buffer: C, from: Int) throws -> (string: String, offset: Int) {
         
         let b0 = buffer[from + 0]
         
         switch b0 {
             
-        case NSKx, NSKX:
+        case self.options.x, self.options.X:
             let result = try self.parseXSequence(buffer: buffer, from: from + 1)
-            
             return (result, 3)
             
-        case let byte where NSKWhitespaces.contains(byte):
+        case let byte where self.options.whitespaces.contains(byte):
             let (index, hasValue, numberOfLines) = try self.skipWhiteSpaces(buffer: buffer, from: from)
             
             if hasValue && numberOfLines > 0 {
@@ -245,70 +242,98 @@ internal final class NSKJSON5Parser: NSKPlainParser {
         default:
             return try super.parseEscapeSequence(buffer: buffer, from: from)
         }
-        
-        
     }
     
-    internal final func parseXSequence(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> String {
+    internal func parseXSequence(buffer: C, from: Int) throws -> String {
         
-        let length = buffer.endIndex - from
+        let length: C.IndexDistance = 2
         
-        guard length >= 2 else {
+        let matchResult = NSKMatcher<C>.match(buffer: buffer,
+                                              from: from,
+                                              length: length,
+                                              where: { (elem, index) -> Bool in
+                                                
+                                                return self.options.isHex(elem)
+        })
+        
+        switch matchResult {
             
+        case .outOfRange, .lengthMismatch:
             throw NSKJSONError.error(description: "Expected at least 2 hex digits instead of \(length) at \(from).")
-        }
-        
-        let b1 = buffer[from + 0]
-        let b0 = buffer[from + 1]
-        
-        if b0.isHex && b1.isHex {
             
-            return String(bytes: [b1, b0], encoding: .utf8)!
+        case .mismatch(let index):
+            throw NSKJSONError.error(description: "Invalid hex digit in unicode escape sequence around character \(index).")
             
-        } else {
-            
-            throw NSKJSONError.error(description: "Invalid hex digit in unicode escape sequence around character \(from).")
+        case .match:
+            let b1 = buffer[from + 0]
+            let b0 = buffer[from + 1]
+            return self.options.string(bytes: [b1, b0])!
         }
     }
     
-    internal override final func parseNumber(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (value: Any, offset: Int) {
+    internal override func parseNumber(buffer: C, from: Int) throws -> (value: Any, offset: Int) {
         
-        let (value, offset) = try NSKJSON5NumberParser.parseNumber(buffer: buffer, from: from, terminator: NSKJSON5Terminator.self)
+        let whiteSpaces = self.options.json5Whitespaces
+        let endArray = self.options.endArray
+        let endDictionary = self.options.endDictionary
+        let comma = self.options.comma
+        let slash = self.options.slash
+        let star = self.options.star
+        
+        let plainJSONTerminator =
+            NSKPlainJSONTerminator(whiteSpaces: whiteSpaces,
+                                   endArray: endArray,
+                                   endDictionary: endDictionary,
+                                   comma: comma)
+        let json5Terminator =
+        NSKJSON5Terminator(terminator: plainJSONTerminator,
+                           slash: slash, star: star)
+        
+        let numberParser = NSKJSON5NumberParser<C>(options: self.options)
+        
+        let (value, offset) = try numberParser.parseNumber(buffer: buffer, from: from, terminator: { (buffer, index) -> Bool in
+            
+            return json5Terminator.contains(buffer: buffer, at: index)
+        })
         
         return (value, offset)
     }
     
-    internal override final func stringTerminator(byte: UInt8) -> NSKTerminator.Type? {
-        
-        if byte == NSKSingleQuotationMark {
-            
-            return NSKSingleQuotationTerminator.self
-            
-        } else {
-            
-            return super.stringTerminator(byte: byte)
-        }
-    }
-    
-    internal override final func isNumberPrefix(_ prefix: UInt8) -> Bool {
-        
-        return NSKJSON5NumberParser.isNumberPrefix(prefix)
-    }
-    
-    internal override final func parseValueSpace(buffer: UnsafeBufferPointer<UInt8>, from: Int, terminator: UInt8) throws -> (offset: Int, hasTerminator: Bool) {
+    internal override func parseValueSpace(buffer: C, from: Int, terminator: Byte) throws -> (offset: Int, hasTerminator: Bool) {
         
         return try self.parseValueSpace(buffer: buffer, from: from, terminator: terminator, trailingComma: true)
     }
     
-    internal override final func parseDictionaryKey(buffer: UnsafeBufferPointer<UInt8>, from: Int) throws -> (value: String, offset: Int) {
+    internal override func parseDictionaryKey(buffer: C, from: Int) throws -> (value: String, offset: Int) {
         
-        if let stringTerminator = self.stringTerminator(byte: buffer[from]) {
+        if buffer.endIndex - from >= 2 {
             
-            return try self.parseString(buffer: buffer, from: from, terminator: stringTerminator)
-            
-        } else {
-            
-            return try self.parseByteSequence(buffer: buffer, from: from, terminator: NSKDictionaryKeyTerminator.self)
+            let byte = buffer[from]
+                
+            if byte == self.options.quotationMark || byte == self.options.apostrophe {
+                
+                let result = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
+                
+                return (result.value, result.offset + 2)
+                
+            } else if byte != self.options.colon {
+                
+                let whitespaces = self.options.json5Whitespaces
+                let colon = self.options.colon
+                let slash = self.options.slash
+                let star = self.options.star
+                
+                let result = try self.parseByteSequence(buffer: buffer, from: from, terminator: { (buffer, index) -> Bool in
+                    
+                    let terminator = NSKDictionaryKeyTerminator(whiteSpaces: whitespaces, colon: colon, slash: slash, star: star)
+                    
+                    return terminator.contains(buffer: buffer, at: index)
+                })
+                
+                return (result.value, result.offset)
+            }
         }
+            
+        throw NSKJSONError.error(description: "Invalid dictionary format at \(from).")
     }
 }
