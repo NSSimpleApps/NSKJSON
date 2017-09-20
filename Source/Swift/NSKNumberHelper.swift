@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal class NSKNumberHelper<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int, C.Iterator.Element == C.SubSequence.Iterator.Element {
+internal class NSKNumberHelper<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
     
     private init() {}
     

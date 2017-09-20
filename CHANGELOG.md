@@ -1,3 +1,6 @@
+## 0.6 (2017-09-21)
+- Bump to Swift 4.
+
 ## 0.5 (2017-07-30)
 
 - Added support of `UTF16BE`, `UTF16LE`, `UTF32BE`, `UTF32LE` encodings.

@@ -9,7 +9,7 @@
 
 import Foundation
 
-internal class NSKMatcher<C> where C: Collection, C.Iterator.Element: Equatable, C.Iterator.Element == C.SubSequence.Iterator.Element {
+internal class NSKMatcher<C> where C: Collection, C.Iterator.Element: Equatable {
     
     private init() {}
     

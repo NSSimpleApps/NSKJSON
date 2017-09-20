@@ -9,7 +9,7 @@
 import Foundation
 
 
-internal final class NSKJSON5NumberParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int, C.Iterator.Element == C.SubSequence.Iterator.Element {
+internal final class NSKJSON5NumberParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
     
     internal typealias Byte = C.Iterator.Element
     internal typealias Terminator = (_ buffer: C, _ index: Int) -> Bool

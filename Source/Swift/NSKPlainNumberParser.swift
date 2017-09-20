@@ -9,7 +9,7 @@
 import Foundation
 
 
-internal final class NSKPlainNumberParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int, C.Iterator.Element == C.SubSequence.Iterator.Element {
+internal final class NSKPlainNumberParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
     
     internal typealias Byte = C.Iterator.Element
     internal typealias Terminator = (_ buffer: C, _ index: Int) -> Bool
@@ -79,13 +79,11 @@ internal final class NSKPlainNumberParser<C> where C: Collection, C.Iterator.Ele
                     
                 index = NSKNumberHelper<C>.skipDigits(buffer: buffer, from: index, options: self.options)
                     
-                let byte = buffer[index]
-                    
                 if index > endIndex || terminator(buffer, index) {
                         
                     return (true, index - from)
                         
-                } else if byte == self.options.e || byte == self.options.E {
+                } else if case let byte = buffer[index], byte == self.options.e || byte == self.options.E {
                     
                     index = try NSKNumberHelper<C>.validateExponent(buffer: buffer, from: index + 1, options: self.options, terminator: terminator)
                     

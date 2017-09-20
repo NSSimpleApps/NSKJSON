@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal class NSKPlainParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.SubSequence.Iterator.Element == C.Iterator.Element, C.Index == Int {
+internal class NSKPlainParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
     
     internal typealias Byte = C.Iterator.Element
     internal typealias Terminator = (_ buffer: C, _ index: Int) -> Bool

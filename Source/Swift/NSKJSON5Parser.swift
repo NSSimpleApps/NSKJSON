@@ -10,7 +10,7 @@
 import Foundation
 
 
-internal final class NSKJSON5Parser<C>: NSKPlainParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.SubSequence.Iterator.Element == C.Iterator.Element, C.Index == Int {
+internal final class NSKJSON5Parser<C>: NSKPlainParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
     
     internal override func skipWhiteSpaces(buffer: C, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
         

@@ -140,7 +140,10 @@ internal final class NSKOptions<T: UnsignedInteger> {
     // [a-f,A-F]
     private lazy var hexCharactes: Set<T> = {
         
-        return Set((UInt8(0x41)...UInt8(0x46)).map(self.transformer)).union(Set((UInt8(0x61)...UInt8(0x66)).map(self.transformer)))
+        let capitalAF = Set((UInt8(0x41)...UInt8(0x46)).map(self.transformer))
+        let af = Set((UInt8(0x61)...UInt8(0x66)).map(self.transformer))
+        
+        return capitalAF.union(af)
     }()
     
     // 0
