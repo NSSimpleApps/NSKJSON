@@ -13,7 +13,7 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectPlainIntegers() {
         
-        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: true, transformer: { $0 })
         let plainTerminator =
             NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
                                    endArray: options.endArray,
@@ -48,7 +48,7 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectPlainDoubles() {
         
-        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: true, transformer: { $0 })
         let plainTerminator =
             NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
                                    endArray: options.endArray,
@@ -85,7 +85,7 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectJSON5Integers() {
         
-        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: true, transformer: { $0 })
         let plainTerminator =
             NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
                                    endArray: options.endArray,
@@ -122,7 +122,7 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testCorrectJSON5Doubles() {
         
-        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: true, transformer: { $0 })
         let plainTerminator =
             NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
                                    endArray: options.endArray,
@@ -159,7 +159,7 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testIncorrectJSON5Doubles() {
         
-        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: true, transformer: { $0 })
         let plainTerminator =
             NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
                                    endArray: options.endArray,
@@ -188,7 +188,7 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testInfinity() {
         
-        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: true, transformer: { $0 })
         let plainTerminator =
             NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
                                    endArray: options.endArray,
@@ -226,7 +226,7 @@ class NSKJSON5NumberTest: XCTestCase {
     
     func testNaN() {
         
-        let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: true, transformer: { $0 })
         let plainTerminator =
             NSKPlainJSONTerminator(whiteSpaces: options.json5Whitespaces,
                                    endArray: options.endArray,

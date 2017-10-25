@@ -9,9 +9,15 @@
 import Foundation
 
 internal final class NSKOptions<T: UnsignedInteger> {
-    
     internal let encoding: String.Encoding
+    internal let trailingComma: Bool
     internal let transformer: (UInt8) -> T
+    
+    internal init(encoding: String.Encoding, trailingComma: Bool, transformer: @escaping (UInt8) -> T) {
+        self.encoding = encoding
+        self.trailingComma = trailingComma
+        self.transformer = transformer
+    }
     
     // \n
     private(set) internal lazy var newLine: T = { self.transformer(0x0A) }()
@@ -133,13 +139,11 @@ internal final class NSKOptions<T: UnsignedInteger> {
     
     // 0x1F
     private lazy var controlCharacters: Set<T> = {
-        
         return Set((UInt8(0x00)...UInt8(0x1F)).map(self.transformer))
     }()
     
     // [a-f,A-F]
     private lazy var hexCharactes: Set<T> = {
-        
         let capitalAF = Set((UInt8(0x41)...UInt8(0x46)).map(self.transformer))
         let af = Set((UInt8(0x61)...UInt8(0x66)).map(self.transformer))
         
@@ -151,56 +155,40 @@ internal final class NSKOptions<T: UnsignedInteger> {
     
     // 9
     private lazy var digitCharacters: Set<T> = {
-        
         return Set((UInt8(0x30)...UInt8(0x39)).map(self.transformer))
     }()
     
-    internal init(encoding: String.Encoding, transformer: @escaping (UInt8) -> T) {
-        
-        self.encoding = encoding
-        self.transformer = transformer
-    }
-    
     internal func isControlCharacter(_ character: T) -> Bool {
-        
         return self.controlCharacters.contains(character)
     }
     
     internal func isHex(_ character: T) -> Bool {
-        
         return self.isDigit(character) || self.hexCharactes.contains(character)
     }
     
     internal func isZero(_ character: T) -> Bool {
-        
         return character == self.zero
     }
     
     internal func isDigit(_ character: T) -> Bool {
-        
         return self.digitCharacters.contains(character)
     }
     
     internal func isDigitButZero(_ character: T) -> Bool {
-        
         return self.isDigit(character) && character != self.zero
     }
     
     private func string(array: [T]) -> String? {
-        
         return array.withUnsafeBytes { (unsafeRawBufferPointer) -> String? in
-            
             return String(bytes: unsafeRawBufferPointer, encoding: self.encoding)
         }
     }
     
     internal func string<S: Sequence>(bytes: S) -> String? where S.Iterator.Element == T {
-        
         return self.string(array: Array(bytes))
     }
     
     internal func string(codePoint: T) -> String {
-        
         return self.string(array: [codePoint]) ?? "\u{FFFD}"
     }
 }

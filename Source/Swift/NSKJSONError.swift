@@ -15,7 +15,6 @@ internal class NSKJSONError {
     private init() {}
     
     internal static func error(description: String) -> NSError {
-        
         return NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: [
             NSDebugDescription : description])
     }

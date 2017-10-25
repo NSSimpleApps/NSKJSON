@@ -26,7 +26,7 @@ class NSKCommentTests: XCTestCase {
             
             do {
                 
-                let options = NSKOptions(encoding: .utf8, transformer: { $0 })
+                let options = NSKOptions(encoding: .utf8, trailingComma: true, transformer: { $0 })
                 
                 let (_, _, numberOfLines) = try NSKJSON5Parser(options: options).skipWhiteSpaces(buffer: data, from: 0)
                 

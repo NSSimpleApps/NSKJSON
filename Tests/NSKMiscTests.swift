@@ -18,7 +18,7 @@ class NSKMiscTests: XCTestCase {
         print(str)
         
         let data = str.data(using: .utf8)!
-        let options = NSKOptions(encoding: .utf8, transformer: { $0 })
+        let options = NSKOptions(encoding: .utf8, trailingComma: false, transformer: { $0 })
         
         do {
             

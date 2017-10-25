@@ -1,3 +1,6 @@
+## 0.6.1 (2017-10-25)
+- Remove method overriding.
+
 ## 0.6 (2017-09-21)
 - Bump to Swift 4.
 

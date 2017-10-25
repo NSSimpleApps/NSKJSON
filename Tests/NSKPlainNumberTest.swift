@@ -21,7 +21,7 @@ class NSKPlainNumberTest: XCTestCase {
             
             do {
                 
-                let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+                let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: false, transformer: { $0 })
                 let terminator =
                 NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
                                        endArray: options.endArray,
@@ -55,7 +55,7 @@ class NSKPlainNumberTest: XCTestCase {
             print("TESTING:", correctPlainDoubleCase)
             
             let data = correctPlainDoubleCase.data(using: .utf8)!
-            let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+            let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: false, transformer: { $0 })
             let terminator =
                 NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
                                        endArray: options.endArray,
@@ -89,7 +89,7 @@ class NSKPlainNumberTest: XCTestCase {
             print("TESTING:", incorrectPlainCase)
             
             let data = incorrectPlainCase.data(using: .utf8)!
-            let options = NSKOptions<UInt8>(encoding: .utf8, transformer: { $0 })
+            let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: false, transformer: { $0 })
             let terminator =
                 NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
                                        endArray: options.endArray,
