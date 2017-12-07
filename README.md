@@ -1,5 +1,5 @@
 # NSKJSON
-NSKJSON is a swift library to parse plain-json format and json5 format.
+NSKJSON is a Swift library for parsing plain-json format and json5 format.
 
 Installation: place this into `Podfile`
 ```

@@ -1,3 +1,6 @@
+## 0.6.2 (2017-12-08)
+- Improve error message.
+
 ## 0.6.1 (2017-10-25)
 - Remove method overriding.
 

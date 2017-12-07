@@ -366,7 +366,7 @@ internal class NSKPlainParser<C> where C: Collection, C.Iterator.Element: Unsign
                         return (trailingIndex - from, true)
                         
                     } else {
-                        throw NSKJSONError.error(description: "0 or 1 commas allowed at \(trailingIndex).")
+                        throw NSKJSONError.error(description: "No trailing comma allowed at \(trailingIndex).")
                     }
                 } else if byte == self.options.comma {
                     throw NSKJSONError.error(description: "Expected value but ',' found at \(trailingIndex) during parsing value space.")
