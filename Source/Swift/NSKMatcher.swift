@@ -30,7 +30,7 @@ internal class NSKMatcher<C> where C: Collection, C.Iterator.Element: Equatable 
         return index
     }
     
-    internal static func match(buffer: C, from: C.Index, length: C.IndexDistance, where predicate: (Element, C.Index) -> Bool) -> Result {
+    internal static func match(buffer: C, from: C.Index, length: Int, where predicate: (Element, C.Index) -> Bool) -> Result {
         
         if from >= buffer.endIndex {
             return .outOfRange

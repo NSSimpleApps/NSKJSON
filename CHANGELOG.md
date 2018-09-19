@@ -1,3 +1,6 @@
+## 0.7 (2018-09-19)
+- Bump to swift4.2
+
 ## 0.6.2 (2017-12-08)
 - Improve error message.
 

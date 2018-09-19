@@ -30,7 +30,7 @@ internal class NSKNumberHelper<C> where C: Collection, C.Iterator.Element: Unsig
         return string.withCString { (pointer: UnsafePointer<Int8>) -> (number: Double, numberLength: Int) in
             
             let doubleEndPointer = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(capacity: 1)
-            defer { doubleEndPointer.deallocate(capacity: 1) }
+            defer { doubleEndPointer.deallocate() }
             
             let doubleResult = strtod(pointer, doubleEndPointer)
             let doubleDistance = pointer.distance(to: doubleEndPointer[0]!)
@@ -43,7 +43,7 @@ internal class NSKNumberHelper<C> where C: Collection, C.Iterator.Element: Unsig
         return string.withCString { (pointer: UnsafePointer<Int8>) -> (number: Int, numberLength: Int) in
             
             let intEndPointer = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(capacity: 1)
-            defer { intEndPointer.deallocate(capacity: 1) }
+            defer { intEndPointer.deallocate() }
             
             let intResult = strtol(pointer, intEndPointer, base)
             let intDistance = pointer.distance(to: intEndPointer[0]!)

@@ -70,7 +70,7 @@ class NSKJSON5NumberTest: XCTestCase {
                 
                 print("TESTING:", correctPlainDoubleCase)
                 
-                XCTAssertEqual(length, correctPlainDoubleCase.characters.count)
+                XCTAssertEqual(length, correctPlainDoubleCase.count)
                 XCTAssertTrue(number is Double)
                 XCTAssertEqual(number as! Double, Double(correctPlainDoubleCase)!)
                 
@@ -144,7 +144,7 @@ class NSKJSON5NumberTest: XCTestCase {
                     return json5Terminator.contains(buffer: data, at: index)
                 })
                 
-                XCTAssertEqual(length, correctJSON5DoubleCase.characters.count)
+                XCTAssertEqual(length, correctJSON5DoubleCase.count)
                 XCTAssertTrue(number is Double)
                 XCTAssertEqual(number as! Double, Double(correctJSON5DoubleCase)!)
                 

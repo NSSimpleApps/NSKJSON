@@ -191,7 +191,7 @@ internal final class NSKJSON5Parser<C>: NSKPlainParser<C> where C: Collection, C
     }
     
     internal func parseXSequence(buffer: C, from: Int) throws -> String {
-        let length: C.IndexDistance = 2
+        let length = 2
         let matchResult = NSKMatcher<C>.match(buffer: buffer,
                                               from: from,
                                               length: length,

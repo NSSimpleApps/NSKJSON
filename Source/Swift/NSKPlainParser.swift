@@ -88,7 +88,7 @@ internal class NSKPlainParser<C> where C: Collection, C.Iterator.Element: Unsign
     
     /// [0-9a-fA-F]{4}
     internal final func parseCodeUnit(buffer: C, from: Int) throws -> UInt16 {
-        let length: C.IndexDistance = 4
+        let length = 4
         
         let matchResult = NSKMatcher<C>.match(buffer: buffer,
                                from: from,

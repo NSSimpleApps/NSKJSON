@@ -69,7 +69,7 @@ class NSKPlainNumberTest: XCTestCase {
                     return terminator.contains(buffer: data, at: index)
                 })
                 
-                XCTAssertEqual(length, correctPlainDoubleCase.characters.count)
+                XCTAssertEqual(length, correctPlainDoubleCase.count)
                 XCTAssertTrue(number is Double)
                 XCTAssertEqual(number as! Double, Double(correctPlainDoubleCase)!)
                 
