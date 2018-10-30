@@ -8,18 +8,16 @@
 
 import Foundation
 
-public let NSKNestingLevel = 100
-
-
-open class NSKJSON {
+public class NSKJSON {
     public enum Version: Int {
         case plain
         case json5
     }
+    public static let nestingLevel = 100
     
     private init() {}
     
-    open class func jsonObject(with data: Data, version: NSKJSON.Version) throws -> Any {
+    public static func jsonObject(with data: Data, version: Version) throws -> Any {
         let encoding: String.Encoding
         let offset: Int
         
@@ -76,7 +74,3 @@ open class NSKJSON {
         }
     }
 }
-
-
-
-

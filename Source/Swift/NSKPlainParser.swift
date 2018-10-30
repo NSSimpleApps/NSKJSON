@@ -263,7 +263,7 @@ internal class NSKPlainParser<C> where C: Collection, C.Iterator.Element: Unsign
     }
     
     internal func parseValue(buffer: C, from: Int, nestingLevel: Int) throws -> (value: Any, offset: Int) {
-        if nestingLevel > NSKNestingLevel {
+        if nestingLevel > NSKJSON.nestingLevel {
             throw NSKJSONError.error(description: "Too many nested arrays or dictionaries at \(from).")
         }
         let byte = buffer[from]
