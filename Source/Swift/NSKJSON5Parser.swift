@@ -9,259 +9,574 @@
 
 import Foundation
 
+struct NSKJSON5Parser<Options: NSKOptions> {
+    typealias Byte = Options.Byte
+    typealias Buffer = Options.Buffer
+    typealias Index = Options.Index
+    typealias PlainParser = NSKPlainParser<Options>
 
-internal final class NSKJSON5Parser<C>: NSKPlainParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
+    private init() {}
     
-    internal override func skipWhiteSpaces(buffer: C, from: Int) throws -> (index: Int, hasValue: Bool, numberOfLines: Int) {
-        let whitespaces = self.options.json5Whitespaces
+    private static func skipSpaces(buffer: Buffer, from: Index) -> Index {
+        let endIndex = buffer.endIndex
+
+        for index in from..<endIndex {
+            if Options.isJson5Whitespace(buffer[index]) == false {
+                return index
+            }
+        }
+        return endIndex - 1
+    }
+    private static func skipSpacesWithLines(buffer: Buffer, from: Index) -> (index: Index, numberOfLines: Int) {
+        let endIndex = buffer.endIndex
+        var numberOfLines = 0
+        
+        for index in from..<endIndex {
+            let byte = buffer[index]
+            
+            if Options.isJson5Whitespace(byte) == false {
+                return (index, numberOfLines)
+                
+            } else if self.isNewLine(byte) {
+                numberOfLines += 1
+            }
+        }
+        return (endIndex - 1, numberOfLines)
+    }
+    
+    @inline(__always)
+    private static func isNewLine(_ character: Byte) -> Bool {
+        return character == Options.newLine || character == Options.carriageReturn
+    }
+    
+    static func skipSingleLineComment(buffer: Buffer, from: Index) -> Index? {
+        let endIndex = buffer.endIndex
+        if buffer.distance(from: from, to: endIndex) >= 2, buffer[from] == Options.slash && buffer[from + 1] == Options.slash {
+            if case let index = from + 2, index < endIndex {
+                for i in index..<endIndex {
+                    if case let byte = buffer[i], self.isNewLine(byte) {
+                        if case let nextIndex = i + 1, nextIndex < endIndex {
+                            return nextIndex
+                        } else {
+                            return i
+                        }
+                    }
+                }
+                return endIndex - 1
+            } else {
+                return endIndex - 1
+            }
+        } else {
+            return nil
+        }
+    }
+    static func skipSingleLineCommentWithLines(buffer: Buffer, from: Index) -> (index: Index, numberOfLines: Int)? {
+        let endIndex = buffer.endIndex
+        if buffer.distance(from: from, to: endIndex) >= 2, buffer[from] == Options.slash && buffer[from + 1] == Options.slash {
+            if case let index = from + 2, index < endIndex {
+                for i in index..<endIndex {
+                    if case let byte = buffer[i], self.isNewLine(byte) {
+                        if case let nextIndex = i + 1, nextIndex < endIndex {
+                            return (nextIndex, 1)
+                        } else {
+                            return (i, 1)
+                        }
+                    }
+                }
+                return (endIndex - 1, 0)
+            } else {
+                return (endIndex - 1, 0)
+            }
+        } else {
+            return nil
+        }
+    }
+    
+    static func skipMultiLineComment(buffer: Buffer, from: Index) throws -> Index? {
+        let endIndex = buffer.endIndex
+        if buffer.distance(from: from, to: endIndex) >= 2, buffer[from] == Options.slash && buffer[from + 1] == Options.star {
+            if case let initialIndex = from + 2, buffer.distance(from: initialIndex, to: endIndex) >= 2 {
+                var nestingLevel = 1
+                var numberOfLines = 0
+                var i = initialIndex
+                
+                while i < endIndex {
+                    let byte = buffer[i]
+                    
+                    if self.isNewLine(byte) {
+                        numberOfLines += 1
+                        
+                    } else if byte == Options.star {
+                        if case let nextIndex = i + 1, nextIndex < endIndex {
+                            if buffer[nextIndex] == Options.slash {
+                                nestingLevel -= 1
+                                
+                                if nestingLevel == 0 {
+                                    if case let nextNextIndex = nextIndex + 1, nextNextIndex < endIndex {
+                                        return nextNextIndex
+                                    } else {
+                                        return nextIndex
+                                    }
+                                } else {
+                                    i += 2
+                                    continue
+                                }
+                            }
+                        }
+                    } else if byte == Options.slash {
+                        if case let nextIndex = i + 1, nextIndex < endIndex {
+                            if buffer[nextIndex] == Options.star {
+                                nestingLevel += 1
+                                i += 2
+                                continue
+                            }
+                        }
+                    }
+                    i += 1
+                }
+                throw NSKJSONError.error(description: "Unterminated multiline comment at \(endIndex - 1).")
+            } else {
+                throw NSKJSONError.error(description: "Unterminated multiline comment at \(from).")
+            }
+        } else {
+            return nil
+        }
+    }
+    static func skipMultiLineCommentWithLines(buffer: Buffer, from: Index) throws -> (index: Index, numberOfLines: Int)? {
+        let endIndex = buffer.endIndex
+        if buffer.distance(from: from, to: endIndex) >= 2, buffer[from] == Options.slash && buffer[from + 1] == Options.star {
+            if case let initialIndex = from + 2, buffer.distance(from: initialIndex, to: endIndex) >= 2 {
+                var nestingLevel = 1
+                var numberOfLines = 0
+                var i = initialIndex
+
+                while i < endIndex {
+                    let byte = buffer[i]
+
+                    if self.isNewLine(byte) {
+                        numberOfLines += 1
+
+                    } else if byte == Options.star {
+                        if case let nextIndex = i + 1, nextIndex < endIndex {
+                            if buffer[nextIndex] == Options.slash {
+                                nestingLevel -= 1
+
+                                if nestingLevel == 0 {
+                                    if case let nextNextIndex = nextIndex + 1, nextNextIndex < endIndex {
+                                        return (nextNextIndex, numberOfLines)
+                                    } else {
+                                        return (nextIndex, numberOfLines)
+                                    }
+                                } else {
+                                    i += 2
+                                    continue
+                                }
+                            }
+                        }
+                    } else if byte == Options.slash {
+                        if case let nextIndex = i + 1, nextIndex < endIndex {
+                            if buffer[nextIndex] == Options.star {
+                                nestingLevel += 1
+                                i += 2
+                                continue
+                            }
+                        }
+                    }
+                    i += 1
+                }
+                throw NSKJSONError.error(description: "Unterminated multiline comment at \(endIndex - 1).")
+            } else {
+                throw NSKJSONError.error(description: "Unterminated multiline comment at \(from).")
+            }
+        } else {
+            return nil
+        }
+    }
+
+    static func skipWhiteSpaces(buffer: Buffer, from: Index) throws -> Index {
+        var index = from
+        while true {
+            let wsIndex = self.skipSpaces(buffer: buffer, from: index)
+            
+            if let slIndex = self.skipSingleLineComment(buffer: buffer, from: wsIndex) {
+                if let mlIndex = try self.skipMultiLineComment(buffer: buffer, from: slIndex) {
+                    index = mlIndex
+                } else {
+                    index = slIndex
+                }
+            } else if let mlIndex = try self.skipMultiLineComment(buffer: buffer, from: wsIndex) {
+                if let slIndex = self.skipSingleLineComment(buffer: buffer, from: mlIndex) {
+                    index = slIndex
+                } else {
+                    index = mlIndex
+                }
+            } else {
+                return wsIndex
+            }
+        }
+    }
+    
+    static func skipWhiteSpacesWithLines(buffer: Buffer, from: Index) throws -> (index: Index, numberOfLines: Int) {
         var index = from
         var numberOfLines = 0
         
         while true {
-            let (wsIndex, wsHasValue, wsLines) = self.skip(buffer: buffer, from: index, set: whitespaces)
+            let (wsIndex, wsNumberOfLines) = self.skipSpacesWithLines(buffer: buffer, from: index)
+            numberOfLines += wsNumberOfLines
             
-            numberOfLines += wsLines
-            index = wsIndex
-            
-            if wsHasValue {
-                let (slIndex, slHasNext, slHasValue, slLines) = self.skipSingleLineComment(buffer: buffer, from: index, whitespaces: whitespaces)
-                
-                numberOfLines += slLines
-                index = slIndex
-                
-                if slHasNext {
-                    let (mlIndex, mlHasNext, mlHasValue, mlLines) = try self.skipMultiLineComment(buffer: buffer, from: index, whitespaces: whitespaces)
-                    
-                    numberOfLines += mlLines
+            if let (slIndex, slNumberOfLines) = self.skipSingleLineCommentWithLines(buffer: buffer, from: wsIndex) {
+                if let (mlIndex, mlNumberOfLines) = try self.skipMultiLineCommentWithLines(buffer: buffer, from: slIndex) {
                     index = mlIndex
-                    
-                    if mlHasNext {
-                        if wsIndex == index {
-                            return (index, mlHasValue, numberOfLines)
-                            
-                        } else {
-                            continue
-                        }
-                    } else {
-                        return (index, mlHasValue, numberOfLines)
-                    }
+                    numberOfLines += (slNumberOfLines + mlNumberOfLines)
                 } else {
-                    return (index, slHasValue, numberOfLines)
+                    index = slIndex
+                    numberOfLines += slNumberOfLines
+                }
+            } else if let (mlIndex, mlNumberOfLines) = try self.skipMultiLineCommentWithLines(buffer: buffer, from: wsIndex) {
+                if let (slIndex, slNumberOfLines) = self.skipSingleLineCommentWithLines(buffer: buffer, from: mlIndex) {
+                    index = slIndex
+                    numberOfLines += (mlNumberOfLines + slNumberOfLines)
+                } else {
+                    index = mlIndex
+                    numberOfLines += mlNumberOfLines
                 }
             } else {
-                return (index, false, numberOfLines)
+                return (wsIndex, numberOfLines)
             }
         }
     }
     
-    internal func skipSingleLineComment(buffer: C, from: Int, whitespaces: Set<Byte>) -> (index: Int, hasNext: Bool, hasValue: Bool, numberOfLines: Int) {
-        let length = buffer.distance(from: from, to: buffer.endIndex)
-        let endIndex = buffer.endIndex - 1
-        
-        if length < 2 || (buffer[from] != self.options.slash || buffer[from + 1] != self.options.slash) {
-            return (from, from + 1 <= endIndex, whitespaces.contains(buffer[from]) == false, 0)
-            
-        } else {
-            let startIndex = from + 2
-            
-            if startIndex > endIndex {
-                return (endIndex, false, false, 0)
+    static func isSingleLineCommentHasValue(buffer: Buffer, from: Index) -> (index: Index, hasValue: Bool?) {
+        if let (index, numberOfLines) = self.skipSingleLineCommentWithLines(buffer: buffer, from: from) {
+            if index == buffer.endIndex - 1 {
+                if numberOfLines == 0 {
+                    return (index, false)
+                } else {
+                    return (index, Options.isJson5Whitespace(buffer[index]) == false)
+                }
+            } else {
+                return (index, nil)
             }
-            for index in startIndex...endIndex {
+        } else {
+            return (from, nil)
+        }
+    }
+    static func isMultiLineCommentHasValue(buffer: Buffer, from: Index) throws -> (index: Index, hasValue: Bool?) {
+        if let index = try self.skipMultiLineComment(buffer: buffer, from: from) {
+            if index == buffer.endIndex - 1 {
                 let byte = buffer[index]
+                if byte == Options.slash, buffer[index - 1] == Options.star {
+                    return (index, false)
+                } else {
+                    return (index, Options.isJson5Whitespace(byte) == false)
+                }
+            } else {
+                return (index, nil)
+            }
+        } else {
+            return (from, nil)
+        }
+    }
+    static func hasValue(buffer: Buffer, from: Index) throws -> Bool {
+        var index = from
+        while true {
+            let wsIndex = self.skipSpaces(buffer: buffer, from: index)
+            
+            let (slIndex, slHasValue) = self.isSingleLineCommentHasValue(buffer: buffer, from: wsIndex)
+            
+            if let slHasValue = slHasValue {
+                return slHasValue
+            } else {
+                let (mlIndex, mlHasValue) = try self.isMultiLineCommentHasValue(buffer: buffer, from: slIndex)
                 
-                if byte == self.options.newLine || byte == self.options.carriageReturn {
-                    if index == endIndex {
-                        return (index, false, false, 1)
-                        
+                if let mlHasValue = mlHasValue {
+                    return mlHasValue
+                } else {
+                    if mlIndex > wsIndex {
+                        index = mlIndex
                     } else {
-                        let nextIndex = index + 1
-                        return (nextIndex, nextIndex < endIndex, whitespaces.contains(buffer[nextIndex]) == false, 1)
+                        return Options.isJson5Whitespace(buffer[mlIndex]) == false
                     }
                 }
             }
-            return (endIndex, false, whitespaces.contains(buffer[endIndex]) == false, 0)
         }
     }
     
-    internal func skipMultiLineComment(buffer: C, from: Int, whitespaces: Set<Byte>) throws -> (index: Int, hasNext: Bool, hasValue: Bool, numberOfLines: Int) {
-        let length = buffer.distance(from: from, to: buffer.endIndex)
-        let endIndex = buffer.endIndex - 1
+    ////////////////////////////////////////////////////////////////////
+    static func parseByteSequence(buffer: Buffer, from: Index, terminator: Byte) throws -> (value: String, offset: Int) {
+        let endIndex = buffer.endIndex
+        var index = from
+        var begin = index
+        var result = ""
         
-        if (length < 2) || (buffer[from] != self.options.slash || buffer[from + 1] != self.options.star) {
-            return (from, from + 1 <= endIndex, whitespaces.contains(buffer[from]) == false, 0)
+        while index < endIndex {
+            let byte = buffer[index]
             
-        } else {
-            var nestingLevel = 1
-            var index = from + 2
-            var numberOfLines = 0
-            
-            while index <= endIndex {
-                let byte = buffer[index]
+            if Options.isControlCharacter(byte) {
+                throw NSKJSONError.error(description: "Unescaped control character around character \(index).")
                 
-                if byte == self.options.newLine || byte == self.options.carriageReturn {
-                    numberOfLines += 1
+            } else if byte == terminator {
+                return (result + Options.string(buffer: buffer, from: begin, to: index), index - from)
+                
+            } else if byte == Options.backSlash {
+                if index < endIndex - 1 {
+                    let prefix = Options.string(buffer: buffer, from: begin, to: index)
+                    let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                     
-                } else if byte == self.options.slash {
-                    if index < endIndex {
-                        if buffer[index + 1] == self.options.star {
-                            nestingLevel += 1
-                            index += 2
-                            continue
-                            
-                        } else {
-                            index += 2
-                            continue
-                        }
+                    result += (prefix + escapeSequence.string)
+                    index += (escapeSequence.offset + 1)
+                    begin = index
+                    continue
+                } else {
+                    break
+                }
+            }
+            index += 1
+        }
+        throw NSKJSONError.error(description: "Unterminated sequence at \(endIndex).")
+    }
+    
+    static func parseEscapeSequence(buffer: Buffer, from: Index) throws -> (string: String, offset: Int) {
+        do {
+            return try PlainParser.parseEscapeSequence(buffer: buffer, from: from)
+        } catch {
+            if Options.isJson5Whitespace(buffer[from]) {
+                let (index, numberOfLines) = try self.skipWhiteSpacesWithLines(buffer: buffer, from: from)
+                if numberOfLines > 0 {
+                    return ("\n", index - from)
+                } else {
+                    throw NSKJSONError.error(description: "Invalid comment format at \(from).")
+                }
+            } else if buffer.distance(from: from, to: buffer.endIndex) >= 3 {
+                if buffer[from + 0] == Options.x, let b1 = Options.hexByte(buffer[from + 1]),
+                    let b0 = Options.hexByte(buffer[from + 2]) {
+                    
+                    return (String(UnicodeScalar(b1 << 4 + b0)), 3)
+                } else {
+                    throw NSKJSONError.error(description: "Invalid hex sequence from \(from).")
+                }
+            } else {
+                throw error
+            }
+        }
+    }
+    
+    static func parseJson5DictionaryKey(buffer: Buffer, from: Index) throws -> (value: String, offset: Int) {
+        let endIndex = buffer.endIndex
+        var index = from
+        var begin = index
+        var result = ""
+        
+        while index < endIndex {
+            let byte = buffer[index]
+            
+            if Options.isControlCharacter(byte) {
+                throw NSKJSONError.error(description: "Unescaped control character around character \(index).")
+                
+            } else {
+                let nextIndex = index + 1
+                if byte == Options.colon || (byte == Options.slash && nextIndex < endIndex && (buffer[nextIndex] == Options.slash || buffer[nextIndex] == Options.star)) {
+                    result += Options.string(buffer: buffer, from: begin, to: index)
+                    if result.isEmpty {
+                        throw NSKJSONError.error(description: "Empty unquoted dictionary key is not allowed at \(index).")
                     } else {
-                        break
+                        return (result, index - from)
                     }
-                } else if byte == self.options.star {
-                    if index < endIndex {
-                        let nextIndex = index + 1
+                } else if byte == Options.backSlash {
+                    if index < endIndex - 1 {
+                        let prefix = Options.string(buffer: buffer, from: begin, to: index)
+                        let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                         
-                        if buffer[nextIndex] == self.options.slash {
-                            nestingLevel -= 1
-                            
-                            if nestingLevel == 0 {
-                                if nextIndex == endIndex {
-                                    return (nextIndex, false, false, numberOfLines)
-                                    
-                                } else {
-                                    return (nextIndex + 1, nextIndex + 1 < endIndex, whitespaces.contains(buffer[nextIndex + 1]) == false, numberOfLines)
-                                }
-                            } else {
-                                index += 2
-                                continue
-                            }
-                        } else {
-                            index += 2
-                            continue
-                        }
+                        result += (prefix + escapeSequence.string)
+                        index += (escapeSequence.offset + 1)
+                        begin = index
+                        continue
                     } else {
                         break
                     }
                 }
                 index += 1
             }
-            throw NSKJSONError.error(description: "Unterminated multiline comment at \(index).")
         }
+        throw NSKJSONError.error(description: "Unterminated sequence at \(endIndex).")
     }
     
-    internal override func parseValue(buffer: C, from: Int, nestingLevel: Int) throws -> (value: Any, offset: Int) {
-        let byte = buffer[from]
-        
-        switch byte {
-        case self.options.apostrophe where from < buffer.endIndex - 1:
-            let string = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
-            
-            return (string.value, string.offset + 2)
-            
-        default:
-            return try super.parseValue(buffer: buffer, from: from, nestingLevel: nestingLevel)
+    static func parseArray(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: [Any], offset: Int)? {
+        guard buffer.distance(from: from, to: buffer.endIndex) >= 2 && buffer[from] == Options.beginArray else {
+            return nil
         }
-    }
-    
-    internal override func isNumberPrefix(byte: Byte) -> Bool {
-        return NSKJSON5NumberParser<C>.isValidPrefix(byte, options: self.options)
-    }
-    
-    override func parseEscapeSequence(buffer: C, from: Int) throws -> (string: String, offset: Int) {
         
-        let b0 = buffer[from + 0]
+        let index = try self.skipWhiteSpaces(buffer: buffer, from: from + 1)
+        let terminator = Options.endArray
         
-        switch b0 {
-        case self.options.x, self.options.X:
-            let result = try self.parseXSequence(buffer: buffer, from: from + 1)
-            return (result, 3)
+        if buffer[index] == terminator {
+            return ([], index + 1 - from)
             
-        case let byte where self.options.whitespaces.contains(byte):
-            let (index, hasValue, numberOfLines) = try self.skipWhiteSpaces(buffer: buffer, from: from)
+        } else {
+            var array: [Any] = []
+            var index = index
             
-            if hasValue && numberOfLines > 0 {
-                return ("\n", index - from)
+            while true {
+                let (value, valueLength) = try self.parseValue(buffer: buffer, from: index, nestingLevel: nestingLevel)
+                array.append(value)
+                index += valueLength
                 
-            } else {
-                throw NSKJSONError.error(description: "Invalid comment format at \(from).")
-            }
-            
-        default:
-            return try super.parseEscapeSequence(buffer: buffer, from: from)
-        }
-    }
-    
-    internal func parseXSequence(buffer: C, from: Int) throws -> String {
-        let length = 2
-        let matchResult = NSKMatcher<C>.match(buffer: buffer,
-                                              from: from,
-                                              length: length,
-                                              where: { (elem, index) -> Bool in
-                                                
-                                                return self.options.isHex(elem)
-        })
-        
-        switch matchResult {
-            
-        case .outOfRange, .lengthMismatch:
-            throw NSKJSONError.error(description: "Expected at least 2 hex digits instead of \(length) at \(from).")
-            
-        case .mismatch(let index):
-            throw NSKJSONError.error(description: "Invalid hex digit in unicode escape sequence around character \(index).")
-            
-        case .match:
-            let b1 = buffer[from + 0]
-            let b0 = buffer[from + 1]
-            return self.options.string(bytes: [b1, b0])!
-        }
-    }
-    
-    internal override func parseNumber(buffer: C, from: Int) throws -> (value: Any, offset: Int) {
-        let whiteSpaces = self.options.json5Whitespaces
-        let endArray = self.options.endArray
-        let endDictionary = self.options.endDictionary
-        let comma = self.options.comma
-        let slash = self.options.slash
-        let star = self.options.star
-        let plainJSONTerminator =
-            NSKPlainJSONTerminator(whiteSpaces: whiteSpaces,
-                                   endArray: endArray,
-                                   endDictionary: endDictionary,
-                                   comma: comma)
-        let json5Terminator =
-        NSKJSON5Terminator(terminator: plainJSONTerminator,
-                           slash: slash, star: star)
-        let numberParser = NSKJSON5NumberParser<C>(options: self.options)
-        
-        let (value, offset) = try numberParser.parseNumber(buffer: buffer, from: from, terminator: { (buffer, index) -> Bool in
-            return json5Terminator.contains(buffer: buffer, at: index)
-        })
-        
-        return (value, offset)
-    }
-    
-    internal override func parseDictionaryKey(buffer: C, from: Int) throws -> (value: String, offset: Int) {
-        if buffer.endIndex - from >= 2 {
-            let byte = buffer[from]
+                let (offset, hasTerminator) = try self.parseValueSpace(buffer: buffer, from: index, terminator: terminator)
                 
-            if byte == self.options.quotationMark || byte == self.options.apostrophe {
-                let result = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
-                
-                return (result.value, result.offset + 2)
-                
-            } else if byte != self.options.colon {
-                let whitespaces = self.options.json5Whitespaces
-                let colon = self.options.colon
-                let slash = self.options.slash
-                let star = self.options.star
-                let result = try self.parseByteSequence(buffer: buffer, from: from, terminator: { (buffer, index) -> Bool in
+                if hasTerminator {
+                    return (array, index + offset + 1 - from)
                     
-                    let terminator = NSKDictionaryKeyTerminator(whiteSpaces: whitespaces, colon: colon, slash: slash, star: star)
-                    return terminator.contains(buffer: buffer, at: index)
-                })
-                
-                return (result.value, result.offset)
+                } else {
+                    index += offset
+                }
             }
         }
-        throw NSKJSONError.error(description: "Invalid dictionary format at \(from).")
+    }
+    
+    static func parseDictionary(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: [String: Any], offset: Int)? {
+        guard buffer.distance(from: from, to: buffer.endIndex) >= 2 && buffer[from] == Options.beginDictionary else {
+            return nil
+        }
+        
+        let terminator = Options.endDictionary
+        let index = try self.skipWhiteSpaces(buffer: buffer, from: from + 1)
+        
+        if buffer[index] == terminator {
+            return ([:], index + 1 - from)
+            
+        } else {
+            var dictionary: [String: Any] = [:]
+            var index = index
+            
+            while true {
+                let (dictionaryKey, keyOffset) = try self.parseDictionaryKey(buffer: buffer, from: index)
+                let spaceOffset  = try self.parseDictionarySpace(buffer: buffer, from: index + keyOffset)
+                
+                let trailingOffset = keyOffset + spaceOffset
+                let (value, valueOffset) = try self.parseValue(buffer: buffer, from: index + trailingOffset, nestingLevel: nestingLevel)
+                let (newOffset, hasTerminator) = try self.parseValueSpace(buffer: buffer, from: index + trailingOffset + valueOffset, terminator: terminator)
+                
+                dictionary[dictionaryKey] = value
+                
+                if hasTerminator {
+                    return (dictionary, index + trailingOffset + valueOffset + newOffset + 1 - from)
+                    
+                } else {
+                    index += trailingOffset + valueOffset + newOffset
+                }
+            }
+        }
+    }
+    
+    static func parseString(buffer: Buffer, from: Index) throws -> (string: String, offset: Int)? {
+        if buffer.distance(from: from, to: buffer.endIndex) >= 2 {
+            if case let byte = buffer[from], byte == Options.quotationMark || byte == Options.apostrophe {
+                let (string, offset) = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
+                return (string, offset + 2)
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+    
+    static func parseValue(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: Any, offset: Int) {
+        if nestingLevel > NSKJSON.nestingLevel {
+            throw NSKJSONError.error(description: "Too many nested arrays or dictionaries at \(from).")
+        }
+        if let (dictionary, offset) = try self.parseDictionary(buffer: buffer, from: from, nestingLevel: nestingLevel + 1) {
+            return (dictionary, offset)
+        } else if let (array, offset) = try self.parseArray(buffer: buffer, from: from, nestingLevel: nestingLevel + 1) {
+            return (array, offset)
+        } else if let (string, offset) = try self.parseString(buffer: buffer, from: from) {
+            return (string, offset)
+        } else if let (primitive, offset) = try PlainParser.parsePrimitive(buffer: buffer, from: from) {
+            return (primitive, offset)
+        } else if let (number, offset) = try NSKJSON5NumberParser<Options>.parseNumber(buffer: buffer, from: from) {
+            return (number, offset)
+        } else {
+            throw NSKJSONError.error(description: "Unable to parse JSON object at \(from).")
+        }
+    }
+    
+    static func parseObject(buffer: Buffer) throws -> Any {
+        if buffer.isEmpty {
+            throw NSKJSONError.error(description: "Empty input.")
+        }
+        
+        if case let index = try self.skipWhiteSpaces(buffer: buffer, from: buffer.startIndex), Options.isPlainWhitespace(buffer[index]) == false {
+            let (value, offset) = try self.parseValue(buffer: buffer, from: index, nestingLevel: 0)
+            
+            if case let nextIndex = index + offset, nextIndex < buffer.endIndex {
+                if try self.hasValue(buffer: buffer, from: nextIndex) {
+                    throw NSKJSONError.error(description: "Garbage at end.")
+                } else {
+                    return value
+                }
+            } else {
+                return value
+            }
+        } else {
+            throw NSKJSONError.error(description: "No json value found.")
+        }
+    }
+    
+    static func parseValueSpace(buffer: Buffer, from: Index, terminator: Byte) throws -> (offset: Int, hasTerminator: Bool) {
+        let leadingIndex = try self.skipWhiteSpaces(buffer: buffer, from: from)
+        let byte = buffer[leadingIndex]
+        
+        if byte == terminator {
+            return (leadingIndex - from, true)
+            
+        } else if byte == Options.comma {
+            if case let nextIndex = leadingIndex + 1, nextIndex < buffer.endIndex {
+                let trailingIndex = try self.skipWhiteSpaces(buffer: buffer, from: nextIndex)
+                let byte = buffer[trailingIndex]
+                
+                if byte == Options.comma {
+                    throw NSKJSONError.error(description: "Expected value but ',' found at \(trailingIndex).")
+                    
+                } else {
+                    return (trailingIndex - from, byte == terminator)
+                }
+            } else {
+                throw NSKJSONError.error(description: "Expected value or closing bracket after \(leadingIndex).")
+            }
+        } else {
+            throw NSKJSONError.error(description: "Expected ',' or closing bracket at \(leadingIndex).")
+        }
+    }
+    
+    static func parseDictionaryKey(buffer: Buffer, from: Index) throws -> (value: String, offset: Int) {
+        if buffer.distance(from: from, to: buffer.endIndex) >= 2 {
+            let byte = buffer[from]
+            switch byte {
+            case Options.quotationMark, Options.apostrophe:
+                let (key, offset) = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
+                return (key, offset + 2)
+            default:
+                let (key, offset) = try self.parseJson5DictionaryKey(buffer: buffer, from: from)
+                return (key, offset)
+            }
+        } else {
+            throw NSKJSONError.error(description: "Invalid dictionary key at \(from).")
+        }
+    }
+    
+    static func parseDictionarySpace(buffer: Buffer, from: Index) throws -> Int { // offset
+        let leadingIndex = try self.skipWhiteSpaces(buffer: buffer, from: from)
+        
+        if buffer[leadingIndex] == Options.colon {
+            if case let nextIndex = leadingIndex + 1, nextIndex < buffer.endIndex {
+                let trailingIndex = try self.skipWhiteSpaces(buffer: buffer, from: nextIndex)
+                
+                return trailingIndex - from
+            } else {
+                throw NSKJSONError.error(description: "Expected value at \(leadingIndex).")
+            }
+        } else {
+            throw NSKJSONError.error(description: "Expected ':' at \(leadingIndex).")
+        }
     }
 }

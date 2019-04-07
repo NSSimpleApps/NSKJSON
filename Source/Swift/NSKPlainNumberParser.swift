@@ -9,108 +9,165 @@
 import Foundation
 
 
-internal final class NSKPlainNumberParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
-    internal typealias Byte = C.Iterator.Element
-    internal typealias Terminator = (_ buffer: C, _ index: Int) -> Bool
+struct NSKPlainNumberParser<Options: NSKOptions> {
+    typealias Byte = Options.Byte
+    typealias Buffer = UnsafeBufferPointer<Byte>
+    typealias Index = Buffer.Index
     
-    internal let options: NSKOptions<Byte>
+    private init() {}
     
-    internal init(options: NSKOptions<Byte>) {
-        self.options = options
-    }
-    
-    internal static func isValidPrefix(_ prefix: Byte, options: NSKOptions<Byte>) -> Bool {
-        return options.isDigit(prefix) || prefix == options.minus
-    }
-    
-    internal func validateNumber(buffer: C, from: Int, terminator: Terminator) throws -> (isAFloatingPoint: Bool, length: Int) {
-        let endIndex = buffer.endIndex - 1
-        var index = from
-        
-        if buffer[index] == self.options.minus {
-            index += 1
-        }
-        
-        if index > endIndex || self.options.isDigit(buffer[index]) == false {
-            throw NSKJSONError.error(description: "Expected digit at \(index).")
-        }
-        
-        if self.options.isZero(buffer[index]) {
-            index += 1
+    /// parse number according to the plain JSON format
+    static func parseNumber(buffer: Buffer, from: Index) throws -> (number: Any, length: Int)? {
+        if buffer.distance(from: from, to: buffer.endIndex) >= 1 {
+            let byte = buffer[from]
+            let signPart: [UInt8]
+            let integerPart: [UInt8]
             
-            if index > endIndex || terminator(buffer, index) {
-                return (false, index - from)
-            }
-            let byte = buffer[index]
-            
-            if self.options.isDigit(byte) {
-                throw NSKJSONError.error(description: "Number with leading zero around character \(index).")
-            }
-        }
-        index = NSKNumberHelper<C>.skipDigits(buffer: buffer, from: index, options: self.options)
-        
-        if index > endIndex || terminator(buffer, index) {
-            return (false, index - from)
-        }
-        let byte = buffer[index]
-        
-        if byte == self.options.dot {
-            index += 1
-            
-            if index > endIndex || self.options.isDigit(buffer[index]) == false {
-                throw NSKJSONError.error(description: "Number with decimal point but no additional digits around character \(index).")
-                    
-            } else {
-                index = NSKNumberHelper<C>.skipDigits(buffer: buffer, from: index, options: self.options)
-                    
-                if index > endIndex || terminator(buffer, index) {
-                    return (true, index - from)
-                        
-                } else if case let byte = buffer[index], byte == self.options.e || byte == self.options.E {
-                    index = try NSKNumberHelper<C>.validateExponent(buffer: buffer, from: index + 1, options: self.options, terminator: terminator)
-                    
-                    return (true, index - from)
-                        
+            if let minus = Options.minus(byte) {
+                if case let digits = self.integerPart(buffer: buffer, from: from + 1), digits.isEmpty == false {
+                    signPart = [minus]
+                    integerPart = digits
                 } else {
-                    throw NSKJSONError.error(description: "Expected digit, 'e' or 'E' at \(index).")
+                    throw NSKJSONError.error(description: "Expected digit at \(from).")
+                }
+            } else if Options.plus(byte) != nil {
+                throw NSKJSONError.error(description: "Leading '+' is not allowed at \(from).")
+                
+            } else {
+                signPart = []
+                integerPart = self.integerPart(buffer: buffer, from: from)
+            }
+            
+            if integerPart.isEmpty {
+                return nil
+            } else {
+                let integerCount = signPart.count + integerPart.count
+                let index = from + integerCount
+                
+                if integerPart.count > 1 && integerPart[0] == 0x30 {
+                    throw NSKJSONError.error(description: "Leading '0' is not allowed at \(index).")
+                }
+                
+                if let decimalPart = try self.decimalPart(buffer: buffer, from: index) {
+                    let double = self.double(digits: signPart + integerPart + decimalPart)
+                    if double.isNaN || double.isInfinite {
+                        throw NSKJSONError.error(description: "Invalid number format at \(from).")
+                    } else {
+                        return (double, integerCount + decimalPart.count)
+                    }
+                } else {
+                    if let int = self.int(digits: integerPart, radix: 10, isNegative: signPart.isEmpty == false) {
+                        return (int, integerCount)
+                    } else {
+                        throw NSKJSONError.error(description: "Number does not fit in Int at \(from).")
+                    }
                 }
             }
-        } else if byte == self.options.e || byte == self.options.E {
-            index = try NSKNumberHelper<C>.validateExponent(buffer: buffer, from: index + 1, options: self.options, terminator: terminator)
-            
-            return (true, index - from)
-            
         } else {
-            throw NSKJSONError.error(description: "Invalid number format at \(index).")
+            return nil
         }
     }
     
-    /// parse number in the plain JSON format
-    internal func parseNumber(buffer: C, from: Int, terminator: Terminator) throws -> (number: Any, length: Int) {
-        let (isAFloatingPoint, length) = try self.validateNumber(buffer: buffer, from: from, terminator: terminator)
-        let string = options.string(bytes: buffer[from..<(from + length)])!
-        let number: Any
-        let numberLength: Int
-        
-        if isAFloatingPoint {
-            let (double, doubleLength) = NSKNumberHelper<C>.parseDouble(buffer: buffer, string: string)
-            
-            if double.isNaN {
-                throw NSKJSONError.error(description: "Number wound up as NaN around character \(from).")
-                
-            } else if double.isInfinite {
-                throw NSKJSONError.error(description: "Number wound up as Infinity around character \(from).")
-            }
-            (number, numberLength) = (double, doubleLength)
-            
+    static func decimalPart(buffer: Buffer, from: Index) throws -> [UInt8]? {
+        if buffer.distance(from: from, to: buffer.endIndex) < 1 {
+            return nil
         } else {
-            let (integer, integerLength) = NSKNumberHelper<C>.parseInteger(buffer: buffer, base: 10, string: string)
+            let decimalPart: [UInt8]
+            if let dot = Options.dot(buffer[from]) {
+                let nextIndex = from + 1
+                
+                if case let digits = self.integerPart(buffer: buffer, from: nextIndex), digits.isEmpty == false {
+                    decimalPart = [dot] + digits
+                } else {
+                    throw NSKJSONError.error(description: "Expected digits at \(nextIndex).")
+                }
+            } else {
+                decimalPart = self.integerPart(buffer: buffer, from: from)
+            }
             
-            (number, numberLength) = (integer, integerLength)
+            if let exponentPart = try self.exponentPart(buffer: buffer, from: from + decimalPart.count, exponent: Options.e(_:)) {
+                return decimalPart + exponentPart
+            } else {
+                if decimalPart.isEmpty {
+                    return nil
+                } else {
+                    return decimalPart
+                }
+            }
         }
-        if length != numberLength {
-            throw NSKJSONError.error(description: "Invalid number format at \(from).")
+    }
+    static func integerPart(buffer: Buffer, from: Index) -> [UInt8] {
+        if case let endIndex = buffer.endIndex, from < endIndex {
+            var result: [UInt8] = []
+            for index in from..<endIndex {
+                if let digit = Options.digit(buffer[index]) {
+                    result.append(digit)
+                } else {
+                    break
+                }
+            }
+            return result
+        } else {
+            return []
         }
-        return (number, numberLength)
+    }
+    static func exponentPart(buffer: Buffer, from: Index, exponent: (Byte) -> UInt8?) throws -> [UInt8]? {
+        let endIndex = buffer.endIndex
+        if buffer.distance(from: from, to: endIndex) >= 1 {
+            if let exponent = exponent(buffer[from]) {
+                if case let nextIndex = from + 1, nextIndex < endIndex {
+                    let predix: [UInt8]
+                    let index: Index
+                    let nextByte = buffer[nextIndex]
+                    
+                    if let minus = Options.minus(nextByte) {
+                        predix = [exponent, minus]
+                        index = nextIndex + 1
+                    } else if let plus = Options.plus(nextByte) {
+                        predix = [exponent, plus]
+                        index = nextIndex + 1
+                    } else {
+                        predix = [exponent]
+                        index = nextIndex
+                    }
+                    if case let digits = self.integerPart(buffer: buffer, from: index), digits.isEmpty == false {
+                        return predix + digits
+                    } else {
+                        throw NSKJSONError.error(description: "Expected digits at \(index).")
+                    }
+                } else {
+                    throw NSKJSONError.error(description: "Expected digits at \(from).")
+                }
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+    static func int(digits: [UInt8], radix: Int, isNegative: Bool) -> Int? {
+        var result: Int = 0
+        let sign = isNegative ? -1 : 1
+        
+        for digit in digits {
+            let (partialValue, overflow) = result.multipliedReportingOverflow(by: radix)
+            if overflow {
+                return nil
+            } else {
+                let (partialValue, overflow) = partialValue.addingReportingOverflow(sign * Int(digit - 0x30))
+                if overflow {
+                    return nil
+                } else {
+                    result = partialValue
+                }
+            }
+        }
+        return result
+    }
+    
+    static func double(digits: [UInt8]) -> Double {
+        return digits.withUnsafeBytes { (raw) -> Double in
+            return atof(raw.bindMemory(to: Int8.self).baseAddress)
+        }
     }
 }

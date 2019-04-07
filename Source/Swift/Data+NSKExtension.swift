@@ -8,9 +8,8 @@
 
 import Foundation
 
-internal extension Data {
-    
-    internal var parseASCIIEncoding: String.Encoding {
+extension Data {
+    var parseASCIIEncoding: String.Encoding {
         let count = self.count
         let asciiRange: CountableClosedRange<UInt8> = 0x01...0x7F
         
@@ -42,7 +41,7 @@ internal extension Data {
         }
     }
     
-    internal func parseBOM() -> (encoding: String.Encoding, offset: Int)? {
+    func parseBOM() -> (encoding: String.Encoding, offset: Int)? {
         let count = self.count
         
         if count >= 2 {
@@ -67,13 +66,5 @@ internal extension Data {
             }
         }
         return nil
-    }
-    
-    internal func buffer<T: UnsignedInteger>(offset: Int) -> UnsafeBufferPointer<T> {
-        let stride = MemoryLayout<T>.stride
-        
-        return self.withUnsafeBytes { (bytes: UnsafePointer<T>) -> UnsafeBufferPointer<T> in
-            return UnsafeBufferPointer(start: bytes.advanced(by: offset/stride), count: (self.count - offset)/stride)
-        }
     }
 }

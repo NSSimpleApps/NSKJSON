@@ -9,156 +9,176 @@
 import Foundation
 
 
-internal final class NSKJSON5NumberParser<C> where C: Collection, C.Iterator.Element: UnsignedInteger, C.Index == Int {
-    internal typealias Byte = C.Iterator.Element
-    internal typealias Terminator = (_ buffer: C, _ index: Int) -> Bool
+struct NSKJSON5NumberParser<Options: NSKOptions> {
+    typealias Byte = Options.Byte
+    typealias Buffer = UnsafeBufferPointer<Byte>
+    typealias Index = Buffer.Index
+    typealias PlainNumberParser = NSKPlainNumberParser<Options>
     
-    internal let options: NSKOptions<Byte>
+    private init() {}
     
-    internal init(options: NSKOptions<Byte>) {
-        self.options = options
-    }
-    
-    internal static func isValidPrefix(_ prefix: Byte, options: NSKOptions<Byte>) -> Bool {
-        return NSKPlainNumberParser<C>.isValidPrefix(prefix, options: options) || prefix == options.dot || prefix == options.plus || prefix == options.I || prefix == options.N
-    }
-    
-    internal func validateNumber(buffer: C, from: Int, terminator: Terminator) throws -> (isAFloatingPoint: Bool, base: Int32, length: Int) {
-        let endIndex = buffer.endIndex - 1
-        var index = from
-        
-        if buffer[index] == self.options.plus || buffer[index] == self.options.minus {
-            index += 1
-        }
-        
-        if index > endIndex {
-            throw NSKJSONError.error(description: "Expected digit, '.', Infinity or NaN at \(index).")
-        }
-        
-        if buffer[index] == self.options.I {
-            let infinityMatch = NSKMatcher.match(buffer: buffer,
-                                                 from: index + 1,
-                                                 sequence: [self.options.n,
-                                                            self.options.f,
-                                                            self.options.i,
-                                                            self.options.n,
-                                                            self.options.i,
-                                                            self.options.t,
-                                                            self.options.y])
+    /// parse number according to the JSON5 format
+    static func parseNumber(buffer: Buffer, from: Index) throws -> (number: Any, length: Int)? {
+        let endIndex = buffer.endIndex
+        if buffer.distance(from: from, to: endIndex) >= 1 {
+            let byte = buffer[from]
+            let signPart: [UInt8]
+            let isNegative: Bool
             
-            switch infinityMatch {
-            case .match:
-                return (true, 10, index - from + 8)
-                
-            default:
-                throw NSKJSONError.error(description: "Expected Infinity at \(index).")
+            if let minus = Options.minus(byte) {
+                signPart = [minus]
+                isNegative = true
+            } else if let plus = Options.plus(byte) {
+                signPart = [plus]
+                isNegative = false
+            } else {
+                signPart = []
+                isNegative = false
             }
-            
-        } else if buffer[index] == self.options.N {
-            let nanMatch = NSKMatcher.match(buffer: buffer,
-                                            from: index + 1,
-                                            sequence: [self.options.a, self.options.N])
-            
-            switch nanMatch {
-            case .match:
-                return (true, 10, index - from + 3)
-                
-            default:
-                throw NSKJSONError.error(description: "Expected NaN at \(index).")
-            }
-        }
-        
-        if self.options.isZero(buffer[index]) && index < endIndex - 1 && (buffer[index + 1] == self.options.x || buffer[index + 1] == self.options.X) {
-            index += 2
-            
-            if case let integerPartHexOffset = NSKNumberHelper<C>.skipHex(buffer: buffer, from: index, options: self.options) - index, integerPartHexOffset > 0 {
-                index += integerPartHexOffset
-                
-                if index > endIndex || terminator(buffer, index) {
-                    return (false, 16, index - from)
+            let signPartCount = signPart.count
+            let nextIndex = from + signPartCount
+            if buffer.distance(from: nextIndex, to: endIndex) > 2,
+                let zero = Options.zero(buffer[nextIndex]), let x = Options.x(buffer[nextIndex + 1]) {
+                let index = nextIndex + 2
+                if case let integerPart = self.hexIntegerPart(buffer: buffer, from: index), integerPart.isEmpty == false {
+                    let leadingCount = 2 + signPartCount + integerPart.count
                     
-                } else {
-                    if buffer[index] == self.options.dot {
-                        index += 1
-                    }
-                    
-                    if index > endIndex || terminator(buffer, index) {
-                        return (true, 16, index - from)
-                    }
-                    
-                    index = NSKNumberHelper<C>.skipHex(buffer: buffer, from: index, options: self.options)
-                    
-                    if index > endIndex || terminator(buffer, index) {
-                        return (true, 16, index - from)
+                    if let decimalPart = try self.hexaDecimalPart(buffer: buffer, from: index + integerPart.count) {
+                        let double = PlainNumberParser.double(digits: signPart + [zero, x] + integerPart + decimalPart)
                         
+                        return (double, leadingCount + decimalPart.count)
                     } else {
-                        if buffer[index] == self.options.p || buffer[index] == self.options.P {
-                            index += 1
-                            index = try NSKNumberHelper<C>.validateExponent(buffer: buffer, from: index, options: self.options, terminator: terminator)
-                            
-                            if index > endIndex || terminator(buffer, index) {
-                                return (true, 16, index - from)
-                                
-                            } else {
-                                throw NSKJSONError.error(description: "Invalid number format at \(index).")
-                            }
+                        if let int = PlainNumberParser.int(digits: integerPart, radix: 16, isNegative: isNegative) {
+                            return (int, leadingCount)
                         } else {
-                            throw NSKJSONError.error(description: "Expected terminator, 'p' or 'P' at \(index).")
+                            throw NSKJSONError.error(description: "Number does not fit in Int at \(from).")
+                        }
+                    }
+                } else {
+                    throw NSKJSONError.error(description: "Incorrect hex number format at \(index).")
+                }
+            } else {
+                let integerPart = PlainNumberParser.integerPart(buffer: buffer, from: nextIndex)
+                if integerPart.isEmpty {
+                    let index = from + signPartCount
+                    if buffer.distance(from: index, to: endIndex) >= 8 {
+                        if buffer[index] == Options.I,
+                            buffer[index + 1] == Options.n,
+                            buffer[index + 2] == Options.f,
+                            buffer[index + 3] == Options.i,
+                            buffer[index + 4] == Options.n,
+                            buffer[index + 5] == Options.i,
+                            buffer[index + 6] == Options.t,
+                            buffer[index + 7] == Options.y {
+                            
+                            let length = signPartCount + 8
+                            if isNegative {
+                                 return (-Double.infinity, length)
+                            } else {
+                                 return (Double.infinity, length)
+                            }
+                        }
+                    } else if buffer.distance(from: index, to: endIndex) >= 3 {
+                        if buffer[index] == Options.N,
+                            buffer[index + 1] == Options.a,
+                            buffer[index + 2] == Options.N {
+                            return (Double.nan, 3 + signPartCount)
                         }
                     }
                 }
-            } else {
-                throw NSKJSONError.error(description: "Expected hex after '0x' at \(index).")
+                
+                let leadingCount = signPartCount + integerPart.count
+                
+                if let (decimalPart, isDecimalPartEmpty) = try self.decimalPart(buffer: buffer, from: nextIndex + integerPart.count) {
+                    if isDecimalPartEmpty && integerPart.isEmpty {
+                        throw NSKJSONError.error(description: "Incorrect number format at \(from).")
+                    } else {
+                        let double = PlainNumberParser.double(digits: signPart + integerPart + decimalPart)
+                        return (double, leadingCount + decimalPart.count)
+                    }
+                } else {
+                    if integerPart.isEmpty {
+                        throw NSKJSONError.error(description: "Incorrect number format at \(from).")
+                    }
+                    if let int = PlainNumberParser.int(digits: integerPart, radix: 10, isNegative: isNegative) {
+                        return (int, leadingCount)
+                    } else {
+                        throw NSKJSONError.error(description: "Number does not fit in Int at \(from).")
+                    }
+                }
             }
+        } else {
+            return nil
         }
-        
-        let leadingDigitsLength = NSKNumberHelper<C>.skipDigits(buffer: buffer, from: index, options: self.options) - index
-        
-        index += leadingDigitsLength
-        
-        if (index > endIndex || terminator(buffer, index)) && leadingDigitsLength > 0 {
-            return (false, 10, index - from)
-        }
-        var hasDot = false
-        
-        if buffer[index] == self.options.dot {
-            index += 1
-            hasDot = true
-        }
-        
-        index = NSKNumberHelper<C>.skipDigits(buffer: buffer, from: index, options: self.options)
-        
-        if index > endIndex || terminator(buffer, index) {
-            return (hasDot, 10, index - from)
-        }
-        
-        if buffer[index] == self.options.e || buffer[index] == self.options.E {
-            index += 1
-            index = try NSKNumberHelper<C>.validateExponent(buffer: buffer, from: index, options: self.options, terminator: terminator)
-            
-            return (true, 10, index - from)
-        }
-        throw NSKJSONError.error(description: "Invalid number format \(index).")
     }
     
-    internal func parseNumber(buffer: C, from: Int, terminator: Terminator) throws -> (number: Any, length: Int) {
-        let (isAFloatingPoint, base, length) = try self.validateNumber(buffer: buffer, from: from, terminator: terminator)
-        let string = options.string(bytes: buffer[from..<(from + length)])!
-        let number: Any
-        let numberLength: Int
-        
-        if isAFloatingPoint {
-            let (double, doubleLength) = NSKNumberHelper<C>.parseDouble(buffer: buffer, string: string)
-            (number, numberLength) = (double, doubleLength)
-            
+    static func hexaDecimalPart(buffer: Buffer, from: Index) throws -> [UInt8]? {
+        if buffer.distance(from: from, to: buffer.endIndex) < 1 {
+            return nil
         } else {
-            let (integer, integerLength) = NSKNumberHelper<C>.parseInteger(buffer: buffer, base: base, string: string)
-            (number, numberLength) = (integer, integerLength)
+            let decimalPart: [UInt8]
+            if let dot = Options.dot(buffer[from]) {
+                let nextIndex = from + 1
+                let digits = self.hexIntegerPart(buffer: buffer, from: nextIndex)
+                decimalPart = [dot] + digits
+                
+            } else {
+                decimalPart = self.hexIntegerPart(buffer: buffer, from: from)
+            }
+            
+            if let exponentPart = try PlainNumberParser.exponentPart(buffer: buffer, from: from + decimalPart.count, exponent: Options.p(_:)) {
+                return decimalPart + exponentPart
+            } else {
+                if decimalPart.isEmpty {
+                    return nil
+                } else {
+                    return decimalPart
+                }
+            }
         }
-        if length != numberLength {
-            throw NSKJSONError.error(description: "Invalid number format at \(from).")
+    }
+    
+    static func decimalPart(buffer: Buffer, from: Index) throws -> ([UInt8], Bool)? {
+        if buffer.distance(from: from, to: buffer.endIndex) < 1 {
+            return nil
+        } else {
+            let isDecimalPartEmpty: Bool
+            let decimalPart: [UInt8]
+            
+            if let dot = Options.dot(buffer[from]) {
+                let nextIndex = from + 1
+                let digits = PlainNumberParser.integerPart(buffer: buffer, from: nextIndex)
+                decimalPart = [dot] + digits
+                isDecimalPartEmpty = digits.isEmpty
+            } else {
+                decimalPart = PlainNumberParser.integerPart(buffer: buffer, from: from)
+                isDecimalPartEmpty = decimalPart.isEmpty
+            }
+            
+            if let exponentPart = try PlainNumberParser.exponentPart(buffer: buffer, from: from + decimalPart.count, exponent: Options.e(_:)) {
+                return (decimalPart + exponentPart, isDecimalPartEmpty)
+            } else {
+                if decimalPart.isEmpty {
+                    return nil
+                } else {
+                    return (decimalPart, isDecimalPartEmpty)
+                }
+            }
         }
-        return (number, numberLength)
+    }
+    static func hexIntegerPart(buffer: Buffer, from: Index) -> [UInt8] {
+        if case let endIndex = buffer.endIndex, from < endIndex {
+            var result: [UInt8] = []
+            for index in from..<endIndex {
+                if let hex = Options.hexByte(buffer[index]) {
+                    result.append(hex)
+                } else {
+                    break
+                }
+            }
+            return result
+        } else {
+            return []
+        }
     }
 }
-

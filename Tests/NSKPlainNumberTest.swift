@@ -11,97 +11,132 @@ import XCTest
 
 class NSKPlainNumberTest: XCTestCase {
     
-    func testIntegers() {
+    func testMisc() {
+        let str = "[-1x]"
+        let data = str.data(using: .utf8)!
         
-        for integer in correctPlainIntegerCases {
-            
-            print("TESTING:", integer.0)
-            
-            let data = integer.0.data(using: .utf8)!
-            
-            do {
-                
-                let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: false, transformer: { $0 })
-                let terminator =
-                NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
-                                       endArray: options.endArray,
-                                       endDictionary: options.endDictionary,
-                                       comma: options.comma)
-                
-                let parser = NSKPlainNumberParser<Data>(options: options)
-                
-                let (number, length) = try parser.parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
-                    
-                    return terminator.contains(buffer: data, at: index)
-                })
-                
-                XCTAssertEqual(length, integer.2)
+        print("TESTING:", str)
+        do {
+            if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 1, isBigEndian: isBigEndian,
+                                                                     block: { (result) -> (number: Any, length: Int)? in
+                                                                        switch result {
+                                                                        case .success(let buffer):
+                                                                            return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                                                                        case .failure(let error):
+                                                                            throw error
+                                                                        }
+            }) {
+                XCTAssertEqual(length, 2)
                 XCTAssertTrue(number is Int)
-                XCTAssertEqual(number as! Int, integer.1)
-                
+                XCTAssertEqual(number as! Int, -1)
+            } else {
+                XCTFail("NOT A NUMBER: " + str)
+            }
+        } catch {
+            print("FAILED AT:", error)
+            XCTFail()
+        }
+    }
+    
+    func testIntegers() {
+        for integer in correctPlainIntegerCases {
+            let str = integer.0
+            let data = str.data(using: .utf8)!
+            
+            print("TESTING:", str)
+            do {
+                if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+                                                                         block: { (result) -> (number: Any, length: Int)? in
+                                                                            switch result {
+                                                                            case .success(let buffer):
+                                                                                return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                                                                            case .failure(let error):
+                                                                                throw error
+                                                                            }
+                }) {
+                    XCTAssertEqual(length, integer.2)
+                    XCTAssertTrue(number is Int)
+                    XCTAssertEqual(number as! Int, integer.1)
+                } else {
+                    XCTFail("NOT A NUMBER: " + str)
+                }
             } catch {
-                
-                print("FAILED AT:", integer.0, error)
-                
+                print("FAILED AT:", error)
                 XCTFail()
             }
         }
     }
     
     func testDoubles() {
-        
         for correctPlainDoubleCase in correctPlainDoubleCases {
-            
             print("TESTING:", correctPlainDoubleCase)
             
             let data = correctPlainDoubleCase.data(using: .utf8)!
-            let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: false, transformer: { $0 })
-            let terminator =
-                NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
-                                       endArray: options.endArray,
-                                       endDictionary: options.endDictionary,
-                                       comma: options.comma)
             
             do {
-                
-                let (number, length) = try NSKPlainNumberParser(options: options).parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
-                    
-                    return terminator.contains(buffer: data, at: index)
-                })
-                
-                XCTAssertEqual(length, correctPlainDoubleCase.count)
-                XCTAssertTrue(number is Double)
-                XCTAssertEqual(number as! Double, Double(correctPlainDoubleCase)!)
-                
+                if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+                                                                         block: { (result) -> (number: Any, length: Int)? in
+                                                                            switch result {
+                                                                            case .success(let buffer):
+                                                                                return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                                                                            case .failure(let error):
+                                                                                throw error
+                                                                            }
+                }) {
+                    XCTAssertEqual(length, correctPlainDoubleCase.count)
+                    XCTAssertTrue(number is Double)
+                    XCTAssertEqual(number as! Double, Double(correctPlainDoubleCase)!)
+                } else {
+                    XCTFail("NOT A NUMBER: " + correctPlainDoubleCase)
+                }
             } catch {
-                
                 print("FAILED AT:", correctPlainDoubleCase, error)
-                
+                XCTFail()
+            }
+        }
+    }
+    
+    func testNils() {
+        for nilCase in nilCases {
+            print("TESTING:", nilCase)
+            let data = nilCase.data(using: .utf8)!
+            
+            do {
+                let result = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+                                                            block: { (result) -> (number: Any, length: Int)? in
+                                                                switch result {
+                                                                case .success(let buffer):
+                                                                    return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                                                                case .failure(let error):
+                                                                    print("FAILED AT:", error)
+                                                                    XCTFail()
+                                                                    return nil
+                                                                }
+                })
+                XCTAssertNil(result)
+            } catch {
+                print("FAILED AT:", nilCase, error)
                 XCTFail()
             }
         }
     }
     
     func testErrors() {
-        
         for incorrectPlainCase in incorrectPlainCases {
-            
             print("TESTING:", incorrectPlainCase)
-            
             let data = incorrectPlainCase.data(using: .utf8)!
-            let options = NSKOptions<UInt8>(encoding: .utf8, trailingComma: false, transformer: { $0 })
-            let terminator =
-                NSKPlainJSONTerminator(whiteSpaces: options.whitespaces,
-                                       endArray: options.endArray,
-                                       endDictionary: options.endDictionary,
-                                       comma: options.comma)
             
-            XCTAssertThrowsError(try NSKPlainNumberParser(options: options).parseNumber(buffer: data, from: 0, terminator: { (data, index) -> Bool in
+            XCTAssertThrowsError(try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+                                                                block: { (result) -> (number: Any, length: Int)? in
+                                                                    switch result {
+                                                                    case .success(let buffer):
+                                                                        return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                                                                    case .failure(let error):
+                                                                        throw error
+                                                                    }
+            }), "FAILED AT \(incorrectPlainCase)") { (error) in
                 
-                return terminator.contains(buffer: data, at: index)
-            }),
-                                 "FAILED AT \(incorrectPlainCase)", { (error) in
-            })
+            }
         }
     }
 }

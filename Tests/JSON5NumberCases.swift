@@ -258,11 +258,7 @@ let correctJSON5DoubleCases = [
     "+0x0p1",
 ]
 
-let incorrectJSON5Cases = ["-",
-                           "- ",
-                           "-,",
-                           "abc",
-                           "123e",
+let incorrectJSON5Cases = ["123e",
                            "123E",
                            "123e+",
                            "123E+",
@@ -289,5 +285,10 @@ let incorrectJSON5Cases = ["-",
                            "+.e10",
                            
                            "0xvsd",
-                           "0x0abcp-1dd",
+                           "Nan",
+                           "+Nan",
+                           "-Nan",
+                           "Inf",
+                           "+Inf",
+                           "-Inf",
 ]

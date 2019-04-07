@@ -31,46 +31,50 @@ public class NSKJSON {
         }
         
         if encoding == .utf8 {
-            let buffer: UnsafeBufferPointer<UInt8> = data.buffer(offset: offset)
+            return try OptionsUTF8.utf8Buffer(data: data, offset: offset,
+                                          block: { (buffer) -> Any in
+                                            switch version {
+                                            case .plain:
+                                                return try NSKPlainParser<OptionsUTF8>.parseObject(buffer: buffer)
+                                            case .json5:
+                                                return try NSKJSON5Parser<OptionsUTF8>.parseObject(buffer: buffer)
+                                            }
+            })
             
-            return try self.parser(encoding: encoding, version: version, transformer: { $0 }).parseObject(buffer: buffer)
+        } else if encoding == .utf16BigEndian || encoding == .utf16LittleEndian {
+            return try OptionsUTF16.buffer(data: data, offset: offset, isBigEndian: encoding == .utf16BigEndian,
+                                           block: { (result) -> Any in
+                                            switch result {
+                                            case .success(let buffer):
+                                                switch version {
+                                                case .plain:
+                                                    return try NSKPlainParser<OptionsUTF16>.parseObject(buffer: buffer)
+                                                case .json5:
+                                                    return try NSKJSON5Parser<OptionsUTF16>.parseObject(buffer: buffer)
+                                                }
+                                            case .failure(let error):
+                                                throw error
+                                            }
+            })
             
-        } else if encoding == .utf16BigEndian {
-            let buffer: UnsafeBufferPointer<UInt16> = data.buffer(offset: offset)
-            
-            return try self.parser(encoding: encoding, version: version, transformer: { UInt16($0).bigEndian }).parseObject(buffer: buffer)
-            
-        } else if encoding == .utf16LittleEndian {
-            let buffer: UnsafeBufferPointer<UInt16> = data.buffer(offset: offset)
-            
-            return try self.parser(encoding: encoding, version: version, transformer: { UInt16($0).littleEndian }).parseObject(buffer: buffer)
-            
-        } else if encoding == .utf32BigEndian {
-            let buffer: UnsafeBufferPointer<UInt32> = data.buffer(offset: offset)
-            
-            return try self.parser(encoding: encoding, version: version, transformer: { UInt32($0).bigEndian }).parseObject(buffer: buffer)
-            
-        } else if encoding == .utf32LittleEndian {
-            let buffer: UnsafeBufferPointer<UInt32> = data.buffer(offset: offset)
-            
-            return try self.parser(encoding: encoding, version: version, transformer: { UInt32($0).littleEndian }).parseObject(buffer: buffer)
+        } else if encoding == .utf32BigEndian || encoding == .utf32LittleEndian {
+            return try OptionsUTF32.buffer(data: data, offset: offset, isBigEndian: encoding == .utf32BigEndian,
+                                           block: { (result) -> Any in
+                                            switch result {
+                                            case .success(let buffer):
+                                                switch version {
+                                                case .plain:
+                                                    return try NSKPlainParser<OptionsUTF32>.parseObject(buffer: buffer)
+                                                case .json5:
+                                                    return try NSKJSON5Parser<OptionsUTF32>.parseObject(buffer: buffer)
+                                                }
+                                            case .failure(let error):
+                                                throw error
+                                            }
+            })
             
         } else {
             throw NSKJSONError.error(description: "\(encoding) is not supported yet.")
-        }
-    }
-    
-    private static func parser<Byte: UnsignedInteger>(encoding: String.Encoding, version: Version, transformer: @escaping (UInt8) -> Byte) -> NSKPlainParser<UnsafeBufferPointer<Byte>> {
-        
-        let options = NSKOptions(encoding: encoding,
-                                 trailingComma: version == .json5,
-                                 transformer: transformer)
-        
-        switch version {
-        case .plain:
-            return NSKPlainParser<UnsafeBufferPointer<Byte>>(options: options)
-        case .json5:
-            return NSKJSON5Parser<UnsafeBufferPointer<Byte>>(options: options)
         }
     }
 }

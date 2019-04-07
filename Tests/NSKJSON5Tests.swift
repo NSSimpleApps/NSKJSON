@@ -12,150 +12,169 @@ import XCTest
 
 class NSKJSON5Tests: XCTestCase {
     
-    func testCorrectJSON5Test() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "json5-tests/\(encoding)", withPrefix: "y_")
-            
-            for fileName in files {
-                
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE PASS TEST: \(file), \(encoding)")
-                
-                do {
-                    
-                    let json = try NSKJSON.jsonObject(with: data, version: .json5)
-                    print(json)
-                    
-                } catch {
-                    
-                    XCTFail("!!!! FAILED AT \(file), \(encoding), \(error)")
-                }
-            }
-        }
-    }
-    
-    func testIncorrectJSON5Test() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "json5-tests/\(encoding)", withPrefix: "n_")
-            
-            for fileName in files {
-                
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE FAILED \(file), \(encoding)")
-                
-                XCTAssertThrowsError(try NSKJSON.jsonObject(with: data, version: .json5), "!!!! FAILED AT \(file), \(encoding)", { (error) in
-                    
-                    print(error)
-                })
-            }
-        }
-    }
-    
     func testCorrectPlainFormat() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "test_plain_parsing/\(encoding)", withPrefix: "y_")
-            
-            for fileName in files {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_plain_parsing", withPrefix: "y_", encoding: encoding)
                 
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE PASS TEST: \(file), \(encoding)")
-                
-                do {
-                    
-                    let json = try NSKJSON.jsonObject(with: data, version: .json5)
-                    print(json)
-                    
-                } catch {
-                    
-                    XCTFail("!!!! FAILED AT \(file), \(error), \(encoding)")
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE PASS TEST: \(fileName), \(encoding)")
+                    do {
+                        let json = try NSKJSON.jsonObject(with: info.data, version: .json5)
+                        print(json)
+                    } catch {
+                        XCTFail("!!!! FAILED AT \(fileName), \(error), \(encoding)")
+                    }
                 }
             }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
         }
     }
     
-    func testCorrectJSON5Format() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "test_json5_parsing/\(encoding)", withPrefix: "y_")
-            
-            for fileName in files {
+    func testIncorrectPlainFormat() {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_plain_parsing", withPrefix: "n_", encoding: encoding)
                 
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE PASS TEST: \(file), \(encoding)")
-                
-                do {
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE FAILED \(fileName), \(encoding)")
                     
-                    let json = try NSKJSON.jsonObject(with: data, version: .json5)
-                    print(json)
-                    
-                } catch {
-                    
-                    XCTFail("!!!! FAILED AT \(file), \(error), \(encoding)")
+                    XCTAssertThrowsError(try NSKJSON.jsonObject(with: info.data, version: .json5), "!!!! FAILED AT \(fileName), \(encoding)", { (error) in
+                        
+                    })
                 }
             }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
         }
     }
     
-    func testIncorrectFormat() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "test_json5_parsing/\(encoding)", withPrefix: "n_")
-            
-            for fileName in files{
+    func testUndefinedPlainFormat() {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_plain_parsing", withPrefix: "i_", encoding: encoding)
                 
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE FAILED: \(file), \(encoding)")
-                
-                XCTAssertThrowsError(try NSKJSON.jsonObject(with: data, version: .json5), "!!!! FAILED AT \(file), \(encoding)", { (error) in
+                for info in infos {
+                    let fileName = info.fileName
+                    print("UNDEFINED FORMAT TEST: \(fileName), \(encoding)")
                     
-                    print(error)
-                })
+                    do {
+                        let json = try NSKJSON.jsonObject(with: info.data, version: .json5)
+                        print(json)
+                        
+                    } catch {
+                        XCTFail("!!!! FAILED AT \(fileName), \(error), \(encoding))")
+                    }
+                }
             }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
         }
     }
     
-    func testUndefinedJSON5Format() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "test_json5_parsing/\(encoding)", withPrefix: "i_")
-            
-            for fileName in files {
+    func testCorrectJSON5Format1() {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "json5-tests", withPrefix: "y_", encoding: encoding)
                 
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE FAILED \(file)")
-                
-                XCTAssertThrowsError(try NSKJSON.jsonObject(with: data, version: .json5), "!!!! FAILED AT \(file), \(encoding)", { (error) in
-                    
-                    print(error)
-                })
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE PASS TEST: \(fileName), \(encoding)")
+                    do {
+                        let json = try NSKJSON.jsonObject(with: info.data, version: .json5)
+                        print(json)
+                    } catch {
+                        XCTFail("!!!! FAILED AT \(fileName), \(error), \(encoding)")
+                    }
+                }
             }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
+        }
+    }
+    
+    func testIncorrectJSON5Format1() {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "json5-tests", withPrefix: "n_", encoding: encoding)
+                
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE FAILED \(fileName), \(encoding)")
+                    
+                    XCTAssertThrowsError(try NSKJSON.jsonObject(with: info.data, version: .json5), "!!!! FAILED AT \(fileName), \(encoding)", { (error) in
+                        
+                    })
+                }
+            }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
+        }
+    }
+    
+    func testCorrectJSON5Format2() {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_json5_parsing", withPrefix: "y_", encoding: encoding)
+                
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE PASS TEST: \(fileName), \(encoding)")
+                    do {
+                        let json = try NSKJSON.jsonObject(with: info.data, version: .json5)
+                        print(json)
+                    } catch {
+                        XCTFail("!!!! FAILED AT \(fileName), \(error), \(encoding)")
+                    }
+                }
+            }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
+        }
+    }
+    
+    func testIncorrectJSON5Format2() {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_json5_parsing", withPrefix: "n_", encoding: encoding)
+                
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE FAILED \(fileName), \(encoding)")
+                    
+                    XCTAssertThrowsError(try NSKJSON.jsonObject(with: info.data, version: .json5), "!!!! FAILED AT \(fileName), \(encoding)", { (error) in
+                        
+                    })
+                }
+            }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
+        }
+    }
+    
+    func testUndefinedJSON5Format2() {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_json5_parsing", withPrefix: "i_", encoding: encoding)
+                
+                for info in infos {
+                    let fileName = info.fileName
+                    print("UNDEFINED FORMAT TEST: \(fileName), \(encoding)")
+                    
+                    do {
+                        let json = try NSKJSON.jsonObject(with: info.data, version: .json5)
+                        print(json)
+                        
+                    } catch {
+                        XCTFail("!!!! FAILED AT \(fileName), \(error), \(encoding))")
+                    }
+                }
+            }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
         }
     }
 }

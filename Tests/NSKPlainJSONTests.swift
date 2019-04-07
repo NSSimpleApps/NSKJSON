@@ -9,86 +9,68 @@
 import XCTest
 @testable import NSKJSON
 
-class NSKJSONTests: XCTestCase {
+class NSKPlainJSONTests: XCTestCase {
     
     func testCorrectPlainFormat() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "test_plain_parsing/\(encoding)", withPrefix: "y_")
-            
-            for fileName in files {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_plain_parsing", withPrefix: "y_", encoding: encoding)
                 
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                if file != "y_structure_lonely_int.json" {
-                    
-                    continue
-                }
-                
-                print("SHOULD HAVE PASS TEST: \(file), \(encoding)")
-                
-                do {
-                    
-                    let json = try NSKJSON.jsonObject(with: data, version: .plain)
-                    print(json)
-                    
-                } catch {
-                    
-                    XCTFail("!!!! FAILED AT \(file), \(error), \(encoding)")
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE PASS TEST: \(fileName), \(encoding)")
+                    do {
+                        let json = try NSKJSON.jsonObject(with: info.data, version: .plain)
+                        print(json)
+                    } catch {
+                        XCTFail("!!!! FAILED AT \(fileName), \(error), \(encoding)")
+                    }
                 }
             }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
         }
     }
     
     func testIncorrectPlainFormat() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "test_plain_parsing/\(encoding)", withPrefix: "n_")
-            
-            for fileName in files {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_plain_parsing", withPrefix: "n_", encoding: encoding)
                 
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE FAILED \(file), \(encoding)")
-                
-                XCTAssertThrowsError(try NSKJSON.jsonObject(with: data, version: .plain), "!!!! FAILED AT \(file), \(encoding)", { (error) in
+                for info in infos {
+                    let fileName = info.fileName
+                    print("SHOULD HAVE FAILED \(fileName), \(encoding)")
                     
-                    print(error)
-                })
+                    XCTAssertThrowsError(try NSKJSON.jsonObject(with: info.data, version: .plain), "!!!! FAILED AT \(fileName), \(encoding)", { (error) in
+                        
+                    })
+                }
             }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
         }
     }
     
     func testUndefinedPlainFormat() {
-        
-        for encoding in encodings {
-            
-            let files = try! Helper.jsonFiles(in: "test_plain_parsing/\(encoding)", withPrefix: "i_")
-            
-            for fileName in files {
+        do {
+            for encoding in encodings {
+                let infos = try Helper.jsonFiles(in: "test_plain_parsing", withPrefix: "i_", encoding: encoding)
                 
-                let url = URL(fileURLWithPath: fileName)
-                let data = try! Data(contentsOf: url)
-                let file = (fileName as NSString).lastPathComponent
-                
-                print("SHOULD HAVE PASS TEST: \(file), \(encoding)")
-                
-                do {
+                for info in infos {
+                    let fileName = info.fileName
+                    print("UNDEFINED FORMAT TEST: \(fileName), \(encoding)")
                     
-                    let json = try NSKJSON.jsonObject(with: data, version: .plain)
-                    print(json)
-                    
-                } catch {
-                    
-                    XCTFail("!!!! FAILED AT \(file), \(error), \(encoding)")
+                    do {
+                        let json = try NSKJSON.jsonObject(with: info.data, version: .plain)
+                        print(json)
+                        
+                    } catch {
+                        XCTFail("!!!! FAILED AT \(fileName), \(error), \(encoding))")
+                    }
                 }
             }
+        } catch {
+            print("FILE ERROR: \(error.localizedDescription)")
         }
     }
 }

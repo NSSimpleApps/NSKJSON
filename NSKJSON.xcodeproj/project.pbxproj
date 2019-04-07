@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B500D2DD2259D0C400E932BB /* NSKJSON5MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B500D2DC2259D0C400E932BB /* NSKJSON5MiscTests.swift */; };
+		B500D2DE2259D0C400E932BB /* NSKJSON5MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B500D2DC2259D0C400E932BB /* NSKJSON5MiscTests.swift */; };
+		B500D2DF2259D0C400E932BB /* NSKJSON5MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B500D2DC2259D0C400E932BB /* NSKJSON5MiscTests.swift */; };
 		B502AAFA1EA1395F00DD3527 /* NSKJSON5NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */; };
 		B502AAFB1EA1396500DD3527 /* NSKJSON5NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */; };
 		B502AAFC1EA1396600DD3527 /* NSKJSON5NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */; };
@@ -14,10 +17,9 @@
 		B54886C71EBD8CAA0020B777 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54886C51EBD8B890020B777 /* Helper.swift */; };
 		B54886C81EBD8CAA0020B777 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54886C51EBD8B890020B777 /* Helper.swift */; };
 		B54886C91EBD8CAB0020B777 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54886C51EBD8B890020B777 /* Helper.swift */; };
-		B549C0D71E9E893000ADE3EF /* NSKMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */; };
-		B549C0D81E9E893000ADE3EF /* NSKMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */; };
-		B549C0D91E9E893000ADE3EF /* NSKMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */; };
-		B555E5521EFED540006D78CB /* NSKMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B555E5511EFED540006D78CB /* NSKMatcher.swift */; };
+		B549C0D71E9E893000ADE3EF /* NSKPlainMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKPlainMiscTests.swift */; };
+		B549C0D81E9E893000ADE3EF /* NSKPlainMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKPlainMiscTests.swift */; };
+		B549C0D91E9E893000ADE3EF /* NSKPlainMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0D61E9E893000ADE3EF /* NSKPlainMiscTests.swift */; };
 		B5582F611EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */; };
 		B5582F621EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */; };
 		B5582F631EBB994300E3BD21 /* NSKJSON5Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */; };
@@ -49,10 +51,6 @@
 		B56204121E9D25410071D7DC /* NSKPlainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F61E9D25410071D7DC /* NSKPlainParser.swift */; };
 		B56204131E9D25410071D7DC /* NSKPlainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F61E9D25410071D7DC /* NSKPlainParser.swift */; };
 		B56204141E9D25410071D7DC /* NSKPlainParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F61E9D25410071D7DC /* NSKPlainParser.swift */; };
-		B56204151E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
-		B56204161E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
-		B56204171E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
-		B56204181E9D25410071D7DC /* NSKTerminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56203F71E9D25410071D7DC /* NSKTerminator.swift */; };
 		B56204261E9D25BD0071D7DC /* NSKJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56203901E9D20920071D7DC /* NSKJSON.framework */; };
 		B56204351E9D25D70071D7DC /* NSKJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B562039E1E9D20A20071D7DC /* NSKJSON.framework */; };
 		B56204441E9D26040071D7DC /* NSKJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56203E51E9D23E00071D7DC /* NSKJSON.framework */; };
@@ -81,19 +79,12 @@
 		B57B61781EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
 		B57B61791EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
 		B57B617A1EA3B0AB0025164B /* NSKJSON5NumberTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */; };
-		B584D9F21EFFF23700F60180 /* NSKMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B555E5511EFED540006D78CB /* NSKMatcher.swift */; };
-		B584D9F31EFFF23800F60180 /* NSKMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B555E5511EFED540006D78CB /* NSKMatcher.swift */; };
-		B584D9F41EFFF23800F60180 /* NSKMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B555E5511EFED540006D78CB /* NSKMatcher.swift */; };
 		B587E3391EC179E30062FCC9 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = B587E3381EC179E30062FCC9 /* comments */; };
 		B587E33A1EC179E30062FCC9 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = B587E3381EC179E30062FCC9 /* comments */; };
 		B587E33B1EC179E30062FCC9 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = B587E3381EC179E30062FCC9 /* comments */; };
 		B587E33D1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
 		B587E33E1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
 		B587E33F1EC17A9D0062FCC9 /* TestComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E33C1EC17A9D0062FCC9 /* TestComments.swift */; };
-		B58889BD1F122B9500D18CEB /* NSKNumberHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58889BC1F122B9500D18CEB /* NSKNumberHelper.swift */; };
-		B58889BE1F122CB500D18CEB /* NSKNumberHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58889BC1F122B9500D18CEB /* NSKNumberHelper.swift */; };
-		B58889BF1F122CB500D18CEB /* NSKNumberHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58889BC1F122B9500D18CEB /* NSKNumberHelper.swift */; };
-		B58889C01F122CB600D18CEB /* NSKNumberHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58889BC1F122B9500D18CEB /* NSKNumberHelper.swift */; };
 		B5951CF71EC6C02C00BEE9D3 /* json5-tests in Resources */ = {isa = PBXBuildFile; fileRef = B5951CF61EC6C01C00BEE9D3 /* json5-tests */; };
 		B5951CF81EC6C02C00BEE9D3 /* json5-tests in Resources */ = {isa = PBXBuildFile; fileRef = B5951CF61EC6C01C00BEE9D3 /* json5-tests */; };
 		B5951CF91EC6C02D00BEE9D3 /* json5-tests in Resources */ = {isa = PBXBuildFile; fileRef = B5951CF61EC6C01C00BEE9D3 /* json5-tests */; };
@@ -127,15 +118,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B500D2DC2259D0C400E932BB /* NSKJSON5MiscTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSKJSON5MiscTests.swift; sourceTree = "<group>"; };
 		B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKJSON5NumberParser.swift; sourceTree = "<group>"; };
 		B54886C51EBD8B890020B777 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKMiscTests.swift; sourceTree = "<group>"; };
+		B549C0D61E9E893000ADE3EF /* NSKPlainMiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKPlainMiscTests.swift; sourceTree = "<group>"; };
 		B54B03091EBF7CBB00851268 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		B54B030A1EBF7CBB00851268 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B54B030B1EBF7CBB00851268 /* NSKJSON.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSKJSON.podspec; sourceTree = "<group>"; };
 		B54B030C1EBF7CBB00851268 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B54B030D1EBF80B500851268 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		B555E5511EFED540006D78CB /* NSKMatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKMatcher.swift; sourceTree = "<group>"; };
 		B56203901E9D20920071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B562039E1E9D20A20071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56203AB1E9D20AB0071D7DC /* NSKJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NSKJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +142,6 @@
 		B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKPlainNumberParser.swift; sourceTree = "<group>"; };
 		B56203F51E9D25410071D7DC /* NSKOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKOptions.swift; sourceTree = "<group>"; };
 		B56203F61E9D25410071D7DC /* NSKPlainParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKPlainParser.swift; sourceTree = "<group>"; };
-		B56203F71E9D25410071D7DC /* NSKTerminator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKTerminator.swift; sourceTree = "<group>"; };
 		B56204211E9D25BD0071D7DC /* iOSNSKJSONTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSNSKJSONTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56204301E9D25D70071D7DC /* macOSNSKJSONTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSNSKJSONTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B562043F1E9D26040071D7DC /* tvOSNSKJSONTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tvOSNSKJSONTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,7 +160,6 @@
 		B57B617C1EA3B1270025164B /* PlainNumberCases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainNumberCases.swift; sourceTree = "<group>"; };
 		B587E3381EC179E30062FCC9 /* comments */ = {isa = PBXFileReference; lastKnownFileType = folder; path = comments; sourceTree = "<group>"; };
 		B587E33C1EC17A9D0062FCC9 /* TestComments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComments.swift; sourceTree = "<group>"; };
-		B58889BC1F122B9500D18CEB /* NSKNumberHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSKNumberHelper.swift; sourceTree = "<group>"; };
 		B5951CF61EC6C01C00BEE9D3 /* json5-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "json5-tests"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -286,13 +275,10 @@
 				B56203F21E9D25410071D7DC /* NSKJSON.swift */,
 				B56203F31E9D25410071D7DC /* NSKJSONError.swift */,
 				B56203F51E9D25410071D7DC /* NSKOptions.swift */,
-				B56203F71E9D25410071D7DC /* NSKTerminator.swift */,
 				B56203F61E9D25410071D7DC /* NSKPlainParser.swift */,
 				B56C327B1EB7306100FD6548 /* NSKJSON5Parser.swift */,
 				B56203F41E9D25410071D7DC /* NSKPlainNumberParser.swift */,
 				B502AAF91EA1395F00DD3527 /* NSKJSON5NumberParser.swift */,
-				B555E5511EFED540006D78CB /* NSKMatcher.swift */,
-				B58889BC1F122B9500D18CEB /* NSKNumberHelper.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -318,7 +304,7 @@
 				B56C32891EB79F3700FD6548 /* test_plain_parsing */,
 				B562045A1E9D2AE40071D7DC /* NSKPlainNumberTest.swift */,
 				B562044E1E9D27140071D7DC /* NSKPlainJSONTests.swift */,
-				B549C0D61E9E893000ADE3EF /* NSKMiscTests.swift */,
+				B549C0D61E9E893000ADE3EF /* NSKPlainMiscTests.swift */,
 			);
 			name = PlainJSON;
 			sourceTree = "<group>";
@@ -328,6 +314,7 @@
 			children = (
 				B57B61761EA3B0860025164B /* NSKJSON5NumberTest.swift */,
 				B56C327D1EB74C9000FD6548 /* NSKJSON5Tests.swift */,
+				B500D2DC2259D0C400E932BB /* NSKJSON5MiscTests.swift */,
 				B56C32851EB74CE200FD6548 /* test_json5_parsing */,
 			);
 			name = JSON5;
@@ -516,11 +503,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1020;
 				TargetAttributes = {
 					B562038F1E9D20920071D7DC = {
 						CreatedOnToolsVersion = 8.3.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					B562039D1E9D20A20071D7DC = {
@@ -538,6 +525,7 @@
 					};
 					B56204201E9D25BD0071D7DC = {
 						CreatedOnToolsVersion = 8.3.1;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					B562042F1E9D25D70071D7DC = {
@@ -553,10 +541,11 @@
 			};
 			buildConfigurationList = B56203881E9D207E0071D7DC /* Build configuration list for PBXProject "NSKJSON" */;
 			compatibilityVersion = "Xcode 8.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = B56203841E9D207E0071D7DC;
 			productRefGroup = B56203911E9D20920071D7DC /* Products */;
@@ -649,13 +638,10 @@
 				B56204091E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
 				B56204111E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
 				B56204011E9D25410071D7DC /* NSKJSON.swift in Sources */,
-				B555E5521EFED540006D78CB /* NSKMatcher.swift in Sources */,
 				B56204051E9D25410071D7DC /* NSKJSONError.swift in Sources */,
 				B502AAFA1EA1395F00DD3527 /* NSKJSON5NumberParser.swift in Sources */,
-				B58889BD1F122B9500D18CEB /* NSKNumberHelper.swift in Sources */,
 				B562040D1E9D25410071D7DC /* NSKOptions.swift in Sources */,
 				B56203F91E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
-				B56204151E9D25410071D7DC /* NSKTerminator.swift in Sources */,
 				B56C327C1EB7306100FD6548 /* NSKJSON5Parser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -667,14 +653,11 @@
 				B562040A1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
 				B56204121E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
 				B56204021E9D25410071D7DC /* NSKJSON.swift in Sources */,
-				B584D9F21EFFF23700F60180 /* NSKMatcher.swift in Sources */,
 				B5582F611EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */,
 				B56204061E9D25410071D7DC /* NSKJSONError.swift in Sources */,
-				B58889BE1F122CB500D18CEB /* NSKNumberHelper.swift in Sources */,
 				B502AAFB1EA1396500DD3527 /* NSKJSON5NumberParser.swift in Sources */,
 				B562040E1E9D25410071D7DC /* NSKOptions.swift in Sources */,
 				B56203FA1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
-				B56204161E9D25410071D7DC /* NSKTerminator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,14 +668,11 @@
 				B562040B1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
 				B56204131E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
 				B56204031E9D25410071D7DC /* NSKJSON.swift in Sources */,
-				B584D9F31EFFF23800F60180 /* NSKMatcher.swift in Sources */,
 				B5582F621EBB994200E3BD21 /* NSKJSON5Parser.swift in Sources */,
 				B56204071E9D25410071D7DC /* NSKJSONError.swift in Sources */,
-				B58889BF1F122CB500D18CEB /* NSKNumberHelper.swift in Sources */,
 				B502AAFC1EA1396600DD3527 /* NSKJSON5NumberParser.swift in Sources */,
 				B562040F1E9D25410071D7DC /* NSKOptions.swift in Sources */,
 				B56203FB1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
-				B56204171E9D25410071D7DC /* NSKTerminator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -703,14 +683,11 @@
 				B562040C1E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
 				B56204141E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
 				B56204041E9D25410071D7DC /* NSKJSON.swift in Sources */,
-				B584D9F41EFFF23800F60180 /* NSKMatcher.swift in Sources */,
 				B5582F631EBB994300E3BD21 /* NSKJSON5Parser.swift in Sources */,
 				B56204081E9D25410071D7DC /* NSKJSONError.swift in Sources */,
-				B58889C01F122CB600D18CEB /* NSKNumberHelper.swift in Sources */,
 				B502AAFD1EA1396600DD3527 /* NSKJSON5NumberParser.swift in Sources */,
 				B56204101E9D25410071D7DC /* NSKOptions.swift in Sources */,
 				B56203FC1E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
-				B56204181E9D25410071D7DC /* NSKTerminator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,8 +695,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B500D2DD2259D0C400E932BB /* NSKJSON5MiscTests.swift in Sources */,
 				B56C327F1EB74CB500FD6548 /* JSON5NumberCases.swift in Sources */,
-				B549C0D71E9E893000ADE3EF /* NSKMiscTests.swift in Sources */,
+				B549C0D71E9E893000ADE3EF /* NSKPlainMiscTests.swift in Sources */,
 				B5BE746E1EAFB4C000B24F71 /* PlainNumberCases.swift in Sources */,
 				B54886C71EBD8CAA0020B777 /* Helper.swift in Sources */,
 				B562044F1E9D27290071D7DC /* NSKPlainJSONTests.swift in Sources */,
@@ -734,8 +712,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B500D2DE2259D0C400E932BB /* NSKJSON5MiscTests.swift in Sources */,
 				B56C32801EB74CB500FD6548 /* JSON5NumberCases.swift in Sources */,
-				B549C0D81E9E893000ADE3EF /* NSKMiscTests.swift in Sources */,
+				B549C0D81E9E893000ADE3EF /* NSKPlainMiscTests.swift in Sources */,
 				B5BE746F1EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */,
 				B54886C81EBD8CAA0020B777 /* Helper.swift in Sources */,
 				B56204501E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */,
@@ -750,8 +729,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B500D2DF2259D0C400E932BB /* NSKJSON5MiscTests.swift in Sources */,
 				B56C32811EB74CB600FD6548 /* JSON5NumberCases.swift in Sources */,
-				B549C0D91E9E893000ADE3EF /* NSKMiscTests.swift in Sources */,
+				B549C0D91E9E893000ADE3EF /* NSKPlainMiscTests.swift in Sources */,
 				B5BE74701EAFB4C100B24F71 /* PlainNumberCases.swift in Sources */,
 				B54886C91EBD8CAB0020B777 /* Helper.swift in Sources */,
 				B56204511E9D272A0071D7DC /* NSKPlainJSONTests.swift in Sources */,
@@ -786,6 +766,7 @@
 		B56203891E9D207E0071D7DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -822,6 +803,7 @@
 		B562038A1E9D207E0071D7DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -912,7 +894,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -970,7 +952,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1038,7 +1020,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1096,7 +1078,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1160,7 +1142,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1218,7 +1200,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1284,7 +1266,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1341,7 +1323,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -1401,7 +1383,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1448,7 +1430,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1505,7 +1487,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1553,7 +1535,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1606,7 +1588,7 @@
 				SDKROOT = appletvos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
@@ -1652,7 +1634,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 			};

@@ -8,7 +8,9 @@
 
 import Foundation
 
-let encodings = ["utf8", "utf16be", "utf16le", "utf32be", "utf32le"]
+let isBigEndian = __CFByteOrder(UInt32(CFByteOrderGetCurrent())) == CFByteOrderBigEndian
+
+let encodings: [String.Encoding] = [.utf8, .utf16BigEndian, .utf16LittleEndian, .utf32BigEndian, .utf32LittleEndian]
 
 let correctPlainIntegerCases = [
     
@@ -88,7 +90,14 @@ let correctPlainDoubleCases = [
     "-123.0E-1",
 ]
 
-let incorrectPlainCases = ["-",
+let nilCases = ["",
+                     "   ",
+                     "a",
+                     "}",
+]
+
+let incorrectPlainCases = [
+                        "-",
                         "- ",
                         "-,",
                         "01",
@@ -101,8 +110,6 @@ let incorrectPlainCases = ["-",
                         "123.E",
                         "-123.e",
                         "-123.E",
-                        "123e",
-                        "123E",
                         "123e+",
                         "123E+",
                         "123e-",
@@ -120,6 +127,9 @@ let incorrectPlainCases = ["-",
                         "123E+,",
                         "123e-,",
                         "123E-,",
-                        "123E-,",]
+                        "123E-,",
+                        "123e",
+                        "123E",
+]
 
 
