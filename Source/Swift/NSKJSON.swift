@@ -77,4 +77,20 @@ public class NSKJSON {
             throw NSKJSONError.error(description: "\(encoding) is not supported yet.")
         }
     }
+    
+    public static func jsonObject(fromString string: String, version: Version) throws -> Any {
+        let count = string.utf8.count
+        
+        return try string.withCString { (start) -> Any in
+            try UnsafeBufferPointer(start: start, count: count).withMemoryRebound(to: UInt8.self, { (buffer) -> Any in
+                switch version {
+                case .plain:
+                    return try NSKPlainParser<OptionsUTF8>.parseObject(buffer: buffer)
+                case .json5:
+                    return try NSKJSON5Parser<OptionsUTF8>.parseObject(buffer: buffer)
+                }
+                
+            })
+        }
+    }
 }

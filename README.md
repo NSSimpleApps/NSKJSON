@@ -14,15 +14,20 @@ Usage:
 import NSKJSON
 
 let data = // some data...
-
 do {
     let plainJson = try NSKJSON.jsonObject(with: data, version: .plain)
     let json5 = try NSKJSON.jsonObject(with: data, version: .json5)
 } catch {
-    
     print(error)
 }
 
+let string = // some string...
+do {
+    let plainJson = try NSKJSON.jsonObject(fromString: string, version: .plain)
+    let json5 = try NSKJSON.jsonObject(fromString: string, version: .json5)
+} catch {
+    print(error)
+}
 ```
 
 Test cases were taken from here:
@@ -34,3 +39,4 @@ https://github.com/json5/json5-tests
 TODO:
 
 1. Improve error reports.
+2. Json encoding and decoding.

@@ -9,9 +9,13 @@
 import Foundation
 
 class Helper {
-    struct Info {
+    struct DataInfo {
         let fileName: String
         let data: Data
+    }
+    struct StringInfo {
+        let fileName: String
+        let string: String
     }
     private init() {}
     
@@ -19,7 +23,19 @@ class Helper {
         return Bundle(for: self).resourcePath!.appending("/" + name)
     }
 
-    static func jsonFiles(in directory: String, withPrefix prefix: String, encoding: String.Encoding) throws -> [Info] {
+    static func data(in directory: String, withPrefix prefix: String, encoding: String.Encoding) throws -> [DataInfo] {
+        return try self.string(in: directory, withPrefix: prefix).map({ (stringInfo) -> DataInfo in
+            let fileName = stringInfo.fileName
+            if let data = stringInfo.string.data(using: encoding) {
+                return DataInfo(fileName: fileName, data: data)
+                
+            } else {
+                throw NSError(domain: "ERROR", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert file: \(fileName) to encoding: \(encoding)."])
+            }
+        })
+    }
+    
+    static func string(in directory: String, withPrefix prefix: String) throws -> [StringInfo] {
         let path = self.directoryPath(forName: directory + "/utf8")
         
         let files = try FileManager.default.contentsOfDirectory(atPath: path)
@@ -31,17 +47,12 @@ class Helper {
             } else {
                 return nil
             }
-        }).map({ (fileName) -> Info in
+        }).map({ (fileName) -> StringInfo in
             let url = URL(fileURLWithPath: fileName)
             let str = try String(contentsOf: url)
             let fileName = (fileName as NSString).lastPathComponent
             
-            if let data = str.data(using: encoding) {
-                return Info(fileName: fileName, data: data)
-                
-            } else {
-                throw NSError(domain: "ERROR", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert file: \(fileName) to encoding: \(encoding)."])
-            }
+            return StringInfo(fileName: fileName, string: str)
         })
     }
 }
