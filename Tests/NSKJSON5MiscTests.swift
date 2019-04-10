@@ -11,13 +11,7 @@ import XCTest
 class NSKJSON5MiscTests: XCTestCase {
     
     func testMisc() {
-        let data = """
-{
-    ,"foo": "bar"
-}
-
-""".data(using: .utf8)!
-        print(Array(data), "\n".utf8.first!)
+        let data = "[[] ]".data(using: .utf8)!
         do {
             
             let obj = try NSKJSON.jsonObject(with: data, version: .json5)

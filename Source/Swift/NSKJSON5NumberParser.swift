@@ -11,8 +11,8 @@ import Foundation
 
 struct NSKJSON5NumberParser<Options: NSKOptions> {
     typealias Byte = Options.Byte
-    typealias Buffer = UnsafeBufferPointer<Byte>
-    typealias Index = Buffer.Index
+    typealias Buffer = Options.Buffer
+    typealias Index = Options.Index
     typealias PlainNumberParser = NSKPlainNumberParser<Options>
     
     private init() {}

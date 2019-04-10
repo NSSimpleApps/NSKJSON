@@ -12,10 +12,14 @@ import XCTest
 class NSKPlainMiscTests: XCTestCase {
     
     func testMisc() {
-        let data = "11".data(using: .utf8)!
+        let data = """
+{
+"a": "b"
+}
+""".data(using: .utf8)!
         
         do {
-            let obj = try NSKJSON.jsonObject(with: data, version: .json5)
+            let obj = try NSKJSON.jsonObject(with: data, version: .plain)
             print("####", obj)
         } catch {
             print(error)

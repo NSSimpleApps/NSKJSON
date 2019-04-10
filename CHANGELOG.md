@@ -1,6 +1,10 @@
+## 0.8.1 (2019-04-10)
+- internal improvements
+- fix typos
+
 ## 0.8 (2019-04-09)
 - Bump to swift5
-- added method `+[NSKJSON jsonObjectFromString:encoding:]`
+- added method `+[NSKJSON jsonObjectFromString:version:]`
 
 ## 0.7 (2018-09-19)
 - Bump to swift4.2

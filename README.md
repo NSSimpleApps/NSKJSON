@@ -40,3 +40,4 @@ TODO:
 
 1. Improve error reports.
 2. Json encoding and decoding.
+3. Json validation.

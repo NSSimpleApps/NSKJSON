@@ -12,7 +12,7 @@ import Foundation
 struct NSKPlainParser<Options: NSKOptions> {
     typealias Byte = Options.Byte
     typealias Buffer = Options.Buffer
-    typealias Index = Buffer.Index
+    typealias Index = Options.Index
     
     private init() {}
     
@@ -26,7 +26,7 @@ struct NSKPlainParser<Options: NSKOptions> {
         return endIndex - 1
     }
     
-    static func parseByteSequence(buffer: Buffer, from: Index, terminator: Byte) throws -> (value: String, offset: Int) {
+    static func parseByteSequence(buffer: Buffer, from: Index, terminator: Byte) throws -> (value: String, length: Int) {
         let endIndex = buffer.endIndex
         var index = from
         var begin = index
@@ -47,7 +47,7 @@ struct NSKPlainParser<Options: NSKOptions> {
                     let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                     
                     result += (prefix + escapeSequence.string)
-                    index += (escapeSequence.offset + 1)
+                    index += (escapeSequence.length + 1)
                     begin = index
                     continue
                 } else {
@@ -62,7 +62,7 @@ struct NSKPlainParser<Options: NSKOptions> {
     /// [0-9a-fA-F]{4}
     static func parseCodeUnit(buffer: Buffer, from: Index) throws -> UInt16 {
         if buffer.distance(from: from, to: buffer.endIndex) >= 4 {
-            if let b3 = Options.hexByte(buffer[from + 0]),
+            if let b3 = Options.hexByte(buffer[from]),
                 let b2 = Options.hexByte(buffer[from + 1]),
                 let b1 = Options.hexByte(buffer[from + 2]),
                 let b0 = Options.hexByte(buffer[from + 3]) {
@@ -96,8 +96,8 @@ struct NSKPlainParser<Options: NSKOptions> {
         }
     }
     
-    static func parseEscapeSequence(buffer: Buffer, from: Index) throws -> (string: String, offset: Int) {
-        switch buffer[from + 0] {
+    static func parseEscapeSequence(buffer: Buffer, from: Index) throws -> (string: String, length: Int) {
+        switch buffer[from] {
         case Options.n: return ("\n", 1)
         case Options.t: return ("\t", 1)
         case Options.quotationMark: return ("\"", 1)
@@ -130,7 +130,7 @@ struct NSKPlainParser<Options: NSKOptions> {
         }
     }
     
-    static func parseArray(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: [Any], offset: Int)? {
+    static func parseArray(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: [Any], index: Index)? {
         guard buffer.distance(from: from, to: buffer.endIndex) >= 2 && buffer[from] == Options.beginArray else {
             return nil
         }
@@ -139,30 +139,29 @@ struct NSKPlainParser<Options: NSKOptions> {
         let terminator = Options.endArray
         
         if buffer[index] == terminator {
-            return ([], index + 1 - from)
+            return ([], index + 1)
             
         } else {
             var array: [Any] = []
             var index = index
             
             while true {
-                let (value, valueLength) = try self.parseValue(buffer: buffer, from: index, nestingLevel: nestingLevel)
+                let (value, valueIndex) = try self.parseValue(buffer: buffer, from: index, nestingLevel: nestingLevel)
                 array.append(value)
-                index += valueLength
                 
-                let (offset, hasTerminator) = try self.parseValueSpace(buffer: buffer, from: index, terminator: terminator)
+                let (spaceIndex, hasTerminator) = try self.parseValueSpace(buffer: buffer, from: valueIndex, terminator: terminator)
                 
                 if hasTerminator {
-                    return (array, index + offset + 1 - from)
+                    return (array, spaceIndex + 1)
                     
                 } else {
-                    index += offset
+                    index = spaceIndex
                 }
             }
         }
     }
     
-    static func parseDictionary(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: [String: Any], offset: Int)? {
+    static func parseDictionary(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: [String: Any], index: Index)? {
         guard buffer.distance(from: from, to: buffer.endIndex) >= 2 && buffer[from] == Options.beginDictionary else {
             return nil
         }
@@ -171,33 +170,32 @@ struct NSKPlainParser<Options: NSKOptions> {
         let index = self.skipWhiteSpaces(buffer: buffer, from: from + 1)
         
         if buffer[index] == terminator {
-            return ([:], index + 1 - from)
+            return ([:], index + 1)
             
         } else {
             var dictionary: [String: Any] = [:]
             var index = index
             
             while true {
-                let (dictionaryKey, keyOffset) = try self.parseDictionaryKey(buffer: buffer, from: index)
-                let spaceOffset  = try self.parseDictionarySpace(buffer: buffer, from: index + keyOffset)
+                let (dictionaryKey, keyIndex) = try self.parseDictionaryKey(buffer: buffer, from: index)
+                let dictionarySpaceIndex  = try self.parseDictionarySpace(buffer: buffer, from: keyIndex)
                 
-                let trailingOffset = keyOffset + spaceOffset
-                let (value, valueOffset) = try self.parseValue(buffer: buffer, from: index + trailingOffset, nestingLevel: nestingLevel)
-                let (newOffset, hasTerminator) = try self.parseValueSpace(buffer: buffer, from: index + trailingOffset + valueOffset, terminator: terminator)
+                let (value, valueIndex) = try self.parseValue(buffer: buffer, from: dictionarySpaceIndex, nestingLevel: nestingLevel)
+                let (trailingIndex, hasTerminator) = try self.parseValueSpace(buffer: buffer, from: valueIndex, terminator: terminator)
                 
                 dictionary[dictionaryKey] = value
                 
                 if hasTerminator {
-                    return (dictionary, index + trailingOffset + valueOffset + newOffset + 1 - from)
+                    return (dictionary, trailingIndex + 1)
                     
                 } else {
-                    index += trailingOffset + valueOffset + newOffset
+                    index = trailingIndex
                 }
             }
         }
     }
     
-    static func parsePrimitive(buffer: Buffer, from: Index) throws -> (value: Any, offset: Int)? {
+    static func parsePrimitive(buffer: Buffer, from: Index) throws -> (value: Any, length: Int)? {
         if buffer.distance(from: from, to: buffer.endIndex) >= 4 {
             switch buffer[from] {
             case Options.n:
@@ -226,29 +224,30 @@ struct NSKPlainParser<Options: NSKOptions> {
         }
     }
     
-    static func parseString(buffer: Buffer, from: Index) throws -> (string: String, offset: Int)? {
-        if buffer.distance(from: from, to: buffer.endIndex) >= 2, buffer[from] == Options.quotationMark {
-            let result = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: Options.quotationMark)
-            return (result.value, result.offset + 2)
+    static func parseString(buffer: Buffer, from: Index) throws -> (string: String, index: Index)? {
+        let quotationMark = Options.quotationMark
+        if buffer.distance(from: from, to: buffer.endIndex) >= 2, buffer[from] == quotationMark {
+            let (value, length) = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: quotationMark)
+            return (value, from + length + 2)
         } else {
             return nil
         }
     }
     
-    static func parseValue(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: Any, offset: Int) {
+    static func parseValue(buffer: Buffer, from: Index, nestingLevel: Int) throws -> (value: Any, index: Index) {
         if nestingLevel > NSKJSON.nestingLevel {
             throw NSKJSONError.error(description: "Too many nested arrays or dictionaries at \(from).")
         }
-        if let (dictionary, offset) = try self.parseDictionary(buffer: buffer, from: from, nestingLevel: nestingLevel + 1) {
-            return (dictionary, offset)
-        } else if let (array, offset) = try self.parseArray(buffer: buffer, from: from, nestingLevel: nestingLevel + 1) {
-            return (array, offset)
-        } else if let (string, offset) = try self.parseString(buffer: buffer, from: from) {
-            return (string, offset)
-        } else if let (primitive, offset) = try self.parsePrimitive(buffer: buffer, from: from) {
-            return (primitive, offset)
-        } else if let (number, offset) = try NSKPlainNumberParser<Options>.parseNumber(buffer: buffer, from: from) {
-            return (number, offset)
+        if let (dictionary, dictionaryIndex) = try self.parseDictionary(buffer: buffer, from: from, nestingLevel: nestingLevel + 1) {
+            return (dictionary, dictionaryIndex)
+        } else if let (array, arrayIndex) = try self.parseArray(buffer: buffer, from: from, nestingLevel: nestingLevel + 1) {
+            return (array, arrayIndex)
+        } else if let (string, stringIndex) = try self.parseString(buffer: buffer, from: from) {
+            return (string, stringIndex)
+        } else if let (primitive, length) = try self.parsePrimitive(buffer: buffer, from: from) {
+            return (primitive, from + length)
+        } else if let (number, length) = try NSKPlainNumberParser<Options>.parseNumber(buffer: buffer, from: from) {
+            return (number, from + length)
         } else {
             throw NSKJSONError.error(description: "Unable to parse JSON object at \(from).")
         }
@@ -260,9 +259,7 @@ struct NSKPlainParser<Options: NSKOptions> {
         }
         
         if case let index = self.skipWhiteSpaces(buffer: buffer, from: buffer.startIndex), Options.isPlainWhitespace(buffer[index]) == false {
-            let (value, offset) = try self.parseValue(buffer: buffer, from: index, nestingLevel: 0)
-            
-            let nextIndex = index + offset
+            let (value, nextIndex) = try self.parseValue(buffer: buffer, from: index, nestingLevel: 0)
             let lastIndex = self.skipWhiteSpaces(buffer: buffer, from: nextIndex)
             
             if lastIndex >= nextIndex, Options.isPlainWhitespace(buffer[lastIndex]) == false {
@@ -275,12 +272,12 @@ struct NSKPlainParser<Options: NSKOptions> {
         }
     }
     
-    static func parseValueSpace(buffer: Buffer, from: Index, terminator: Byte) throws -> (offset: Int, hasTerminator: Bool) {
+    static func parseValueSpace(buffer: Buffer, from: Index, terminator: Byte) throws -> (index: Index, hasTerminator: Bool) {
         let leadingIndex = self.skipWhiteSpaces(buffer: buffer, from: from)
         let byte = buffer[leadingIndex]
         
         if byte == terminator {
-            return (leadingIndex - from, true)
+            return (leadingIndex, true)
             
         } else if byte == Options.comma {
             if case let nextIndex = leadingIndex + 1, nextIndex < buffer.endIndex {
@@ -294,7 +291,7 @@ struct NSKPlainParser<Options: NSKOptions> {
                     throw NSKJSONError.error(description: "Expected value but ',' found at \(trailingIndex).")
                     
                 } else {
-                    return (trailingIndex - from, false)
+                    return (trailingIndex, false)
                 }
             } else {
                 throw NSKJSONError.error(description: "Expected value or closing bracket after \(leadingIndex).")
@@ -304,25 +301,25 @@ struct NSKPlainParser<Options: NSKOptions> {
         }
     }
     
-    static func parseDictionaryKey(buffer: Buffer, from: Index) throws -> (value: String, offset: Int) {
+    static func parseDictionaryKey(buffer: Buffer, from: Index) throws -> (value: String, index: Index) {
         let quotationMark = Options.quotationMark
 
         guard buffer.distance(from: from, to: buffer.endIndex) >= 2 && buffer[from] == quotationMark else {
             throw NSKJSONError.error(description: "Invalid dictionary key at \(from).")
         }
-        let result = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: quotationMark)
+        let (value, length) = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: quotationMark)
 
-        return (result.value, result.offset + 2)
+        return (value, from + length + 2)
     }
     
-    static func parseDictionarySpace(buffer: Buffer, from: Index) throws -> Int { // offset
+    static func parseDictionarySpace(buffer: Buffer, from: Index) throws -> Index {
         let leadingIndex = self.skipWhiteSpaces(buffer: buffer, from: from)
         
         if buffer[leadingIndex] == Options.colon {
             if case let nextIndex = leadingIndex + 1, nextIndex < buffer.endIndex {
                 let trailingIndex = self.skipWhiteSpaces(buffer: buffer, from: nextIndex)
                 
-                return trailingIndex - from
+                return trailingIndex
             } else {
                 throw NSKJSONError.error(description: "Expected value at \(leadingIndex).")
             }

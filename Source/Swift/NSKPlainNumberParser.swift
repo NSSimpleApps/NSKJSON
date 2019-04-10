@@ -11,7 +11,7 @@ import Foundation
 
 struct NSKPlainNumberParser<Options: NSKOptions> {
     typealias Byte = Options.Byte
-    typealias Buffer = UnsafeBufferPointer<Byte>
+    typealias Buffer = Options.Buffer
     typealias Index = Buffer.Index
     
     private init() {}
