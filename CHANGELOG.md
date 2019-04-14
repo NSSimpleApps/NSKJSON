@@ -1,3 +1,6 @@
+## 0.8.2 (2019-04-14)
+- update number parser
+
 ## 0.8.1 (2019-04-10)
 - internal improvements
 - fix typos

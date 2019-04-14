@@ -56,7 +56,7 @@ struct NSKPlainNumberParser<Options: NSKOptions> {
                         return (double, integerCount + decimalPart.count)
                     }
                 } else {
-                    if let int = self.int(digits: integerPart, radix: 10, isNegative: signPart.isEmpty == false) {
+                    if let int = self.int(digits: signPart + integerPart, radix: 10) {
                         return (int, integerCount)
                     } else {
                         throw NSKJSONError.error(description: "Number does not fit in Int at \(from).")
@@ -145,29 +145,20 @@ struct NSKPlainNumberParser<Options: NSKOptions> {
             return nil
         }
     }
-    static func int(digits: [UInt8], radix: Int, isNegative: Bool) -> Int? {
-        var result: Int = 0
-        let sign = isNegative ? -1 : 1
-        
-        for digit in digits {
-            let (partialValue, overflow) = result.multipliedReportingOverflow(by: radix)
-            if overflow {
-                return nil
-            } else {
-                let (partialValue, overflow) = partialValue.addingReportingOverflow(sign * Int(digit - 0x30))
-                if overflow {
-                    return nil
-                } else {
-                    result = partialValue
-                }
-            }
-        }
-        return result
-    }
     
-    static func double(digits: [UInt8]) -> Double {
-        return digits.withUnsafeBytes { (raw) -> Double in
-            return atof(raw.bindMemory(to: Int8.self).baseAddress)
+    @inline(__always)
+    static func int(digits: [UInt8], radix: Int32) -> Int? {
+        errno = 0
+        let result = strtol(unsafeBitCast(digits, to: [Int8].self), nil, radix)
+            
+        if errno == ERANGE {
+            return nil
+        } else {
+            return result
         }
+    }
+    @inline(__always)
+    static func double(digits: [UInt8]) -> Double {
+        return strtod(unsafeBitCast(digits, to: [Int8].self), nil)
     }
 }

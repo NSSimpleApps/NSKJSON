@@ -48,7 +48,7 @@ struct NSKJSON5NumberParser<Options: NSKOptions> {
                         
                         return (double, leadingCount + decimalPart.count)
                     } else {
-                        if let int = PlainNumberParser.int(digits: integerPart, radix: 16, isNegative: isNegative) {
+                        if let int = PlainNumberParser.int(digits: signPart + integerPart, radix: 16) {
                             return (int, leadingCount)
                         } else {
                             throw NSKJSONError.error(description: "Number does not fit in Int at \(from).")
@@ -100,7 +100,7 @@ struct NSKJSON5NumberParser<Options: NSKOptions> {
                     if integerPart.isEmpty {
                         throw NSKJSONError.error(description: "Incorrect number format at \(from).")
                     }
-                    if let int = PlainNumberParser.int(digits: integerPart, radix: 10, isNegative: isNegative) {
+                    if let int = PlainNumberParser.int(digits: signPart + integerPart, radix: 10) {
                         return (int, leadingCount)
                     } else {
                         throw NSKJSONError.error(description: "Number does not fit in Int at \(from).")

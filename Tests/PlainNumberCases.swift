@@ -90,8 +90,7 @@ let correctPlainDoubleCases = [
     "-123.0E-1",
 ]
 
-let nilCases = ["",
-                     "   ",
+let nilCases = ["   ",
                      "a",
                      "}",
 ]
