@@ -39,11 +39,12 @@ struct NSKPlainParser<Options: NSKOptions> {
                 throw NSKJSONError.error(description: "Unescaped control character around character \(index).")
                 
             } else if byte == terminator {
-                return (result + Options.string(buffer: buffer, from: begin, to: index), index - from)
+                let string = try Options.string(buffer: buffer, from: begin, to: index)
+                return (result + string, index - from)
                 
             } else if byte == Options.backSlash {
                 if index < endIndex - 1 {
-                    let prefix = Options.string(buffer: buffer, from: begin, to: index)
+                    let prefix = try Options.string(buffer: buffer, from: begin, to: index)
                     let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                     
                     result += (prefix + escapeSequence.string)

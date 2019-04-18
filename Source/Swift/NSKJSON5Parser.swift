@@ -316,11 +316,12 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 throw NSKJSONError.error(description: "Unescaped control character around character \(index).")
                 
             } else if byte == terminator {
-                return (result + Options.string(buffer: buffer, from: begin, to: index), index - from)
+                let string = try Options.string(buffer: buffer, from: begin, to: index)
+                return (result + string, index - from)
                 
             } else if byte == Options.backSlash {
                 if index < endIndex - 1 {
-                    let prefix = Options.string(buffer: buffer, from: begin, to: index)
+                    let prefix = try Options.string(buffer: buffer, from: begin, to: index)
                     let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                     
                     result += (prefix + escapeSequence.string)
@@ -375,8 +376,9 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 
             } else {
                 let nextIndex = index + 1
-                if byte == Options.colon || (byte == Options.slash && nextIndex < endIndex && (buffer[nextIndex] == Options.slash || buffer[nextIndex] == Options.star)) {
-                    result += Options.string(buffer: buffer, from: begin, to: index)
+                if byte == Options.colon || Options.isJson5Whitespace(byte) || (byte == Options.slash && nextIndex < endIndex && (buffer[nextIndex] == Options.slash || buffer[nextIndex] == Options.star)) {
+                    let string = try Options.string(buffer: buffer, from: begin, to: index)
+                    result += string
                     if result.isEmpty {
                         throw NSKJSONError.error(description: "Empty unquoted dictionary key is not allowed at \(index).")
                     } else {
@@ -384,7 +386,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                     }
                 } else if byte == Options.backSlash {
                     if index < endIndex - 1 {
-                        let prefix = Options.string(buffer: buffer, from: begin, to: index)
+                        let prefix = try Options.string(buffer: buffer, from: begin, to: index)
                         let escapeSequence = try self.parseEscapeSequence(buffer: buffer, from: index + 1)
                         
                         result += (prefix + escapeSequence.string)

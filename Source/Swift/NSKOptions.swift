@@ -63,7 +63,7 @@ protocol NSKOptions {
     static func hexByte(_ character: Byte) -> UInt8? // [0-15]
     static func digit(_ character: Byte) -> UInt8? // [0-9]
     
-    static func string(buffer: Buffer, from: Index, to: Index) -> String
+    static func string(buffer: Buffer, from: Index, to: Index) throws -> String
 }
 
 extension NSKOptions {
@@ -218,8 +218,25 @@ extension NSKJSON {
             }
         }
         
-        static func string(buffer: Buffer, from: Index, to: Index) -> String {
-            return String(decoding: buffer[from..<to], as: UTF8.self)
+        static func string(buffer: Buffer, from: Index, to: Index) throws -> String {
+            var it = buffer[from..<to].makeIterator()
+            var d = UTF8()
+            var index = from
+            var scalarView = String.UnicodeScalarView()
+            scalarView.reserveCapacity(buffer.distance(from: from, to: to))
+            
+            outer: while true {
+                switch d.decode(&it) {
+                case .emptyInput:
+                    break outer
+                case .error:
+                    throw NSKJSONError.error(description: "Unable to convert data to a string at: \(index).")
+                case .scalarValue(let scalar):
+                    scalarView.append(scalar)
+                    index += 1
+                }
+            }
+            return String(scalarView)
         }
     }
     
@@ -338,8 +355,25 @@ extension NSKJSON {
             }
             return nil
         }
-        static func string(buffer: Buffer, from: Index, to: Index) -> String {
-            return String(decoding: buffer[from..<to], as: UTF16.self)
+        static func string(buffer: Buffer, from: Index, to: Index) throws -> String {
+            var it = buffer[from..<to].makeIterator()
+            var d = UTF16()
+            var index = from
+            var scalarView = String.UnicodeScalarView()
+            scalarView.reserveCapacity(buffer.distance(from: from, to: to))
+            
+            outer: while true {
+                switch d.decode(&it) {
+                case .emptyInput:
+                    break outer
+                case .error:
+                    throw NSKJSONError.error(description: "Unable to convert data to a string at: \(index).")
+                case .scalarValue(let scalar):
+                    scalarView.append(scalar)
+                    index += 1
+                }
+            }
+            return String(scalarView)
         }
     }
     
@@ -457,8 +491,25 @@ extension NSKJSON {
             }
             return nil
         }
-        static func string(buffer: Buffer, from: Index, to: Index) -> String {
-            return String(decoding: buffer[from..<to], as: UTF32.self)
+        static func string(buffer: Buffer, from: Index, to: Index) throws -> String {
+            var it = buffer[from..<to].makeIterator()
+            var d = UTF32()
+            var index = from
+            var scalarView = String.UnicodeScalarView()
+            scalarView.reserveCapacity(buffer.distance(from: from, to: to))
+            
+            outer: while true {
+                switch d.decode(&it) {
+                case .emptyInput:
+                    break outer
+                case .error:
+                    throw NSKJSONError.error(description: "Unable to convert data to a string at: \(index).")
+                case .scalarValue(let scalar):
+                    scalarView.append(scalar)
+                    index += 1
+                }
+            }
+            return String(scalarView)
         }
     }
 }

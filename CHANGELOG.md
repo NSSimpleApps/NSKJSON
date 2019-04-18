@@ -1,3 +1,6 @@
+## 0.8.3 (2019-04-18)
+- fix string parser
+
 ## 0.8.2 (2019-04-14)
 - update number parser
 
