@@ -1,3 +1,6 @@
+## 0.9 (2020-09-17)
+- Bump to iOS9 and swift5.3
+
 ## 0.8.3 (2019-04-18)
 - fix string parser
 
