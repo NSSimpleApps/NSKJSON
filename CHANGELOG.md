@@ -1,3 +1,6 @@
+## 0.9.2 (2021-05-03)
+- Update project settings
+
 ## 0.9.1 (2021-05-03)
 - Update project settings
 
