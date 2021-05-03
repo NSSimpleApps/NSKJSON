@@ -1,3 +1,6 @@
+## 0.9.1 (2021-05-03)
+- Update project settings
+
 ## 0.9 (2020-09-17)
 - Bump to iOS9 and swift5.3
 
