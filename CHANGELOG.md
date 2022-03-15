@@ -1,3 +1,6 @@
+## 1.0 (2022-03-15)
+- Bump supported version
+
 ## 0.9.2 (2021-05-03)
 - Update project settings
 
