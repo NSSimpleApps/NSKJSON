@@ -7,15 +7,13 @@ Pod::Spec.new do |s|
     s.author       = { 'NSSimpleApps, Sergey Poluyanov' => 'ns.simple.apps@gmail.com' }
     s.source       = { :git => "https://github.com/NSSimpleApps/NSKJSON.git", :tag => s.version.to_s }
     s.requires_arc = true
-    s.swift_version = '5.6'
+    s.swift_version = '5.9'
 
 
-    s.platform                  = :ios, '12.4', :watchos, '6.2', :tvos, '12.4', :osx, '10.15'
+    s.platform                  = :ios, '12.4', :osx, '10.15'
 
     s.osx.deployment_target = "10.15"
     s.ios.deployment_target = "12.4"
-    s.watchos.deployment_target = "6.2"
-    s.tvos.deployment_target = "12.4"
 
     s.source_files = "Source/Swift/*.swift"
 

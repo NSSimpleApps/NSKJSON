@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for iOSNSKJSON.
+//! Project version number for NSKJSON.
 FOUNDATION_EXPORT double NSKJSONVersionNumber;
 
-//! Project version string for iOSNSKJSON.
+//! Project version string for NSKJSON.
 FOUNDATION_EXPORT const unsigned char NSKJSONVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <iOSNSKJSON/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import <NSKJSON/PublicHeader.h>
 
 
