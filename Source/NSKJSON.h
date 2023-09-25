@@ -6,7 +6,7 @@
 //
 //
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 //! Project version number for iOSNSKJSON.
 FOUNDATION_EXPORT double NSKJSONVersionNumber;
