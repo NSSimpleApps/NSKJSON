@@ -9,6 +9,7 @@
 import Foundation
 
 public class NSKJSON {
+    @frozen
     public enum Version: Int {
         case plain
         case json5

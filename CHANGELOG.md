@@ -1,3 +1,6 @@
+## 1.3 (2024-09-18)
+- Bump supported version
+
 ## 1.2 (2024-09-18)
 - Bump supported version
 
