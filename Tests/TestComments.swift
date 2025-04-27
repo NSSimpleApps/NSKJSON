@@ -26,14 +26,14 @@ class NSKCommentTests: XCTestCase {
                 let fileName = info.fileName
                 print("TESTING", fileName)
                 let result = try NSKJSON.OptionsUTF8.buffer(data: info.data.dropLast(1), offset: 0, isBigEndian: isBigEndian,
-                                           block: { (result) -> (index: NSKJSON.OptionsUTF8.Index, numberOfLines: Int) in
-                                            switch result {
-                                            case .success(let buffer):
-                                                return try NSKJSON5Parser<NSKJSON.OptionsUTF8>.skipWhiteSpacesWithLines(buffer: buffer, from: 0)
-                                            case .failure(let error):
-                                                throw error
-                                            }
-                                            
+                                                            block: { (result) -> (index: NSKJSON.OptionsUTF8.Index, numberOfLines: Int) in
+                    switch result {
+                    case .success(let buffer):
+                        return try NSKJSON5Parser<NSKJSON.OptionsUTF8>.skipWhiteSpacesWithLines(buffer: buffer, from: 0)
+                    case .failure(let error):
+                        throw error
+                    }
+                    
                 })
                 let lines = result.numberOfLines
                 print(fileName, ":", lines)

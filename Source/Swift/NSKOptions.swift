@@ -9,7 +9,8 @@
 import Foundation
 
 protocol NSKOptions {
-    associatedtype Byte: UnsignedInteger
+    associatedtype CodePoint: UnicodeCodec
+    typealias Byte = CodePoint.CodeUnit
     typealias Buffer = UnsafeBufferPointer<Byte>
     typealias Index = Buffer.Index
     
@@ -58,15 +59,35 @@ protocol NSKOptions {
     static var N: Byte { get } // N
     
     static func isPlainWhitespace(_ character: Byte) -> Bool
-    static func isJson5Whitespace(_ character: Byte) -> Bool
+    static func isJSON5Whitespace(_ character: Byte) -> Bool
     static func isControlCharacter(_ character: Byte) -> Bool
     static func hexByte(_ character: Byte) -> UInt8? // [0-15]
     static func digit(_ character: Byte) -> UInt8? // [0-9]
-    
-    static func string(buffer: Buffer, from: Index, to: Index) throws -> String
 }
 
 extension NSKOptions {
+    static func string(buffer: Buffer, from: Index, to: Index) throws -> String {
+        var it = buffer[from..<to].makeIterator()
+        var d = CodePoint()
+        var index = from
+        var scalarView = String.UnicodeScalarView()
+        scalarView.reserveCapacity(buffer.distance(from: from, to: to))
+        
+        outer: while true {
+            switch d.decode(&it) {
+            case .emptyInput:
+                break outer
+            case .error:
+                throw NSKJSONError.error(description: "Unable to convert data to a string at: \(index).")
+            case .scalarValue(let scalar):
+                scalarView.append(scalar)
+                index += 1
+            }
+        }
+        return String(scalarView)
+    }
+    
+    
     static func buffer<ResultType>(data: Data, offset: Int, isBigEndian: Bool,
                                    block: (Result<Buffer, Error>) throws -> ResultType) rethrows -> ResultType {
         if case let length = data.count - offset, length > 0 {
@@ -76,13 +97,13 @@ extension NSKOptions {
                 case (true, CFByteOrderBigEndian):
                     fallthrough
                 case (false, CFByteOrderLittleEndian):
-                    return try data[offset...].withUnsafeBytes({ (rawBufferPointer) -> ResultType in
+                    return try data.dropFirst(offset).withUnsafeBytes({ (rawBufferPointer) -> ResultType in
                         return try block(.success(rawBufferPointer.bindMemory(to: Byte.self)))
                     })
                 case (false, CFByteOrderBigEndian):
                     fallthrough
                 case (true, CFByteOrderLittleEndian):
-                    return try data.reversed()[..<(data.endIndex - offset)].withUnsafeBytes({ (rawBufferPointer) -> ResultType in
+                    return try data.reversed().dropLast(offset).withUnsafeBytes({ (rawBufferPointer) -> ResultType in
                         let pointer: [Byte] = rawBufferPointer.bindMemory(to: Byte.self).reversed()
                         return try pointer.withUnsafeBytes({ (raw) -> ResultType in
                             return try block(.success(raw.bindMemory(to: Byte.self)))
@@ -102,7 +123,7 @@ extension NSKOptions {
 extension NSKJSON {
     struct OptionsUTF8: NSKOptions {
         private init() {}
-        typealias Byte = UTF8.CodeUnit
+        typealias CodePoint = UTF8
         
         static let newLine          : Byte = 0x0A
         static let carriageReturn   : Byte = 0x0D
@@ -151,7 +172,7 @@ extension NSKJSON {
             character == self.carriageReturn ||
             character == self.tab
         }
-        static func isJson5Whitespace(_ character: Byte) -> Bool {
+        static func isJSON5Whitespace(_ character: Byte) -> Bool {
             if self.isPlainWhitespace(character) {
                 return true
             } else {
@@ -217,32 +238,11 @@ extension NSKJSON {
                 return try block(raw.bindMemory(to: Byte.self))
             }
         }
-        
-        static func string(buffer: Buffer, from: Index, to: Index) throws -> String {
-            var it = buffer[from..<to].makeIterator()
-            var d = UTF8()
-            var index = from
-            var scalarView = String.UnicodeScalarView()
-            scalarView.reserveCapacity(buffer.distance(from: from, to: to))
-            
-            outer: while true {
-                switch d.decode(&it) {
-                case .emptyInput:
-                    break outer
-                case .error:
-                    throw NSKJSONError.error(description: "Unable to convert data to a string at: \(index).")
-                case .scalarValue(let scalar):
-                    scalarView.append(scalar)
-                    index += 1
-                }
-            }
-            return String(scalarView)
-        }
     }
     
     struct OptionsUTF16: NSKOptions {
         private init() {}
-        typealias Byte = UTF16.CodeUnit
+        typealias CodePoint = UTF16
         
         static let newLine          : Byte = Byte(OptionsUTF8.newLine)
         static let carriageReturn   : Byte = Byte(OptionsUTF8.carriageReturn)
@@ -288,9 +288,9 @@ extension NSKJSON {
             }
             return false
         }
-        static func isJson5Whitespace(_ character: Byte) -> Bool {
+        static func isJSON5Whitespace(_ character: Byte) -> Bool {
             if let byte = self.getByte(from: character) {
-                return OptionsUTF8.isJson5Whitespace(byte)
+                return OptionsUTF8.isJSON5Whitespace(byte)
             }
             return false
         }
@@ -354,32 +354,12 @@ extension NSKJSON {
                 return OptionsUTF8.digit(byte)
             }
             return nil
-        }
-        static func string(buffer: Buffer, from: Index, to: Index) throws -> String {
-            var it = buffer[from..<to].makeIterator()
-            var d = UTF16()
-            var index = from
-            var scalarView = String.UnicodeScalarView()
-            scalarView.reserveCapacity(buffer.distance(from: from, to: to))
-            
-            outer: while true {
-                switch d.decode(&it) {
-                case .emptyInput:
-                    break outer
-                case .error:
-                    throw NSKJSONError.error(description: "Unable to convert data to a string at: \(index).")
-                case .scalarValue(let scalar):
-                    scalarView.append(scalar)
-                    index += 1
-                }
-            }
-            return String(scalarView)
         }
     }
     
     struct OptionsUTF32: NSKOptions {
         private init() {}
-        typealias Byte = UTF32.CodeUnit
+        typealias CodePoint = UTF32
         
         static let newLine          : Byte = Byte(OptionsUTF8.newLine)
         static let carriageReturn   : Byte = Byte(OptionsUTF8.carriageReturn)
@@ -425,9 +405,9 @@ extension NSKJSON {
             }
             return false
         }
-        static func isJson5Whitespace(_ character: Byte) -> Bool {
+        static func isJSON5Whitespace(_ character: Byte) -> Bool {
             if let byte = self.getByte(from: character) {
-                return OptionsUTF8.isJson5Whitespace(byte)
+                return OptionsUTF8.isJSON5Whitespace(byte)
             }
             return false
         }
@@ -490,26 +470,6 @@ extension NSKJSON {
                 return OptionsUTF8.digit(byte)
             }
             return nil
-        }
-        static func string(buffer: Buffer, from: Index, to: Index) throws -> String {
-            var it = buffer[from..<to].makeIterator()
-            var d = UTF32()
-            var index = from
-            var scalarView = String.UnicodeScalarView()
-            scalarView.reserveCapacity(buffer.distance(from: from, to: to))
-            
-            outer: while true {
-                switch d.decode(&it) {
-                case .emptyInput:
-                    break outer
-                case .error:
-                    throw NSKJSONError.error(description: "Unable to convert data to a string at: \(index).")
-                case .scalarValue(let scalar):
-                    scalarView.append(scalar)
-                    index += 1
-                }
-            }
-            return String(scalarView)
         }
     }
 }

@@ -14,14 +14,14 @@ struct NSKJSON5Parser<Options: NSKOptions> {
     typealias Buffer = Options.Buffer
     typealias Index = Options.Index
     typealias PlainParser = NSKPlainParser<Options>
-
+    
     private init() {}
     
     private static func skipSpaces(buffer: Buffer, from: Index) -> Index {
         let endIndex = buffer.endIndex
-
+        
         for index in from..<endIndex {
-            if Options.isJson5Whitespace(buffer[index]) == false {
+            if Options.isJSON5Whitespace(buffer[index]) == false {
                 return index
             }
         }
@@ -34,7 +34,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
         for index in from..<endIndex {
             let byte = buffer[index]
             
-            if Options.isJson5Whitespace(byte) == false {
+            if Options.isJSON5Whitespace(byte) == false {
                 return (index, numberOfLines)
                 
             } else if self.isNewLine(byte) {
@@ -149,18 +149,18 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 var nestingLevel = 1
                 var numberOfLines = 0
                 var i = initialIndex
-
+                
                 while i < endIndex {
                     let byte = buffer[i]
-
+                    
                     if self.isNewLine(byte) {
                         numberOfLines += 1
-
+                        
                     } else if byte == Options.star {
                         if case let nextIndex = i + 1, nextIndex < endIndex {
                             if buffer[nextIndex] == Options.slash {
                                 nestingLevel -= 1
-
+                                
                                 if nestingLevel == 0 {
                                     if case let nextNextIndex = nextIndex + 1, nextNextIndex < endIndex {
                                         return (nextNextIndex, numberOfLines)
@@ -192,7 +192,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
             return nil
         }
     }
-
+    
     static func skipWhiteSpaces(buffer: Buffer, from: Index) throws -> Index {
         var index = from
         while true {
@@ -252,7 +252,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 if numberOfLines == 0 {
                     return (index, false)
                 } else {
-                    return (index, Options.isJson5Whitespace(buffer[index]) == false)
+                    return (index, Options.isJSON5Whitespace(buffer[index]) == false)
                 }
             } else {
                 return (index, nil)
@@ -268,7 +268,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 if byte == Options.slash, buffer[index - 1] == Options.star {
                     return (index, false)
                 } else {
-                    return (index, Options.isJson5Whitespace(byte) == false)
+                    return (index, Options.isJSON5Whitespace(byte) == false)
                 }
             } else {
                 return (index, nil)
@@ -295,7 +295,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                     if mlIndex > wsIndex {
                         index = mlIndex
                     } else {
-                        return Options.isJson5Whitespace(buffer[mlIndex]) == false
+                        return Options.isJSON5Whitespace(buffer[mlIndex]) == false
                     }
                 }
             }
@@ -341,7 +341,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
         do {
             return try PlainParser.parseEscapeSequence(buffer: buffer, from: from)
         } catch {
-            if Options.isJson5Whitespace(buffer[from]) {
+            if Options.isJSON5Whitespace(buffer[from]) {
                 let (index, numberOfLines) = try self.skipWhiteSpacesWithLines(buffer: buffer, from: from)
                 if numberOfLines > 0 {
                     return ("\n", index - from)
@@ -350,7 +350,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 }
             } else if buffer.distance(from: from, to: buffer.endIndex) >= 3 {
                 if buffer[from + 0] == Options.x, let b1 = Options.hexByte(buffer[from + 1]),
-                    let b0 = Options.hexByte(buffer[from + 2]) {
+                   let b0 = Options.hexByte(buffer[from + 2]) {
                     
                     return (String(UnicodeScalar(b1 << 4 + b0)), 3)
                 } else {
@@ -362,7 +362,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
         }
     }
     
-    static func parseJson5DictionaryKey(buffer: Buffer, from: Index) throws -> (value: String, index: Index) {
+    static func parseJSON5DictionaryKey(buffer: Buffer, from: Index) throws -> (value: String, index: Index) {
         let endIndex = buffer.endIndex
         var index = from
         var begin = index
@@ -376,7 +376,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 
             } else {
                 let nextIndex = index + 1
-                if byte == Options.colon || Options.isJson5Whitespace(byte) || (byte == Options.slash && nextIndex < endIndex && (buffer[nextIndex] == Options.slash || buffer[nextIndex] == Options.star)) {
+                if byte == Options.colon || Options.isJSON5Whitespace(byte) || (byte == Options.slash && nextIndex < endIndex && (buffer[nextIndex] == Options.slash || buffer[nextIndex] == Options.star)) {
                     let string = try Options.string(buffer: buffer, from: begin, to: index)
                     result += string
                     if result.isEmpty {
@@ -556,7 +556,7 @@ struct NSKJSON5Parser<Options: NSKOptions> {
                 let (key, length) = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: byte)
                 return (key, from + length + 2)
             default:
-                return try self.parseJson5DictionaryKey(buffer: buffer, from: from)
+                return try self.parseJSON5DictionaryKey(buffer: buffer, from: from)
             }
         } else {
             throw NSKJSONError.error(description: "Invalid dictionary key at \(from).")

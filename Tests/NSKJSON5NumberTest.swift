@@ -19,13 +19,13 @@ class NSKJSON5NumberTest: XCTestCase {
             do {
                 if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
-                                                                            switch result {
-                                                                            case .success(let buffer):
-                                                                                return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                            case .failure(let error):
-                                                                                throw error
-                                                                            }
-                                                                            
+                    switch result {
+                    case .success(let buffer):
+                        return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    case .failure(let error):
+                        throw error
+                    }
+                    
                 }) {
                     XCTAssertEqual(length, integer.2)
                     XCTAssertTrue(number is Int)
@@ -48,12 +48,12 @@ class NSKJSON5NumberTest: XCTestCase {
                 print("TESTING:", correctPlainDoubleCase)
                 if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
-                                                                            switch result {
-                                                                            case .success(let buffer):
-                                                                                return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                            case .failure(let error):
-                                                                                throw error
-                                                                            }
+                    switch result {
+                    case .success(let buffer):
+                        return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    case .failure(let error):
+                        throw error
+                    }
                 }) {
                     XCTAssertEqual(length, correctPlainDoubleCase.count)
                     XCTAssertTrue(number is Double)
@@ -67,7 +67,7 @@ class NSKJSON5NumberTest: XCTestCase {
             }
         }
     }
-
+    
     func testCorrectJSON5Integers() {
         for integer in correctJSON5IntegerCases {
             let str = integer.0
@@ -75,15 +75,15 @@ class NSKJSON5NumberTest: XCTestCase {
             
             do {
                 print("TESTING:", integer.0)
-
+                
                 if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
-                                                                            switch result {
-                                                                            case .success(let buffer):
-                                                                                return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                            case .failure(let error):
-                                                                                throw error
-                                                                            }
+                    switch result {
+                    case .success(let buffer):
+                        return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    case .failure(let error):
+                        throw error
+                    }
                 }) {
                     XCTAssertEqual(length, integer.1)
                     XCTAssertTrue(number is Int)
@@ -104,15 +104,15 @@ class NSKJSON5NumberTest: XCTestCase {
             
             do {
                 print("TESTING:", correctJSON5DoubleCase)
-
+                
                 if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
-                                                                            switch result {
-                                                                            case .success(let buffer):
-                                                                                return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                            case .failure(let error):
-                                                                                throw error
-                                                                            }
+                    switch result {
+                    case .success(let buffer):
+                        return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    case .failure(let error):
+                        throw error
+                    }
                 }) {
                     XCTAssertEqual(length, correctJSON5DoubleCase.count)
                     XCTAssertTrue(number is Double)
@@ -134,19 +134,19 @@ class NSKJSON5NumberTest: XCTestCase {
             let data = incorrectJSON5Case.data(using: .utf8)!
             XCTAssertThrowsError(try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                 block: { (result) -> (number: Any, length: Int)? in
-                                                                    switch result {
-                                                                    case .success(let buffer):
-                                                                        return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                    case .failure(let error):
-                                                                        throw error
-                                                                    }
+                switch result {
+                case .success(let buffer):
+                    return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                case .failure(let error):
+                    throw error
+                }
             }), "FAILED AT \(incorrectJSON5Case)", { (error) in
                 //let e = error as NSError
                 //print(incorrectPlainCase, e.userInfo["NSDebugDescription"]!)
             })
         }
     }
-
+    
     func testInfinity() {
         let tests: [(String, Int)] = [("Infinity", 8), ("+Infinity", 9), ("-Infinity", 9)]
         
@@ -154,15 +154,15 @@ class NSKJSON5NumberTest: XCTestCase {
             do {
                 print("TESTING:", test.0)
                 let data = test.0.data(using: .utf8)!
-
+                
                 if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
-                                                                            switch result {
-                                                                            case .success(let buffer):
-                                                                                return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                            case .failure(let error):
-                                                                                throw error
-                                                                            }
+                    switch result {
+                    case .success(let buffer):
+                        return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    case .failure(let error):
+                        throw error
+                    }
                 }) {
                     XCTAssertEqual(length, test.1)
                     XCTAssertTrue(number is Double)
@@ -177,7 +177,7 @@ class NSKJSON5NumberTest: XCTestCase {
             }
         }
     }
-
+    
     func testNaN() {
         let tests: [(String, Int)] = [("NaN", 3), ("+NaN", 4), ("-NaN", 4)]
         
@@ -188,12 +188,12 @@ class NSKJSON5NumberTest: XCTestCase {
                 
                 if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
-                                                                            switch result {
-                                                                            case .success(let buffer):
-                                                                                return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                            case .failure(let error):
-                                                                                throw error
-                                                                            }
+                    switch result {
+                    case .success(let buffer):
+                        return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    case .failure(let error):
+                        throw error
+                    }
                 }) {
                     XCTAssertEqual(length, test.1)
                     XCTAssertTrue(number is Double)
@@ -218,12 +218,12 @@ class NSKJSON5NumberTest: XCTestCase {
             
             if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                      block: { (result) -> (number: Any, length: Int)? in
-                                                                        switch result {
-                                                                        case .success(let buffer):
-                                                                            return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
-                                                                        case .failure(let error):
-                                                                            throw error
-                                                                        }
+                switch result {
+                case .success(let buffer):
+                    return try NSKJSON5NumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                case .failure(let error):
+                    throw error
+                }
             }) {
                 print(number, length)
                 XCTAssertEqual(length, str.count)

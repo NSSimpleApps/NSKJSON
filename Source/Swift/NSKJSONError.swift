@@ -10,11 +10,11 @@ import Foundation
 
 private let NSDebugDescription = "NSDebugDescription"
 
-class NSKJSONError {
+final class NSKJSONError {
     private init() {}
     
     static func error(description: String) -> NSError {
-        return NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: [
-            NSDebugDescription : description])
+        return NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue,
+                       userInfo: [NSDebugDescription : description])
     }
 }

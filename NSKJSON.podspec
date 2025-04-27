@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "NSKJSON"
-    s.version      = "1.3"
+    s.version      = "1.4"
     s.summary      = "NSKJSON is a swift library for parsing plain-json format and json5 format."
     s.homepage     = "https://github.com/NSSimpleApps/NSKJSON"
     s.license      = { :type => 'MIT', :file => 'LICENSE' }

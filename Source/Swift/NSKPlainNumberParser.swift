@@ -150,7 +150,7 @@ struct NSKPlainNumberParser<Options: NSKOptions> {
     static func int(digits: [UInt8], radix: Int32) -> Int? {
         errno = 0
         let result = strtol(unsafeBitCast(digits, to: [Int8].self), nil, radix)
-            
+        
         if errno == ERANGE {
             return nil
         } else {

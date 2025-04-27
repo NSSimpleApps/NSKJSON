@@ -34,7 +34,7 @@ public class NSKJSON {
         switch encoding {
         case .utf8:
             return try OptionsUTF8.utf8Buffer(data: data, offset: offset,
-                                          block: { (buffer) -> Any in
+                                              block: { (buffer) -> Any in
                 switch version {
                 case .plain:
                     return try NSKPlainParser<OptionsUTF8>.parseObject(buffer: buffer)

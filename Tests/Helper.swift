@@ -22,7 +22,7 @@ class Helper {
     static func directoryPath(forName name: String) -> String {
         return Bundle(for: self).resourcePath!.appending("/" + name)
     }
-
+    
     static func data(in directory: String, withPrefix prefix: String, encoding: String.Encoding) throws -> [DataInfo] {
         return try self.string(in: directory, withPrefix: prefix).map({ (stringInfo) -> DataInfo in
             let fileName = stringInfo.fileName

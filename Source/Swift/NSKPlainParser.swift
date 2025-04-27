@@ -64,9 +64,9 @@ struct NSKPlainParser<Options: NSKOptions> {
     static func parseCodeUnit(buffer: Buffer, from: Index) throws -> UInt16 {
         if buffer.distance(from: from, to: buffer.endIndex) >= 4 {
             if let b3 = Options.hexByte(buffer[from]),
-                let b2 = Options.hexByte(buffer[from + 1]),
-                let b1 = Options.hexByte(buffer[from + 2]),
-                let b0 = Options.hexByte(buffer[from + 3]) {
+               let b2 = Options.hexByte(buffer[from + 1]),
+               let b1 = Options.hexByte(buffer[from + 2]),
+               let b0 = Options.hexByte(buffer[from + 3]) {
                 
                 return (UInt16(b3 << 4 + b2) << 4 + UInt16(b1)) << 4 + UInt16(b0)
             } else {
@@ -108,7 +108,7 @@ struct NSKPlainParser<Options: NSKOptions> {
         case Options.b: return ("\u{08}", 1)
         case Options.f: return ("\u{0C}", 1)
         case Options.r: return ("\r", 1)
-        
+            
         case Options.u:
             let codeUnit = try self.parseCodeUnit(buffer: buffer, from: from + 1)
             
@@ -304,12 +304,12 @@ struct NSKPlainParser<Options: NSKOptions> {
     
     static func parseDictionaryKey(buffer: Buffer, from: Index) throws -> (value: String, index: Index) {
         let quotationMark = Options.quotationMark
-
+        
         guard buffer.distance(from: from, to: buffer.endIndex) >= 2 && buffer[from] == quotationMark else {
             throw NSKJSONError.error(description: "Invalid dictionary key at \(from).")
         }
         let (value, length) = try self.parseByteSequence(buffer: buffer, from: from + 1, terminator: quotationMark)
-
+        
         return (value, from + length + 2)
     }
     

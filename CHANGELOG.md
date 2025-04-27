@@ -1,3 +1,6 @@
+## 1.4 (2025-04-27)
+- Minor updates.
+
 ## 1.3 (2024-09-18)
 - Bump supported version
 

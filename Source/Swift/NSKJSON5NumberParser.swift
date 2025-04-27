@@ -38,7 +38,7 @@ struct NSKJSON5NumberParser<Options: NSKOptions> {
             let signPartCount = signPart.count
             let nextIndex = from + signPartCount
             if buffer.distance(from: nextIndex, to: endIndex) > 2,
-                let zero = Options.zero(buffer[nextIndex]), let x = Options.x(buffer[nextIndex + 1]) {
+               let zero = Options.zero(buffer[nextIndex]), let x = Options.x(buffer[nextIndex + 1]) {
                 let index = nextIndex + 2
                 if case let integerPart = self.hexIntegerPart(buffer: buffer, from: index), integerPart.isEmpty == false {
                     let leadingCount = 2 + signPartCount + integerPart.count
@@ -63,25 +63,25 @@ struct NSKJSON5NumberParser<Options: NSKOptions> {
                     let index = from + signPartCount
                     if buffer.distance(from: index, to: endIndex) >= 8 {
                         if buffer[index] == Options.I,
-                            buffer[index + 1] == Options.n,
-                            buffer[index + 2] == Options.f,
-                            buffer[index + 3] == Options.i,
-                            buffer[index + 4] == Options.n,
-                            buffer[index + 5] == Options.i,
-                            buffer[index + 6] == Options.t,
-                            buffer[index + 7] == Options.y {
+                           buffer[index + 1] == Options.n,
+                           buffer[index + 2] == Options.f,
+                           buffer[index + 3] == Options.i,
+                           buffer[index + 4] == Options.n,
+                           buffer[index + 5] == Options.i,
+                           buffer[index + 6] == Options.t,
+                           buffer[index + 7] == Options.y {
                             
                             let length = signPartCount + 8
                             if isNegative {
-                                 return (-Double.infinity, length)
+                                return (-Double.infinity, length)
                             } else {
-                                 return (Double.infinity, length)
+                                return (Double.infinity, length)
                             }
                         }
                     } else if buffer.distance(from: index, to: endIndex) >= 3 {
                         if buffer[index] == Options.N,
-                            buffer[index + 1] == Options.a,
-                            buffer[index + 2] == Options.N {
+                           buffer[index + 1] == Options.a,
+                           buffer[index + 2] == Options.N {
                             return (Double.nan, 3 + signPartCount)
                         }
                     }
