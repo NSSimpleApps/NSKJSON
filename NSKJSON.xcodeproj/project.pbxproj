@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -90,18 +90,14 @@
 /* Begin PBXFrameworksBuildPhase section */
 		B562038C1E9D20920071D7DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B562041E1E9D25BD0071D7DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				B56204261E9D25BD0071D7DC /* NSKJSON.framework in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -220,11 +216,9 @@
 /* Begin PBXHeadersBuildPhase section */
 		B562038D1E9D20920071D7DC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				B56203C61E9D22570071D7DC /* NSKJSON.h in Headers */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
@@ -239,8 +233,6 @@
 				B562038E1E9D20920071D7DC /* Resources */,
 			);
 			buildRules = (
-			);
-			dependencies = (
 			);
 			name = NSKJSON;
 			productName = NSKJSON;
@@ -288,7 +280,6 @@
 				};
 			};
 			buildConfigurationList = B56203881E9D207E0071D7DC /* Build configuration list for PBXProject "NSKJSON" */;
-			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -296,6 +287,7 @@
 				Base,
 			);
 			mainGroup = B56203841E9D207E0071D7DC;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = B56203911E9D20920071D7DC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -309,15 +301,12 @@
 /* Begin PBXResourcesBuildPhase section */
 		B562038E1E9D20920071D7DC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				CE20EE442CC209B400B221FD /* PrivacyInfo.xcprivacy in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B562041F1E9D25BD0071D7DC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				B5951CF71EC6C02C00BEE9D3 /* json5-tests in Resources */,
 				B56C328A1EB79F3700FD6548 /* test_plain_parsing in Resources */,
@@ -325,14 +314,12 @@
 				B587E3391EC179E30062FCC9 /* comments in Resources */,
 				B57800CA1EB8CCE000A0E6A7 /* test.json5 in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B562038B1E9D20920071D7DC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				B56204091E9D25410071D7DC /* NSKPlainNumberParser.swift in Sources */,
 				B56204111E9D25410071D7DC /* NSKPlainParser.swift in Sources */,
@@ -343,11 +330,9 @@
 				B56203F91E9D25410071D7DC /* Data+NSKExtension.swift in Sources */,
 				B56C327C1EB7306100FD6548 /* NSKJSON5Parser.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B562041D1E9D25BD0071D7DC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				B500D2DD2259D0C400E932BB /* NSKJSON5MiscTests.swift in Sources */,
 				B56C327F1EB74CB500FD6548 /* JSON5NumberCases.swift in Sources */,
@@ -360,7 +345,6 @@
 				B57B61781EA3B0AA0025164B /* NSKJSON5NumberTest.swift in Sources */,
 				B56C32821EB74CBF00FD6548 /* NSKJSON5Tests.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
@@ -374,7 +358,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		B56203891E9D207E0071D7DC /* Debug */ = {
+		B56203891E9D207E0071D7DC /* Debug configuration for PBXProject "NSKJSON" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -417,7 +401,7 @@
 			};
 			name = Debug;
 		};
-		B562038A1E9D207E0071D7DC /* Release */ = {
+		B562038A1E9D207E0071D7DC /* Release configuration for PBXProject "NSKJSON" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -458,7 +442,7 @@
 			};
 			name = Release;
 		};
-		B56203971E9D20920071D7DC /* Debug */ = {
+		B56203971E9D20920071D7DC /* Debug configuration for PBXNativeTarget "NSKJSON" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -530,7 +514,7 @@
 			};
 			name = Debug;
 		};
-		B56203981E9D20920071D7DC /* Release */ = {
+		B56203981E9D20920071D7DC /* Release configuration for PBXNativeTarget "NSKJSON" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -596,7 +580,7 @@
 			};
 			name = Release;
 		};
-		B562042A1E9D25BD0071D7DC /* Debug */ = {
+		B562042A1E9D25BD0071D7DC /* Debug configuration for PBXNativeTarget "NSKJSONTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -657,7 +641,7 @@
 			};
 			name = Debug;
 		};
-		B562042B1E9D25BD0071D7DC /* Release */ = {
+		B562042B1E9D25BD0071D7DC /* Release configuration for PBXNativeTarget "NSKJSONTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -718,28 +702,25 @@
 		B56203881E9D207E0071D7DC /* Build configuration list for PBXProject "NSKJSON" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B56203891E9D207E0071D7DC /* Debug */,
-				B562038A1E9D207E0071D7DC /* Release */,
+				B56203891E9D207E0071D7DC /* Debug configuration for PBXProject "NSKJSON" */,
+				B562038A1E9D207E0071D7DC /* Release configuration for PBXProject "NSKJSON" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		B56203961E9D20920071D7DC /* Build configuration list for PBXNativeTarget "NSKJSON" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B56203971E9D20920071D7DC /* Debug */,
-				B56203981E9D20920071D7DC /* Release */,
+				B56203971E9D20920071D7DC /* Debug configuration for PBXNativeTarget "NSKJSON" */,
+				B56203981E9D20920071D7DC /* Release configuration for PBXNativeTarget "NSKJSON" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		B56204291E9D25BD0071D7DC /* Build configuration list for PBXNativeTarget "NSKJSONTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B562042A1E9D25BD0071D7DC /* Debug */,
-				B562042B1E9D25BD0071D7DC /* Release */,
+				B562042A1E9D25BD0071D7DC /* Debug configuration for PBXNativeTarget "NSKJSONTests" */,
+				B562042B1E9D25BD0071D7DC /* Release configuration for PBXNativeTarget "NSKJSONTests" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */

@@ -1,3 +1,6 @@
+## 1.5 (2025-06-04)
+- Minor updates.
+
 ## 1.4 (2025-04-27)
 - Minor updates.
 

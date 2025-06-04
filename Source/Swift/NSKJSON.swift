@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class NSKJSON {
+public final class NSKJSON: Sendable {
     @frozen
-    public enum Version: Int {
+    public enum Version: Int, Sendable {
         case plain
         case json5
     }
@@ -33,35 +33,35 @@ public class NSKJSON {
         
         switch encoding {
         case .utf8:
-            return try OptionsUTF8.utf8Buffer(data: data, offset: offset,
-                                              block: { (buffer) -> Any in
+            return try NSKOptionsUTF8.utf8Buffer(data: data, offset: offset,
+                                                 block: { (buffer) -> Any in
                 switch version {
                 case .plain:
-                    return try NSKPlainParser<OptionsUTF8>.parseObject(buffer: buffer)
+                    return try NSKPlainParser<NSKOptionsUTF8>.parseObject(buffer: buffer)
                 case .json5:
-                    return try NSKJSON5Parser<OptionsUTF8>.parseObject(buffer: buffer)
+                    return try NSKJSON5Parser<NSKOptionsUTF8>.parseObject(buffer: buffer)
                 }
             })
         case .utf16BigEndian, .utf16LittleEndian:
-            return try OptionsUTF16.buffer(data: data, offset: offset, isBigEndian: encoding == .utf16BigEndian,
-                                           block: { (result) -> Any in
+            return try NSKOptionsUTF16.buffer(data: data, offset: offset, isBigEndian: encoding == .utf16BigEndian,
+                                              block: { (result) -> Any in
                 let buffer = try result.get()
                 switch version {
                 case .plain:
-                    return try NSKPlainParser<OptionsUTF16>.parseObject(buffer: buffer)
+                    return try NSKPlainParser<NSKOptionsUTF16>.parseObject(buffer: buffer)
                 case .json5:
-                    return try NSKJSON5Parser<OptionsUTF16>.parseObject(buffer: buffer)
+                    return try NSKJSON5Parser<NSKOptionsUTF16>.parseObject(buffer: buffer)
                 }
             })
         case .utf32BigEndian, .utf32LittleEndian:
-            return try OptionsUTF32.buffer(data: data, offset: offset, isBigEndian: encoding == .utf32BigEndian,
-                                           block: { (result) -> Any in
+            return try NSKOptionsUTF32.buffer(data: data, offset: offset, isBigEndian: encoding == .utf32BigEndian,
+                                              block: { (result) -> Any in
                 let buffer = try result.get()
                 switch version {
                 case .plain:
-                    return try NSKPlainParser<OptionsUTF32>.parseObject(buffer: buffer)
+                    return try NSKPlainParser<NSKOptionsUTF32>.parseObject(buffer: buffer)
                 case .json5:
-                    return try NSKJSON5Parser<OptionsUTF32>.parseObject(buffer: buffer)
+                    return try NSKJSON5Parser<NSKOptionsUTF32>.parseObject(buffer: buffer)
                 }
             })
         default:
@@ -76,9 +76,9 @@ public class NSKJSON {
             try UnsafeBufferPointer(start: start, count: count).withMemoryRebound(to: UInt8.self, { (buffer) -> Any in
                 switch version {
                 case .plain:
-                    return try NSKPlainParser<OptionsUTF8>.parseObject(buffer: buffer)
+                    return try NSKPlainParser<NSKOptionsUTF8>.parseObject(buffer: buffer)
                 case .json5:
-                    return try NSKJSON5Parser<OptionsUTF8>.parseObject(buffer: buffer)
+                    return try NSKJSON5Parser<NSKOptionsUTF8>.parseObject(buffer: buffer)
                 }
             })
         }

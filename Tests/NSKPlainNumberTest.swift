@@ -17,11 +17,11 @@ class NSKPlainNumberTest: XCTestCase {
         
         print("TESTING:", str)
         do {
-            if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 1, isBigEndian: isBigEndian,
+            if let (number, length) = try NSKOptionsUTF8.buffer(data: data, offset: 1, isBigEndian: isBigEndian,
                                                                      block: { (result) -> (number: Any, length: Int)? in
                 switch result {
                 case .success(let buffer):
-                    return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    return try NSKPlainNumberParser<NSKOptionsUTF8>.parseNumber(buffer: buffer, from: 0)
                 case .failure(let error):
                     throw error
                 }
@@ -45,11 +45,11 @@ class NSKPlainNumberTest: XCTestCase {
             
             print("TESTING:", str)
             do {
-                if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+                if let (number, length) = try NSKOptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
                     switch result {
                     case .success(let buffer):
-                        return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                        return try NSKPlainNumberParser<NSKOptionsUTF8>.parseNumber(buffer: buffer, from: 0)
                     case .failure(let error):
                         throw error
                     }
@@ -74,11 +74,11 @@ class NSKPlainNumberTest: XCTestCase {
             let data = correctPlainDoubleCase.data(using: .utf8)!
             
             do {
-                if let (number, length) = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+                if let (number, length) = try NSKOptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                          block: { (result) -> (number: Any, length: Int)? in
                     switch result {
                     case .success(let buffer):
-                        return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                        return try NSKPlainNumberParser<NSKOptionsUTF8>.parseNumber(buffer: buffer, from: 0)
                     case .failure(let error):
                         throw error
                     }
@@ -102,11 +102,11 @@ class NSKPlainNumberTest: XCTestCase {
             let data = nilCase.data(using: .utf8)!
             
             do {
-                let result = try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+                let result = try NSKOptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                             block: { (result) -> (number: Any, length: Int)? in
                     switch result {
                     case .success(let buffer):
-                        return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                        return try NSKPlainNumberParser<NSKOptionsUTF8>.parseNumber(buffer: buffer, from: 0)
                     case .failure(let error):
                         print("FAILED AT:", error)
                         XCTFail()
@@ -126,11 +126,11 @@ class NSKPlainNumberTest: XCTestCase {
             print("TESTING:", incorrectPlainCase)
             let data = incorrectPlainCase.data(using: .utf8)!
             
-            XCTAssertThrowsError(try NSKJSON.OptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
+            XCTAssertThrowsError(try NSKOptionsUTF8.buffer(data: data, offset: 0, isBigEndian: isBigEndian,
                                                                 block: { (result) -> (number: Any, length: Int)? in
                 switch result {
                 case .success(let buffer):
-                    return try NSKPlainNumberParser<NSKJSON.OptionsUTF8>.parseNumber(buffer: buffer, from: 0)
+                    return try NSKPlainNumberParser<NSKOptionsUTF8>.parseNumber(buffer: buffer, from: 0)
                 case .failure(let error):
                     throw error
                 }
