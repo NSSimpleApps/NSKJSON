@@ -14,7 +14,7 @@ let package = Package(
     products: [
         .library(name: "NSKJSON",
                  targets: ["NSKJSON"]),
-        .library(name: "NSKJSON-Dynamic",
+        .library(name: "NSKJSONDynamic",
                  type: .dynamic,
                  targets: ["NSKJSON"]),
     ],
