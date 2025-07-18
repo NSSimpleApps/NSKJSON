@@ -12,14 +12,11 @@ let package = Package(
         .visionOS(.v1)
     ],
     products: [
-        .library(name: "NSKJSON",
-                 targets: ["NSKJSON"]),
-        .library(name: "NSKJSONDynamic",
-                 type: .dynamic,
-                 targets: ["NSKJSON"]),
+        .library(name: "NSKJSON", targets: ["NSKJSON"]),
+        .library(name: "NSKJSONDynamic", type: .dynamic, targets: ["NSKJSON"]),
     ],
     targets: [
-        .target(name: "NSKJSON",
-                path: "Source/Swift"),
-    ]
+        .target(name: "NSKJSON", path: "Source/Swift", resources: [.process("Source/PrivacyInfo.xcprivacy")])
+    ],
+    swiftLanguageModes: [.v6]
 )

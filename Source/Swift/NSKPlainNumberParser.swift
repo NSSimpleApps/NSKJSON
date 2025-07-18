@@ -44,7 +44,7 @@ struct NSKPlainNumberParser<Options: NSKOptions> {
                 let integerCount = signPart.count + integerPart.count
                 let index = from + integerCount
                 
-                if integerPart.count > 1 && integerPart[0] == 0x30 {
+                if integerPart.count > 1 && integerPart[0] == NSKOptionsUTF8.zero {
                     throw NSKJSONError.error(description: "Leading '0' is not allowed at \(index).")
                 }
                 

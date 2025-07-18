@@ -161,7 +161,7 @@ struct NSKOptionsUTF8: NSKOptions {
     static let i                : Byte = 0x69
     static let y                : Byte = 0x79
     static let N                : Byte = 0x4E
-    private static let zero     : Byte = 0x30
+    static let zero             : Byte = 0x30
     
     static func isPlainWhitespace(_ character: Byte) -> Bool {
         return character == self.space ||
